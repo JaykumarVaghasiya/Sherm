@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">ShermAssignment</string>
+    <string name="sherm">Sherm</string>
+    <string name="sign_in">Sign In</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="button">Button</string>
+    <string name="login">Login</string>
+    <string name="sign_out">Sign out</string>
+    <string name="logged_In">Logged In Successfully</string>
+    <string name="request_valid_email_or_password">Please Enter valid Email and Password</string>
+    <string name="request_email_or_password">Please Enter Email and Password</string>
+    <string name="invalid_credentials">Invalid Credentials</string>
+    <string name="empty_credentials">empty Credentials</string>
+</resources>

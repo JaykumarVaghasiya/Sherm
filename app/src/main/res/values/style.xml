@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.RemoveSplashScreenTheme" parent="@style/Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/green</item>
+        <item name="colorPrimaryDark">@color/lightGreen</item>
+        <item name="colorAccent">@color/green</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="ShermTheme" parent="@style/Theme.Material3.DayNight" >
+        <item name="colorPrimary">@color/green</item>
+        <item name="colorPrimaryDark">@color/lightGreen</item>
+        <item name="colorAccent">@color/green</item>
+        <item name="actionBarTheme">@color/white</item>
+
+    </style>
+</resources>
