@@ -34,7 +34,7 @@
             android:theme="@style/Theme.RemoveSplashScreenTheme"/>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".model.dashboard.MainActivity"
             android:exported="false" />
     </application>
 

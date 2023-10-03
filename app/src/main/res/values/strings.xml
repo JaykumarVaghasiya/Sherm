@@ -12,4 +12,5 @@
     <string name="request_email_or_password">Please Enter Email and Password</string>
     <string name="invalid_credentials">Invalid Credentials</string>
     <string name="empty_credentials">empty Credentials</string>
+    <string name="image">Image</string>
 </resources>
