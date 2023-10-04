@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
-import com.jay.shermassignment.model.dashboard.MainActivity
+import com.jay.shermassignment.dashboardUI.MainActivity
 import com.jay.shermassignment.R
 import kotlinx.coroutines.launch
 import retrofit2.HttpException

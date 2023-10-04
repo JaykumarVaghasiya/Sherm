@@ -1,4 +1,4 @@
-package com.jay.shermassignment.model.dashboard
+package com.jay.shermassignment.dashboardUI
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,15 +9,26 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.jay.shermassignment.inspectionUI.Inspection
 import com.jay.shermassignment.R
 import com.jay.shermassignment.login.LoginActivity
+import com.jay.shermassignment.model.dashboard.Dashboard
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var dashboardAdapter: DashboardAdapter
 
     private val dashboardList= listOf(
-       Dashboard("certificate","Certificate")
+       Dashboard("hazard","HAZARDS"),
+       Dashboard("incident","INCIDENTS"),
+       Dashboard("issues","ISSUES"),
+       Dashboard("inspection","INSPECTIONS"),
+       Dashboard("document","DOCUMENTS"),
+       Dashboard("icon_sds","SDS"),
+       Dashboard("icon_mytraining","MY TRAINING"),
+       Dashboard("icon_mycat","MY CAT"),
+       Dashboard("licence","LICENCES"),
+       Dashboard("certificate","CERTIFICATES")
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,10 +39,13 @@ class MainActivity : AppCompatActivity() {
         val layoutManager = GridLayoutManager(this,2)
         recyclerView.layoutManager = layoutManager
 
-        dashboardAdapter = DashboardAdapter(this, dashboardList)
+        dashboardAdapter = DashboardAdapter(this, dashboardList){dashboard ->
+            if(dashboard.name == "INSPECTIONS"){
+                val intent=Intent(this, Inspection::class.java)
+                startActivity(intent)
+            }
+        }
         recyclerView.adapter = dashboardAdapter
-
-
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater

@@ -7,11 +7,12 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
-    <style name="ShermTheme" parent="@style/Theme.Material3.DayNight" >
+    <style name="ShermTheme" parent="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/green</item>
         <item name="colorPrimaryDark">@color/lightGreen</item>
         <item name="colorAccent">@color/green</item>
-        <item name="actionBarTheme">@color/white</item>
-
+        <item name="android:statusBarColor">@color/green</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="background">@color/white</item>
     </style>
 </resources>

@@ -15,26 +15,29 @@
         android:supportsRtl="true"
         android:theme="@style/ShermTheme"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ShowInspectionDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".inspectionUI.Inspection"
+            android:exported="false"
+            android:parentActivityName=".dashboardUI.MainActivity" />
         <activity
             android:name=".splashScreen.SplashScreen"
             android:exported="true"
             android:theme="@style/Theme.RemoveSplashScreenTheme">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".login.LoginActivity"
             android:exported="false"
-            android:theme="@style/Theme.RemoveSplashScreenTheme"/>
-
+            android:theme="@style/Theme.RemoveSplashScreenTheme" />
         <activity
-            android:name=".model.dashboard.MainActivity"
+            android:name=".dashboardUI.MainActivity"
             android:exported="false" />
     </application>
 

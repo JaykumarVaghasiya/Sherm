@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".dashboardUI.MainActivity">
+    tools:context=".inspectionUI.Inspection">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvDashboard"
+        android:id="@+id/rvInspection"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/itemlist_dashboard" />
+        tools:listitem="@layout/itemlist_inspection"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
