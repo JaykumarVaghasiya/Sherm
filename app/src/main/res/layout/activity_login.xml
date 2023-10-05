@@ -8,6 +8,17 @@
     android:background="@drawable/background"
     >
 
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"/>
+
     <ImageView
         android:id="@+id/img_sherm"
         android:layout_width="wrap_content"
@@ -46,13 +57,15 @@
         android:ems="10"
         android:gravity="center"
         android:hint="@string/email"
+        android:textColorHint="@color/black"
         android:inputType="textEmailAddress"
         android:padding="10dp"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/tv_sign_in"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="@+id/tv_sign_in"
-        app:layout_constraintTop_toBottomOf="@+id/tv_sign_in" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_sign_in"
+        android:autofillHints="example@gmail.com" />
 
 
     <EditText
@@ -65,6 +78,7 @@
         android:background="@drawable/roundedcorner"
         android:textColor="@color/black"
         android:ems="10"
+        android:textColorHint="@color/black"
         android:gravity="center"
         android:hint="@string/password"
         android:inputType="text|textPassword"
@@ -72,7 +86,8 @@
         app:layout_constraintEnd_toEndOf="@+id/et_email"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="@+id/et_email"
-        app:layout_constraintTop_toBottomOf="@+id/et_email" />
+        app:layout_constraintTop_toBottomOf="@+id/et_email"
+        android:importantForAutofill="no" />
 
 
     <com.google.android.material.button.MaterialButton
@@ -86,6 +101,7 @@
         android:padding="10dp"
         android:text="@string/login"
         android:textSize="16sp"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/et_password"
         app:layout_constraintStart_toStartOf="@+id/et_password"
         app:layout_constraintTop_toBottomOf="@+id/et_password" />

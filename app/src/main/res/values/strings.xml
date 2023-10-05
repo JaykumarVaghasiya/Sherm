@@ -15,4 +15,5 @@
     <string name="image">Image</string>
     <string name="delete">Delete</string>
     <string name="empty_data_or_response">Data is Empty or Response</string>
+    <string name="add">add</string>
 </resources>
