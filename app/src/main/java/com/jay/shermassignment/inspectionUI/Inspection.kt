@@ -2,11 +2,15 @@ package com.jay.shermassignment.inspectionUI
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.jay.shermassignment.AddInspectionFragment
 import com.jay.shermassignment.R
 import com.jay.shermassignment.SessionManager
 import com.jay.shermassignment.ShowInspectionDetailsActivity
@@ -55,7 +59,31 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
                     .show()
             }
         }
+
     }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.ispection_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (id == R.id.add) {
+            val fragment = AddInspectionFragment()
+
+            val fragmentManager = supportFragmentManager
+
+            val transaction = fragmentManager.beginTransaction()
+
+            transaction.replace(R.id.fragment_inspection, fragment)
+
+
+            transaction.commit()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
     override fun onDeleteClicked(row: Row) {
         val authToken = SessionManager(this).fetchAuthToken()
