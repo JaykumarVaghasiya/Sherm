@@ -89,12 +89,14 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
         val authToken = SessionManager(this).fetchAuthToken()
         lifecycleScope.launch {
             val inspectionResponse = try {
+                val queryParameters = mapOf(
+                    "inspectionId" to row.inspectionId
+                )
                 InspectionDetailsInstance.api.deleteInspectionItem(
-                    InspectionRef
-                        ("", "", 1, null,
-                        "completedDate", arrayListOf(), "asc", "false"),
+                    queryParameters,
                     "Bearer $authToken"
                 )
+
             } catch (e: IOException) {
                 Toast.makeText(this@Inspection, e.message, Toast.LENGTH_SHORT).show()
                 return@launch

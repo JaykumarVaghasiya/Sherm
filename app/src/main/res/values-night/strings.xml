@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="add">add</string>
+    <string name="inspection_location">Inspection Location *</string>
+    <string name="responsible_person">Responsible Person *</string>
+    <string name="due_date">Due Date *</string>
+    <string name="reporting_to">Reporting To *</string>
+    <string name="save">Save</string>
 </resources>

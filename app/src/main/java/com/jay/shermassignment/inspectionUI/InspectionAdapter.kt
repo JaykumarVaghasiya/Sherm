@@ -18,6 +18,7 @@ class InspectionAdapter(
     RecyclerView.Adapter<InspectionAdapter.InspectionViewHolder>() {
     private var inspectionList= mutableListOf<Row>()
     inner class InspectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
         private val inspectionId = itemView.findViewById<MaterialTextView>(R.id.tvInspectionId)
         private val dueDate = itemView.findViewById<MaterialTextView>(R.id.tvInspectionDate)
         private val inspectionType = itemView.findViewById<MaterialTextView>(R.id.tvInspectionName)
