@@ -16,15 +16,32 @@
         android:theme="@style/ShermTheme"
         tools:targetApi="31">
         <activity
-            android:name=".ShowInspectionDetailsActivity"
-            android:exported="false"
-            android:parentActivityName=".inspectionUI.Inspection" />
+            android:name=".CAViewActivity"
+            android:exported="false" />
         <activity
-            android:name=".inspectionUI.Inspection"
+            android:name=".Comment"
             android:exported="false"
-            android:parentActivityName=".dashboardUI.MainActivity" />
+            android:parentActivityName=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity" />
         <activity
-            android:name=".splashScreen.SplashScreen"
+            android:name=".CorrectiveAction"
+            android:exported="false"
+            android:parentActivityName=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity" />
+        <activity
+            android:name=".AddInspectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.commentUI.Comment"
+            android:exported="false" />
+        <activity
+            android:name=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.inspectionUI.Inspection" />
+        <activity
+            android:name=".ui.inspectionUI.Inspection"
+            android:exported="false"
+            android:parentActivityName=".ui.dashboardUI.MainActivity" />
+        <activity
+            android:name=".ui.splashScreen.SplashScreen"
             android:exported="true"
             android:theme="@style/Theme.RemoveSplashScreenTheme">
             <intent-filter>
@@ -34,11 +51,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".ui.login.LoginActivity"
             android:exported="false"
             android:theme="@style/Theme.RemoveSplashScreenTheme" />
         <activity
-            android:name=".dashboardUI.MainActivity"
+            android:name=".ui.dashboardUI.MainActivity"
             android:exported="false" />
     </application>
 

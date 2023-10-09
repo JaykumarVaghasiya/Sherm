@@ -29,4 +29,8 @@
     <string name="edit">edit</string>
     <string name="back">Back</string>
     <string name="submit">Submit</string>
+    <string name="date">Date</string>
+    <string name="corrective_evaluation">Corrective Evaluation</string>
+    <string name="inspection_comments">Inspection Comments *</string>
+    <string name="type_here">Type Here....</string>
 </resources>
