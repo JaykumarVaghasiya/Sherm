@@ -16,6 +16,9 @@
         android:theme="@style/ShermTheme"
         tools:targetApi="31">
         <activity
+            android:name=".DueDateExtendRequest"
+            android:exported="false" />
+        <activity
             android:name=".CAViewActivity"
             android:exported="false" />
         <activity
