@@ -41,4 +41,6 @@
     <string name="review_date">Review Date</string>
     <string name="preferred_date">Preferred Date</string>
     <string name="comments">Comments *</string>
+    <string name="reject">REJECT</string>
+    <string name="approve">APPROVE</string>
 </resources>
