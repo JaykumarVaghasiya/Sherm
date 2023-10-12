@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,12 +26,15 @@ import java.io.IOException
 
 class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
     InspectionAdapter.OnDeleteListener {
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var inspectionAdapter: InspectionAdapter
+    private lateinit var progressBar: ProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inspection)
-
+        progressBar = findViewById(R.id.progressBar)
+        progressBar.visibility = View.VISIBLE
         recyclerView = findViewById(R.id.rvInspection)
         inspectionAdapter = InspectionAdapter(this, this, this)
 
@@ -36,17 +42,16 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
         recyclerView.layoutManager = inspectionLayoutManager
         recyclerView.adapter = inspectionAdapter
 
-
-
         val authToken = SessionManager(this).fetchAuthToken()
 
         lifecycleScope.launch {
             val inspectionResponse = try {
                 InspectionDetailsInstance.api.getInspectionDetails(
                     InspectionRef(
-                        "", "", 1, null, "completedDate", arrayListOf(), "asc", "false"
+                        "", "", 3, null, "completedDate", arrayListOf(), "asc", "false"
                     ), "Bearer $authToken"
                 )
+
             } catch (e: IOException) {
                 Toast.makeText(this@Inspection, e.message, Toast.LENGTH_SHORT).show()
                 return@launch
@@ -57,12 +62,20 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
 
             if (inspectionResponse.isSuccessful && inspectionResponse.body() != null) {
                 inspectionAdapter.submitInspectionList(inspectionResponse.body()!!.content.rows)
+                progressBar.visibility = View.GONE
             } else {
                 Toast.makeText(this@Inspection, R.string.empty_data_or_response, Toast.LENGTH_LONG)
                     .show()
+                progressBar.visibility = View.GONE
             }
         }
 
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+            }
+        })
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
@@ -73,20 +86,23 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.add) {
-          val intent=Intent(this, AddInspectionActivity::class.java)
+            val intent = Intent(this, AddInspectionActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(
+                com.google.android.material.R.anim.abc_grow_fade_in_from_bottom,
+                R.anim.slide_out_to_left
+            )
         }
         return super.onOptionsItemSelected(item)
     }
+
 
 
     override fun onDeleteClicked(row: Row) {
         val authToken = SessionManager(this).fetchAuthToken()
         lifecycleScope.launch {
             val inspectionResponse = try {
-                val queryParameters = mapOf(
-                    "inspectionId" to row.inspectionId
-                )
+                val queryParameters = row.id
                 InspectionDetailsInstance.api.deleteInspectionItem(
                     queryParameters,
                     "Bearer $authToken"
@@ -103,14 +119,20 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
             if (inspectionResponse.isSuccessful && inspectionResponse.body() != null) {
                 inspectionAdapter.deleteInspection(row)
             } else {
-                Toast.makeText(this@Inspection, "Can't deleted", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@Inspection, R.string.cantdeleted, Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     override fun onInspectionClicked(row: Row) {
-        val intent=Intent(this, ShowInspectionDetailsActivity::class.java)
-        intent.putExtra("id",row.inspectionId)
+        val intent = Intent(this, ShowInspectionDetailsActivity::class.java)
+        intent.putExtra("id", row.id)
         startActivity(intent)
+        overridePendingTransition(
+            com.google.android.material.R.anim.abc_grow_fade_in_from_bottom,
+            R.anim.slide_out_to_left
+        )
     }
+
+
 }

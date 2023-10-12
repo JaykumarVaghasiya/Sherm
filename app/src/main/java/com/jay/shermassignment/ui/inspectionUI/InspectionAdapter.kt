@@ -1,6 +1,7 @@
 package com.jay.shermassignment.ui.inspectionUI
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,8 @@ class InspectionAdapter(
     private val inspectionListener: OnInspectionListener
 ) :
     RecyclerView.Adapter<InspectionAdapter.InspectionViewHolder>() {
-    private var inspectionList= mutableListOf<Row>()
+    private var inspectionList = mutableListOf<Row>()
+    private var selectedPosition: Int = RecyclerView.NO_POSITION
     inner class InspectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val inspectionId = itemView.findViewById<MaterialTextView>(R.id.tvInspectionId)
@@ -69,10 +71,12 @@ class InspectionAdapter(
     fun submitInspectionList(newInspectionList: List<Row>){
         inspectionList.clear()
         inspectionList.addAll(newInspectionList)
+        Log.d("Debug", "newInspectionList size: ${newInspectionList.size}")
         notifyDataSetChanged()
     }
     fun deleteInspection(row: Row){
         inspectionList.remove(row)
+        Log.d("Debug", "inspectionList size: ${inspectionList.size}")
         notifyDataSetChanged()
     }
     interface OnDeleteListener {

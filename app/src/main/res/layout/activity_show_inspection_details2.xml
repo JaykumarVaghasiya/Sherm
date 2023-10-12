@@ -9,6 +9,18 @@
     android:animateLayoutChanges="true"
     tools:context=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity">
 
+    <ProgressBar
+        android:id="@+id/progressBar3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:progressTint="@color/black"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:progressBackgroundTint="@color/green"/>
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"

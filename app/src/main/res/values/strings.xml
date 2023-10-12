@@ -47,4 +47,5 @@
     <string name="last_service_inspection_date">Last Service Inspection Date</string>
     <string name="add_corrective_action">Add Corrective Action</string>
     <string name="completeddate">CompletedDate</string>
+    <string name="cantdeleted">Can\'t deleted</string>
 </resources>

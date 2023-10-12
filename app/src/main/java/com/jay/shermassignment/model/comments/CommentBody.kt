@@ -1,6 +1,6 @@
 package com.jay.shermassignment.model.comments
 
-data class CommetBody(
+data class CommentBody(
     val comment: String,
     val inspectionScheduleId: Int
 )

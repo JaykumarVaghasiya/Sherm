@@ -18,4 +18,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/itemlist_inspection"/>
 
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        android:progressBackgroundTint="@color/lightGreen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rvInspection" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

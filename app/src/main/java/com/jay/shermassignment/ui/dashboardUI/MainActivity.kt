@@ -47,6 +47,10 @@ class MainActivity : AppCompatActivity() {
             if(dashboard.name == "INSPECTIONS"){
                 val intent=Intent(this, Inspection::class.java)
                 startActivity(intent)
+                overridePendingTransition(
+                    com.google.android.material.R.anim.abc_grow_fade_in_from_bottom,
+                    R.anim.slide_out_to_left
+                )
             }
         }
         recyclerView.adapter = dashboardAdapter
@@ -62,6 +66,10 @@ class MainActivity : AppCompatActivity() {
         if (id == R.id.signOut) {
             val intent = Intent(this@MainActivity, LoginActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(
+                com.google.android.material.R.anim.abc_grow_fade_in_from_bottom,
+                R.anim.slide_out_to_left
+            )
             Toast.makeText(this, R.string.sign_out, Toast.LENGTH_SHORT).show()
             finish()
         }

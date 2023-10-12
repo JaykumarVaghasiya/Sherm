@@ -11,9 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.jay.shermassignment.R
+import com.jay.shermassignment.ui.dashboardUI.MainActivity
 import com.jay.shermassignment.utils.RetrofitInstance
 import com.jay.shermassignment.utils.SessionManager
-import com.jay.shermassignment.ui.dashboardUI.MainActivity
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -33,6 +33,8 @@ class LoginActivity : AppCompatActivity() {
         sessionManager = SessionManager(this)
         retrofitInstance = RetrofitInstance
         progressBar = findViewById(R.id.progressbar)
+        progressBar.bringToFront()
+        progressBar.visibility = View.VISIBLE
         emailEditText = findViewById(R.id.et_email)
         passwordEditText = findViewById(R.id.et_password)
         login = findViewById(R.id.bt_login)
@@ -77,10 +79,15 @@ class LoginActivity : AppCompatActivity() {
                         .show()
                     progressBar.visibility = View.GONE
                     startActivity(intent)
+                    overridePendingTransition(
+                        com.google.android.material.R.anim.abc_grow_fade_in_from_bottom,
+                        R.anim.slide_out_to_left
+                    )
                     finish()
                 } else {
                     showErrorDialog()
                 }
+                progressBar.visibility = View.GONE
             }
         }
     }

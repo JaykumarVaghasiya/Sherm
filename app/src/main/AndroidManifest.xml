@@ -14,10 +14,12 @@
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/ShermTheme"
-        tools:targetApi="31" >
+        tools:targetApi="tiramisu"
+        android:enableOnBackInvokedCallback="true">
         <activity
-            android:name=".AddInspectionCompleted"
-            android:exported="false" />
+            android:name=".ui.addinpectioncompleted.AddInspectionCompleted"
+            android:exported="false"
+            android:parentActivityName=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity"/>
         <activity
             android:name=".ui.correctiveaction.AssignCorrectiveAction"
             android:exported="false" />
@@ -40,10 +42,12 @@
             android:parentActivityName=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity" />
         <activity
             android:name=".ui.inspectionDetailsUI.AddInspectionActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity"/>
         <activity
             android:name=".ui.commentUI.Comment"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity"/>
         <activity
             android:name=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity"
             android:exported="false"
