@@ -1,7 +1,8 @@
-package com.jay.shermassignment
+package com.jay.shermassignment.ui.correctiveaction
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.jay.shermassignment.R
 
 class DueDateExtendedApproval : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -21,41 +21,41 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.button.MaterialButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_margin="8dp"
             android:background="@drawable/photo" />
 
         <com.google.android.material.button.MaterialButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_margin="8dp"
             android:background="@drawable/clip" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCorrectiveAction"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_margin="8dp"
             android:background="@drawable/correctiveaction" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnComments"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_margin="8dp"
             android:background="@drawable/comments" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnInspectionCompleted"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_margin="8dp"
             android:background="@drawable/icon_inspection_completed" />
 
         <com.google.android.material.button.MaterialButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_margin="8dp"
             android:background="@drawable/webform" />
 
@@ -75,26 +75,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-
-        <com.google.android.material.textview.MaterialTextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="2dp"
-            android:text="@string/category"
-            android:textColor="@color/black" />
+            android:orientation="horizontal">
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:paddingVertical="2dp"
+                android:text="@string/category"
+                android:textColor="@color/black" />
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:paddingVertical="2dp"
+                android:text="*"
+                android:textColor="@color/red" />
+
+        </LinearLayout>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="2dp"
+            android:layout_marginTop="12dp"
             android:textColor="@color/black" />
 
         <Spinner
-            android:id="@+id/spCategory"
+            android:id="@+id/spDetailsCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="2dp"
+            android:layout_marginTop="12dp"
+            android:spinnerMode="dialog"
             android:textColor="@color/black"
             android:visibility="gone" />
 
@@ -109,21 +125,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="2dp"
+            android:layout_marginTop="12dp"
             android:text="@string/inspection_type"
             android:textColor="@color/black" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvInspectionType"
             android:layout_width="match_parent"
+            android:layout_marginTop="12dp"
             android:layout_height="wrap_content"
             android:paddingVertical="2dp"
             android:textColor="@color/black" />
 
         <Spinner
-            android:id="@+id/spInspectionType"
+            android:id="@+id/spInspectionTypeDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="2dp"
+            android:layout_marginTop="12dp"
+            android:spinnerMode="dialog"
             android:textColor="@color/black"
             android:visibility="gone" />
 
@@ -131,11 +151,13 @@
             android:id="@+id/divider10"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+
             android:background="?android:attr/listDivider" />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:paddingVertical="2dp"
             android:text="@string/site"
             android:textColor="@color/black" />
@@ -145,15 +167,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="2dp"
+            android:layout_marginTop="12dp"
             android:textColor="@color/black" />
 
-        <EditText
-            android:id="@+id/etSite"
+        <Spinner
+            android:id="@+id/etSiteDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
             android:paddingVertical="2dp"
+            android:layout_marginTop="12dp"
+            android:spinnerMode="dialog"
             android:textColor="@color/black"
             android:visibility="gone" />
 
@@ -167,6 +190,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="2dp"
+            android:layout_marginTop="12dp"
             android:text="@string/inspection_location"
             android:textColor="@color/black" />
 
@@ -175,13 +199,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="2dp"
+            android:layout_marginTop="12dp"
             android:textColor="@color/black" />
 
         <Spinner
-            android:id="@+id/spInspectionLocation"
+            android:id="@+id/spInspectionLocationDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="2dp"
+            android:layout_marginTop="12dp"
+            android:spinnerMode="dialog"
             android:textColor="@color/black"
             android:visibility="gone" />
 
@@ -189,12 +216,14 @@
             android:id="@+id/divider12"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+
             android:background="?android:attr/listDivider" />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="2dp"
+            android:layout_marginTop="12dp"
             android:text="@string/responsible_person"
             android:textColor="@color/black" />
 
@@ -203,13 +232,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="2dp"
+            android:layout_marginTop="12dp"
             android:textColor="@color/black" />
 
         <Spinner
-            android:id="@+id/spResponsiblePerson"
+            android:id="@+id/spResponsiblePersonDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="2dp"
+            android:layout_marginTop="12dp"
+            android:spinnerMode="dialog"
             android:textColor="@color/black"
             android:visibility="gone" />
 
@@ -223,19 +255,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="2dp"
+            android:layout_marginTop="12dp"
             android:text="@string/due_date"
             android:textColor="@color/black" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvDueDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/date"
+
                 android:layout_weight="1"
                 android:textColor="@color/black" />
 
@@ -260,6 +295,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="2dp"
+            android:layout_marginTop="12dp"
             android:text="@string/reporting_to"
             android:textColor="@color/black" />
 
@@ -268,12 +304,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="2dp"
+            android:layout_marginTop="12dp"
             android:textColor="@color/black" />
 
         <Spinner
-            android:id="@+id/spReportingTo"
+            android:id="@+id/spReportingToDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
+            android:layout_marginTop="12dp"
             android:textColor="@color/black"
             android:visibility="gone" />
 

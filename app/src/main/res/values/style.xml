@@ -14,7 +14,7 @@
         <item name="colorAccent">@color/green</item>
         <item name="android:statusBarColor">@color/green</item>
         <item name="actionBarTheme">@style/actionBar</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="actionBar" parent="@style/Theme.MaterialComponents.DayNight.DarkActionBar">

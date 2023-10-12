@@ -1,18 +1,18 @@
 package com.jay.shermassignment.ui.dashboardUI
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jay.shermassignment.ui.inspectionUI.Inspection
 import com.jay.shermassignment.R
-import com.jay.shermassignment.ui.login.LoginActivity
 import com.jay.shermassignment.model.dashboard.Dashboard
+import com.jay.shermassignment.ui.inspectionUI.Inspection
+import com.jay.shermassignment.ui.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,7 +36,11 @@ class MainActivity : AppCompatActivity() {
 
         val recyclerView=findViewById<RecyclerView>(R.id.rvDashboard)
 
-        val layoutManager = GridLayoutManager(this,2)
+        val layoutManager = object : GridLayoutManager(this,2){
+            override fun canScrollVertically(): Boolean {
+                return false
+            }
+        }
         recyclerView.layoutManager = layoutManager
 
         dashboardAdapter = DashboardAdapter(this, dashboardList){dashboard ->

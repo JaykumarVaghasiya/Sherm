@@ -4,38 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".ui.correctiveaction.CAViewActivity">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCalenderAdd"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginHorizontal="8dp"
-            android:background="@drawable/calendar_add"
-            android:padding="8dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCalenderView"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginHorizontal="8dp"
-            android:background="@drawable/calendar_view"
-            android:padding="8dp" />
-    </LinearLayout>
+    android:padding="12dp"
+    tools:context=".ui.correctiveaction.AssignCorrectiveAction">
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/corrective_action_details"
-        android:textColor="@color/black"
+        android:text="@string/add_corrective_action"
+        android:textColor="@color/navyGreen"
         android:textStyle="bold" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -46,7 +23,7 @@
         android:textColor="@color/black" />
 
     <Spinner
-        android:id="@+id/spResponsiblePersonCA"
+        android:id="@+id/spResponsiblePersonAddCA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -61,7 +38,7 @@
         android:textColor="@color/black" />
 
     <Spinner
-        android:id="@+id/spHierarchyOfControl"
+        android:id="@+id/spHierarchyOfControlAddCA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -82,14 +59,14 @@
         android:gravity="center">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvDueDateCA"
+            android:id="@+id/tvDueDateAddCA"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/black" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnDuedate"
+            android:id="@+id/btnDuedateAddCA"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/calender" />
@@ -106,12 +83,13 @@
         android:textColor="@color/black" />
 
     <EditText
-        android:id="@+id/editTextTextMultiLine"
+        android:id="@+id/ettmAddCA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="start|top"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        android:autofillHints="" />
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
@@ -120,7 +98,7 @@
         android:textColor="@color/black" />
 
     <Spinner
-        android:id="@+id/spStatus"
+        android:id="@+id/spStatusAddCA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -135,7 +113,7 @@
         android:textColor="@color/black" />
 
     <Spinner
-        android:id="@+id/spFollowUp"
+        android:id="@+id/spFollowUpAddCA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -150,7 +128,7 @@
         android:textColor="@color/black" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tvReviewDate"
+        android:id="@+id/tvReviewDateAddCA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black" />

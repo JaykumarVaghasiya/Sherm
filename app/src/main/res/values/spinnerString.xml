@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="category">
+        <item>Environment</item>
+        <item>Legal Compliance</item>
+        <item>Quality</item>
+        <item>Work Health and Safety</item>
+    </string-array>
+
+    <string-array name="category_environment">
+        <item>Select</item>
+    </string-array>
+
+    <string-array name="category_legal_compliance">
+        <item>Select</item>
+    </string-array>
+
+    <string-array name="category_quality">
+        <item>Select</item>
+    </string-array>
+
+    <string-array name="category_work_health_and_safety">
+        <item>Contractor Pre-Qualification Assessment</item>
+        <item>Daily Pre-start Checklist Inspection(Inline)</item>
+        <item>Electrical Test and Tag</item>
+        <item>First Aid Equipment</item>
+        <item>ForkLift</item>
+        <item>Motor Vehicle Check</item>
+        <item>Site Workplace Inspection</item>
+        <item>Take 5</item>
+        <item>Vehicle Pre-Start</item>
+    </string-array>
+
+    <string-array name="site">
+        <item>Client Site</item>
+        <item>Gladstone</item>
+        <item>Offshore</item>
+        <item>Tinbeerwah</item>
+        <item>Wynnum</item>
+    </string-array>
+
+    <string-array name="inspection_location">
+        <item>Select</item>
+    </string-array>
+
+    <string-array name="responsible_person">
+        <item>Caroline Kingston</item>
+        <item>Hitesh Gangadiya</item>
+        <item>Marnie Cruickshank</item>
+        <item>Monika Test</item>
+        <item>Monika Verma</item>
+        <item>Sara Jones</item>
+        <item>Symone Mercer</item>
+        <item>Test Supervisor</item>
+        <item>Test Manager</item>
+        <item>Test Employee</item>
+        <item>Test Production</item>
+        <item>Vimal Gangadiya</item>
+        <item>Vishva Tripathi</item>
+    </string-array>
+
+    <string-array name="assignCA">
+        <item>Elimination</item>
+        <item>Substitution</item>
+        <item>Engineering</item>
+        <item>Isolation</item>
+        <item>Administration</item>
+        <item>PPE</item>
+    </string-array>
+
+    <string-array name="followUp">
+        <item>1 Month</item>
+        <item>2 Month</item>
+        <item>3 Month</item>
+        <item>4 Month</item>
+        <item>5 Month</item>
+        <item>6 Month</item>
+        <item>7 Month</item>
+        <item>8 Month</item>
+        <item>9 Month</item>
+        <item>10 Month</item>
+        <item>11 Month</item>
+        <item>12 Month</item>
+    </string-array>
+</resources>

@@ -10,10 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jay.shermassignment.AddInspectionActivity
 import com.jay.shermassignment.R
 import com.jay.shermassignment.model.inspection.InspectionRef
 import com.jay.shermassignment.model.inspection.Row
+import com.jay.shermassignment.ui.inspectionDetailsUI.AddInspectionActivity
 import com.jay.shermassignment.ui.inspectionDetailsUI.ShowInspectionDetailsActivity
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
@@ -35,6 +35,8 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
         val inspectionLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = inspectionLayoutManager
         recyclerView.adapter = inspectionAdapter
+
+
 
         val authToken = SessionManager(this).fetchAuthToken()
 
@@ -71,7 +73,7 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.add) {
-          val intent=Intent(this,AddInspectionActivity::class.java)
+          val intent=Intent(this, AddInspectionActivity::class.java)
             startActivity(intent)
         }
         return super.onOptionsItemSelected(item)
