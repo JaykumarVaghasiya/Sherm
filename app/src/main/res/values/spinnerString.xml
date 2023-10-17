@@ -82,4 +82,9 @@
         <item>11 Month</item>
         <item>12 Month</item>
     </string-array>
+
+    <string-array name="status">
+        <item>Assigned</item>
+        <item>UnAssigned</item>
+    </string-array>
 </resources>

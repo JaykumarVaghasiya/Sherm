@@ -1,9 +1,9 @@
-package com.jay.shermassignment.model.addinspection
+package com.jay.shermassignment.model.addInspectionData
 
-data class AddInspectionBody(
+data class addInspectionRef(
     val assignerId: Int,
     val dueDate: String,
-    val id: Int? = null,
+    val id: Any?,
     val inspectionLocation: String,
     val inspectionType: InspectionType,
     val reschedule: Boolean,

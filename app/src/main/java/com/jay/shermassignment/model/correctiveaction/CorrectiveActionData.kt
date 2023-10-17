@@ -1,6 +1,6 @@
 package com.jay.shermassignment.model.correctiveaction
 
-data class CorrectiveActionBody(
+data class CorrectiveActionData(
     val id: Int,
     val page: Int,
     val sidx: String,

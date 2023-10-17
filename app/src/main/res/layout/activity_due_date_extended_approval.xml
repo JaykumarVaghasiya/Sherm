@@ -6,7 +6,7 @@
     android:padding="12dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ui.correctiveaction.DueDateExtendedApproval">
+    tools:context=".ui.DueDateExtendedApproval">
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"

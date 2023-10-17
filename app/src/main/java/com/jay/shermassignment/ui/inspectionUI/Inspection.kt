@@ -30,6 +30,7 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
     private lateinit var recyclerView: RecyclerView
     private lateinit var inspectionAdapter: InspectionAdapter
     private lateinit var progressBar: ProgressBar
+    private val currentPage = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inspection)
@@ -44,11 +45,20 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
 
         val authToken = SessionManager(this).fetchAuthToken()
 
+        loadInspectionData(authToken!!)
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+            }
+        })
+    }
+    private fun loadInspectionData(authToken: String) {
         lifecycleScope.launch {
             val inspectionResponse = try {
                 InspectionDetailsInstance.api.getInspectionDetails(
                     InspectionRef(
-                        "", "", 3, null, "completedDate", arrayListOf(), "asc", "false"
+                        "", "", currentPage, null, "completedDate", arrayListOf(), "asc", "false"
                     ), "Bearer $authToken"
                 )
 
@@ -133,6 +143,4 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
             R.anim.slide_out_to_left
         )
     }
-
-
 }

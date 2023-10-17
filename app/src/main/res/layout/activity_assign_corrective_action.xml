@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="12dp"
-    tools:context=".ui.correctiveaction.AssignCorrectiveAction">
+    tools:context=".ui.AssignCorrectiveAction">
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.jay.shermassignment.ui.correctiveaction
+package com.jay.shermassignment.ui
 
 import android.os.Build
 import android.os.Bundle
@@ -7,11 +7,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.jay.shermassignment.R
 
-class DueDateExtendedApproval : AppCompatActivity() {
+class CAViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_due_date_extended_approval)
-
+        setContentView(R.layout.activity_caview)
 
         if (Build.VERSION.SDK_INT >= 33) {
             onBackInvokedDispatcher.registerOnBackInvokedCallback(
