@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -8,31 +8,34 @@
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/ic_launcher"
         android:label="@string/sherm"
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/ShermTheme"
-        tools:targetApi="tiramisu"
-        android:enableOnBackInvokedCallback="true">
+        tools:targetApi="tiramisu">
+        <activity
+            android:name=".CorrecitveEvalution"
+            android:exported="false" />
         <activity
             android:name=".ui.addinpectioncompleted.AddInspectionCompleted"
             android:exported="false"
-            android:parentActivityName=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity"/>
+            android:parentActivityName=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity" />
         <activity
             android:name=".ui.AssignCorrectiveAction"
             android:exported="false" />
         <activity
-            android:name=".ui.DueDateExtendedApproval"
+            android:name=".ui.dueDate.DueDateExtendedApproval"
             android:exported="false" />
         <activity
-            android:name=".ui.DueDateExtendRequest"
+            android:name=".ui.dueDate.DueDateExtendRequest"
             android:exported="false" />
         <activity
             android:name=".ui.CAViewActivity"
             android:exported="false"
-            android:parentActivityName=".ui.correctiveaction.CorrectiveAction"/>
+            android:parentActivityName=".ui.correctiveaction.CorrectiveAction" />
         <activity
             android:name=".Comment"
             android:exported="false"
@@ -44,11 +47,11 @@
         <activity
             android:name=".ui.inspectionDetailsUI.AddInspectionActivity"
             android:exported="false"
-            android:parentActivityName=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity"/>
+            android:parentActivityName=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity" />
         <activity
             android:name=".ui.commentUI.Comment"
             android:exported="false"
-            android:parentActivityName=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity"/>
+            android:parentActivityName=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity" />
         <activity
             android:name=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity"
             android:exported="false"
@@ -60,7 +63,7 @@
         <activity
             android:name=".ui.splashScreen.SplashScreen"
             android:exported="true"
-            android:theme="@style/Theme.RemoveSplashScreenTheme" >
+            android:theme="@style/Theme.RemoveSplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -11,7 +11,11 @@ import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
 import com.jay.shermassignment.model.correctiveaction.Row
 
-class CorrectiveActionAdapter(private val context: Context) :
+class CorrectiveActionAdapter(
+    private val context: Context,
+    private val correctiveActionListener: OnCorrectiveActionItemClick,
+    private val correctiveEvaluationListener: OnCorrectiveEvaluationClick
+) :
     RecyclerView.Adapter<CorrectiveActionAdapter.CorrectiveActionViewHolder>() {
     private var correctiveActionList = mutableListOf<Row>()
 
@@ -31,7 +35,9 @@ class CorrectiveActionAdapter(private val context: Context) :
             assign.text = row.responsible
             assigner.text = row.reported
             inspectionName.text = row.caType
-            correctiveEvolution.setOnClickListener { }
+            correctiveEvolution.setOnClickListener {
+                correctiveEvaluationListener.onCorrectiveEvaluationClick(row)
+            }
 
         }
 
@@ -54,6 +60,9 @@ class CorrectiveActionAdapter(private val context: Context) :
     ) {
         val correctiveAction = correctiveActionList[position]
         holder.bind(correctiveAction)
+        holder.itemView.setOnClickListener {
+            correctiveActionListener.onItemClick(correctiveAction)
+        }
 
     }
 
@@ -61,9 +70,17 @@ class CorrectiveActionAdapter(private val context: Context) :
         return correctiveActionList.size
 
     }
-    fun submitInspectionList(newCorrectiveAction: List<Row>){
+
+    fun submitInspectionList(newCorrectiveAction: List<Row>) {
         correctiveActionList.addAll(newCorrectiveAction)
         Log.d("Debug", "newInspectionList size: ${newCorrectiveAction.size}")
         notifyDataSetChanged()
+    }
+
+    interface OnCorrectiveActionItemClick {
+        fun onItemClick(row: Row)
+    }
+    interface OnCorrectiveEvaluationClick {
+        fun onCorrectiveEvaluationClick(row: Row)
     }
 }

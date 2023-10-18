@@ -13,28 +13,31 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.jay.shermassignment.CorrectiveEvaluation
 import com.jay.shermassignment.R
 import com.jay.shermassignment.model.correctiveaction.CorrectiveActionData
+import com.jay.shermassignment.model.correctiveaction.Row
 import com.jay.shermassignment.ui.CAViewActivity
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-class CorrectiveAction : AppCompatActivity() {
+class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrectiveActionItemClick,
+    CorrectiveActionAdapter.OnCorrectiveEvaluationClick {
     private lateinit var correctiveActionRecyclerView: RecyclerView
     private lateinit var correctiveActionAdapter: CorrectiveActionAdapter
-    private lateinit var progressBar:ProgressBar
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_corrective_action)
 
         correctiveActionRecyclerView = findViewById(R.id.rvCorrectiveAction)
-        progressBar=findViewById(R.id.pbCorrectiveAction)
+        progressBar = findViewById(R.id.pbCorrectiveAction)
         progressBar.bringToFront()
-        progressBar.visibility=View.VISIBLE
-        correctiveActionAdapter = CorrectiveActionAdapter(this)
+        progressBar.visibility = View.VISIBLE
+        correctiveActionAdapter = CorrectiveActionAdapter(this, this, this)
 
         val inspectionLayoutManager = LinearLayoutManager(this)
         correctiveActionRecyclerView.layoutManager = inspectionLayoutManager
@@ -104,5 +107,17 @@ class CorrectiveAction : AppCompatActivity() {
                 finish()
             }
         })
+    }
+
+    override fun onItemClick(row: Row) {
+        val intent = Intent(this, CAViewActivity::class.java)
+        intent.putExtra("correctiveActionId", row.id)
+        startActivity(intent)
+    }
+
+    override fun onCorrectiveEvaluationClick(row: Row) {
+        val intent = Intent(this, CorrectiveEvaluation::class.java)
+        intent.putExtra("correctiveActionId", row.id)
+        startActivity(intent)
     }
 }

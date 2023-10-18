@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:orientation="vertical"
     android:padding="8dp"
-    tools:context=".ui.DueDateExtendRequest">
+    tools:context=".ui.dueDate.DueDateExtendRequest">
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
