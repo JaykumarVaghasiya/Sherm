@@ -36,7 +36,7 @@
     <string name="corrective_action_details">Corrective Action Details</string>
     <string name="hierarchy_of_control">Hierarchy of Control</string>
     <string name="corrective_actions">Corrective Actions </string>
-    <string name="status">Status</string>
+    <string name="reschedule">Reschedule</string>
     <string name="follow_up">Follow Up</string>
     <string name="review_date">Review Date</string>
     <string name="preferred_date">Preferred Date</string>
@@ -50,4 +50,6 @@
     <string name="cantdeleted">Can\'t deleted</string>
     <string name="selectedDate">Select a Date</string>
     <string name="star">*</string>
+    <string name="status">Status</string>
+    <string name="inspection_detail">INSPECTION DETAIL</string>
 </resources>

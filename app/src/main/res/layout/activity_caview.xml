@@ -39,14 +39,27 @@
         android:text="@string/corrective_action_details"
         android:textColor="@color/black"
         android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:paddingVertical="2dp">
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/responsible_person"
         android:textColor="@color/black" />
-
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/star"
+            android:layout_marginStart="4dp"
+            android:textStyle="bold"
+            android:textColor="@color/red" />
+    </LinearLayout>
     <Spinner
         android:id="@+id/spResponsiblePersonCA"
         android:layout_width="match_parent"
@@ -56,13 +69,25 @@
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
-    <com.google.android.material.textview.MaterialTextView
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:paddingVertical="2dp">
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hierarchy_of_control"
         android:textColor="@color/black" />
-
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/star"
+            android:layout_marginStart="4dp"
+            android:textStyle="bold"
+            android:textColor="@color/red" />
+    </LinearLayout>
     <Spinner
         android:id="@+id/spHierarchyOfControl"
         android:layout_width="match_parent"
@@ -102,13 +127,26 @@
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:paddingVertical="2dp">
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/corrective_actions"
         android:textColor="@color/black" />
-
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/star"
+            android:layout_marginStart="4dp"
+            android:textStyle="bold"
+            android:textColor="@color/red" />
+    </LinearLayout>
     <EditText
         android:id="@+id/etmCorrectiveAction"
         android:layout_width="match_parent"

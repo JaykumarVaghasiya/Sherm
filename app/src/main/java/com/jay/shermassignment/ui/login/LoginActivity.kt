@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.jay.shermassignment.R
+import com.jay.shermassignment.generic.showToast
 import com.jay.shermassignment.ui.dashboardUI.MainActivity
 import com.jay.shermassignment.utils.RetrofitInstance
 import com.jay.shermassignment.utils.SessionManager
@@ -29,16 +30,23 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
+        initializeId()
+        progressBar.visibility = View.VISIBLE
         sessionManager = SessionManager(this)
         retrofitInstance = RetrofitInstance
-        progressBar = findViewById(R.id.progressbar)
         progressBar.bringToFront()
-        progressBar.visibility = View.VISIBLE
+        btClickListener()
+
+
+    }
+    private fun initializeId(){
+        progressBar = findViewById(R.id.progressbar)
+
         emailEditText = findViewById(R.id.et_email)
         passwordEditText = findViewById(R.id.et_password)
         login = findViewById(R.id.bt_login)
-
+    }
+    private fun btClickListener(){
         login.setOnClickListener {
             loginUser()
         }
@@ -64,19 +72,18 @@ class LoginActivity : AppCompatActivity() {
                     UserDetailsInstance.api.getUserDetails(user)
                 } catch (e: IOException) {
                     progressBar.visibility = View.GONE
-                    Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_SHORT).show()
+                   showToast(this@LoginActivity,e.message)
                     return@launch
                 } catch (e: HttpException) {
                     progressBar.visibility = View.GONE
-                    Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_SHORT).show()
+                    showToast(this@LoginActivity,e.message)
                     return@launch
                 }
 
                 if (response.isSuccessful && response.body() != null) {
                     val userResponse = response.body()
                     userResponse?.content?.token?.let { sessionManager.saveAuthToken(it) }
-                    Toast.makeText(this@LoginActivity, R.string.logged_In, Toast.LENGTH_SHORT)
-                        .show()
+                    showToast(this@LoginActivity,R.string.login.toString())
                     progressBar.visibility = View.GONE
                     startActivity(intent)
                     overridePendingTransition(

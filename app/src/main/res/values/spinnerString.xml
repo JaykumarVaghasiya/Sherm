@@ -87,4 +87,9 @@
         <item>Assigned</item>
         <item>UnAssigned</item>
     </string-array>
+
+    <string-array name="reschedule">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
 </resources>

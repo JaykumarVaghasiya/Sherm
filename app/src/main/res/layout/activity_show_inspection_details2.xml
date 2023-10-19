@@ -87,59 +87,69 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/inspection_detail"
+            android:textColor="@color/navyGreen"
+            android:textStyle="bold"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:paddingVertical="2dp">
+
+
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:paddingVertical="2dp"
                 android:text="@string/category"
                 android:textColor="@color/black" />
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:paddingVertical="2dp"
-                android:text="*"
+                android:layout_marginStart="4dp"
+                android:text="@string/star"
                 android:textColor="@color/red" />
 
         </LinearLayout>
+
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="2dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="4dp"
             android:textColor="@color/black" />
-
-        <Spinner
-            android:id="@+id/spDetailsCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="2dp"
-            android:layout_marginTop="12dp"
-            android:spinnerMode="dialog"
-            android:textColor="@color/black"
-            android:visibility="gone" />
 
         <View
             android:id="@+id/divider7"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:paddingVertical="2dp">
 
         <com.google.android.material.textview.MaterialTextView
-
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="2dp"
-            android:layout_marginTop="12dp"
             android:text="@string/inspection_type"
             android:textColor="@color/black" />
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/star"
+            android:layout_marginStart="4dp"
+            android:textStyle="bold"
+            android:textColor="@color/red" />
+    </LinearLayout>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvInspectionType"
@@ -149,31 +159,33 @@
             android:paddingVertical="2dp"
             android:textColor="@color/black" />
 
-        <Spinner
-            android:id="@+id/spInspectionTypeDetails"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="2dp"
-            android:layout_marginTop="12dp"
-            android:spinnerMode="dialog"
-            android:textColor="@color/black"
-            android:visibility="gone" />
 
         <View
             android:id="@+id/divider10"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-
             android:background="?android:attr/listDivider" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:paddingVertical="2dp">
+
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:paddingVertical="2dp"
             android:text="@string/site"
             android:textColor="@color/black" />
-
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/star"
+            android:layout_marginStart="4dp"
+            android:textStyle="bold"
+            android:textColor="@color/red" />
+    </LinearLayout>
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvSite"
             android:layout_width="match_parent"
@@ -182,29 +194,32 @@
             android:layout_marginTop="12dp"
             android:textColor="@color/black" />
 
-        <Spinner
-            android:id="@+id/etSiteDetails"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="2dp"
-            android:layout_marginTop="12dp"
-            android:spinnerMode="dialog"
-            android:textColor="@color/black"
-            android:visibility="gone" />
-
         <View
             android:id="@+id/divider11"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:paddingVertical="2dp">
+
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="2dp"
-            android:layout_marginTop="12dp"
             android:text="@string/inspection_location"
             android:textColor="@color/black" />
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/star"
+            android:layout_marginStart="4dp"
+            android:textStyle="bold"
+            android:textColor="@color/red" />
+    </LinearLayout>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvInspectionLocation"
@@ -214,31 +229,31 @@
             android:layout_marginTop="12dp"
             android:textColor="@color/black" />
 
-        <Spinner
-            android:id="@+id/spInspectionLocationDetails"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="2dp"
-            android:layout_marginTop="12dp"
-            android:spinnerMode="dialog"
-            android:textColor="@color/black"
-            android:visibility="gone" />
-
         <View
             android:id="@+id/divider12"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-
             android:background="?android:attr/listDivider" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:paddingVertical="2dp">
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="2dp"
-            android:layout_marginTop="12dp"
             android:text="@string/responsible_person"
             android:textColor="@color/black" />
-
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/star"
+            android:layout_marginStart="4dp"
+            android:textStyle="bold"
+            android:textColor="@color/red" />
+    </LinearLayout>
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvResponsiblePerson"
             android:layout_width="match_parent"
@@ -247,15 +262,6 @@
             android:layout_marginTop="12dp"
             android:textColor="@color/black" />
 
-        <Spinner
-            android:id="@+id/spResponsiblePersonDetails"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="2dp"
-            android:layout_marginTop="12dp"
-            android:spinnerMode="dialog"
-            android:textColor="@color/black"
-            android:visibility="gone" />
 
         <View
             android:id="@+id/divider13"
@@ -268,49 +274,41 @@
             android:layout_height="wrap_content"
             android:paddingVertical="2dp"
             android:layout_marginTop="12dp"
-            android:text="@string/due_date"
+            android:text="@string/last_service_inspection_date"
             android:textColor="@color/black" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="12dp">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvDueDate"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/date"
-
-                android:layout_weight="1"
                 android:textColor="@color/black" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btCalender"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="end"
-                android:background="@drawable/calendar_add"
-                android:paddingVertical="2dp"
-                android:textColor="@color/black"
-                android:visibility="gone" />
-        </LinearLayout>
 
         <View
             android:id="@+id/divider16"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:paddingVertical="2dp">
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="2dp"
-            android:layout_marginTop="12dp"
-            android:text="@string/reporting_to"
+            android:text="@string/reschedule"
             android:textColor="@color/black" />
-
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/star"
+            android:layout_marginStart="4dp"
+            android:textStyle="bold"
+            android:textColor="@color/red" />
+    </LinearLayout>
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvReportingTo"
             android:layout_width="match_parent"
@@ -318,15 +316,6 @@
             android:paddingVertical="2dp"
             android:layout_marginTop="12dp"
             android:textColor="@color/black" />
-
-        <Spinner
-            android:id="@+id/spReportingToDetails"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:spinnerMode="dialog"
-            android:layout_marginTop="12dp"
-            android:textColor="@color/black"
-            android:visibility="gone" />
 
         <View
             android:id="@+id/divider17"
