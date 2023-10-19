@@ -24,16 +24,17 @@
             android:exported="false"
             android:parentActivityName=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity" />
         <activity
-            android:name=".ui.AssignCorrectiveAction"
+            android:name=".ui.addcorrectiveaction.AddCorrectiveAction"
             android:exported="false" />
         <activity
             android:name=".ui.dueDate.DueDateExtendedApproval"
             android:exported="false" />
         <activity
             android:name=".ui.dueDate.DueDateExtendRequest"
+            android:parentActivityName=".ui.correctiveactiondetails.CAViewActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.CAViewActivity"
+            android:name=".ui.correctiveactiondetails.CAViewActivity"
             android:exported="false"
             android:parentActivityName=".ui.correctiveaction.CorrectiveAction" />
         <activity

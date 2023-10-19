@@ -13,11 +13,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jay.shermassignment.CorrectiveEvaluation
 import com.jay.shermassignment.R
 import com.jay.shermassignment.model.correctiveaction.CorrectiveActionData
 import com.jay.shermassignment.model.correctiveaction.Row
-import com.jay.shermassignment.ui.CAViewActivity
+import com.jay.shermassignment.ui.correctiveactiondetails.CAViewActivity
+import com.jay.shermassignment.ui.correctiveevaluation.CorrectiveEvaluation
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -110,8 +110,9 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
     }
 
     override fun onItemClick(row: Row) {
+        val id = row.id
         val intent = Intent(this, CAViewActivity::class.java)
-        intent.putExtra("correctiveActionId", row.id)
+        intent.putExtra("correctiveActionId", id)
         startActivity(intent)
     }
 

@@ -12,7 +12,7 @@ import retrofit2.http.Query
 
 interface DueDateAPI {
 
-    @GET("/OHSClient/rest/v2/getExtendDueDateRequest.do")
+    @GET("/OHSClient/rest/v2/saveCorrectiveAction.do")
     suspend fun getDueDateRequest(
         @Query("correctiveActionId") correctiveActionId: Int,
         @Header("Authorization") authToken: String

@@ -48,4 +48,6 @@
     <string name="add_corrective_action">Add Corrective Action</string>
     <string name="completeddate">CompletedDate</string>
     <string name="cantdeleted">Can\'t deleted</string>
+    <string name="selectedDate">Select a Date</string>
+    <string name="star">*</string>
 </resources>

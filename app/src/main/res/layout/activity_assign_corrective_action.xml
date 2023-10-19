@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="12dp"
-    tools:context=".ui.AssignCorrectiveAction">
+    tools:context=".ui.addcorrectiveaction.AddCorrectiveAction">
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
@@ -83,7 +83,7 @@
         android:textColor="@color/black" />
 
     <EditText
-        android:id="@+id/ettmAddCA"
+        android:id="@+id/etmAddCA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"

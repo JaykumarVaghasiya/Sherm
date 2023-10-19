@@ -1,6 +1,6 @@
 package com.jay.shermassignment.model.addinspectioncompletted
 
-data class CompltedInspectionBody(
+data class CompletedInspectionBody(
     val inspectionCompletedDate: String,
     val inspectionScheduleId: Int
 )

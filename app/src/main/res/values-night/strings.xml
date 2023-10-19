@@ -6,4 +6,5 @@
     <string name="due_date">Due Date *</string>
     <string name="reporting_to">Reporting To *</string>
     <string name="save">Save</string>
+    <string name="star">*</string>
 </resources>

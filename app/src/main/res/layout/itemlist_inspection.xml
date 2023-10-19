@@ -8,7 +8,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardElevation="12dp"
+        app:cardElevation="8dp"
         app:cardUseCompatPadding="true"
         app:cardCornerRadius="16dp"
         android:background="@color/white">
@@ -49,13 +49,14 @@
                 android:id="@+id/divider"
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
+                android:layout_marginTop="4dp"
                 android:background="?android:attr/listDivider" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvInspectionName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="1dp"
+                android:layout_margin="2dp"
                 android:padding="4dp"
                 android:textColor="@color/navyGreen" />
 
@@ -63,7 +64,7 @@
                 android:id="@+id/tvInspectionLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="1dp"
+                android:layout_margin="2dp"
                 android:padding="4dp"
                 android:textColor="@color/navyGreen" />
 
@@ -71,14 +72,14 @@
                 android:id="@+id/tvInspectionVolunteer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="1dp"
+                android:layout_margin="2dp"
                 android:padding="4dp"
                 android:textColor="@color/navyGreen" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="1dp"
+                android:layout_margin="2dp"
                 android:orientation="horizontal"
                 android:padding="2dp">
 
@@ -86,7 +87,7 @@
                     android:id="@+id/tvInspectionStatus"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
+                    android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:padding="4dp"
                     android:textColor="@color/navyGreen" />
@@ -96,7 +97,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_gravity="end"
-                    android:layout_margin="1dp"
+                    android:layout_margin="2dp"
                     android:background="@drawable/delete"
                     android:contentDescription="@string/delete"
                     android:padding="4dp" />

@@ -4,24 +4,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp"
+    android:padding="12dp"
     tools:context=".ui.commentUI.Comment">
 
-    <com.google.android.material.textview.MaterialTextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/inspection_comments"
-        android:textColor="@color/black"
-        android:padding="8dp"
-        />
+        android:orientation="horizontal">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/inspection_comments"
+            android:textColor="@color/black" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/star"
+            android:textColor="@color/red" />
+    </LinearLayout>
 
     <EditText
+        android:id="@+id/etInspectionComment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:hint="@string/type_here"
-        android:padding="8dp"
         android:autofillHints=""
-        android:inputType="text" />
+        android:hint="@string/type_here"
+        android:inputType="textMultiLine"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:textColor="@color/black" />
 
 </LinearLayout>

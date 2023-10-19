@@ -10,29 +10,24 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
+import com.jay.shermassignment.generic.showGenericDateDialog
 import com.jay.shermassignment.model.addInspectionData.InspectionCategoryMaster
 import com.jay.shermassignment.model.addInspectionData.InspectionType
 import com.jay.shermassignment.model.addInspectionData.ResponsiblePerson
 import com.jay.shermassignment.model.addInspectionData.Site
 import com.jay.shermassignment.model.addInspectionData.WorkplaceInspection
 import com.jay.shermassignment.model.addInspectionData.addInspectionRef
-import com.jay.shermassignment.model.inspection.Row
-import com.jay.shermassignment.ui.inspectionUI.InspectionAdapter
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.Calendar
+import java.util.Date
 import java.util.Locale
-import java.util.TimeZone
 
-class AddInspectionActivity : AppCompatActivity(), InspectionAdapter.OnDeleteListener,
-    InspectionAdapter.OnInspectionListener {
+class AddInspectionActivity : AppCompatActivity() {
 
     private lateinit var categorySpinner: Spinner
     private lateinit var inspectionTypeSpinner: Spinner
@@ -43,7 +38,7 @@ class AddInspectionActivity : AppCompatActivity(), InspectionAdapter.OnDeleteLis
     private lateinit var dueDate: MaterialTextView
     private lateinit var dateButton: MaterialButton
     private lateinit var status: Spinner
-    private lateinit var inspectionAdapter: InspectionAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +54,7 @@ class AddInspectionActivity : AppCompatActivity(), InspectionAdapter.OnDeleteLis
         dateButton = findViewById(R.id.btCalender)
         status = findViewById(R.id.spStatus)
 
-        inspectionAdapter = InspectionAdapter(this, this, this)
+
 
         spinnerValues()
 
@@ -138,28 +133,6 @@ class AddInspectionActivity : AppCompatActivity(), InspectionAdapter.OnDeleteLis
             }
     }
 
-    private fun showDateDialog() {
-        val constraintsBuilder = CalendarConstraints.Builder()
-        val currentDate = MaterialDatePicker.todayInUtcMilliseconds()
-        constraintsBuilder.setStart(currentDate)
-
-        val datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Select Date")
-            .setSelection(currentDate)
-            .build()
-
-        datePicker.addOnPositiveButtonClickListener { selection ->
-            val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-            calendar.timeInMillis = selection
-            val selectedDateString =
-                SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(calendar.time)
-            dueDate.text = selectedDateString
-        }
-        datePicker.addOnNegativeButtonClickListener {
-            datePicker.dismiss()
-        }
-        datePicker.show(supportFragmentManager, "")
-    }
 
     private fun spinnerValues() {
 
@@ -171,16 +144,13 @@ class AddInspectionActivity : AppCompatActivity(), InspectionAdapter.OnDeleteLis
         setupSpinnerFromArray(responsiblePersonSpinner, R.array.responsible_person)
         setupSpinnerFromArray(status, R.array.status)
         dateButton.setOnClickListener {
-            showDateDialog()
+            showGenericDateDialog(R.string.selectedDate.toString(), System.currentTimeMillis() , { selectedDate ->
+                val formattedDate = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(selectedDate))
+                dueDate.text = formattedDate
+            }, this)
         }
     }
 
-    override fun onDeleteClicked(row: Row) {
-        TODO("Not yet implemented")
-    }
 
-    override fun onInspectionClicked(row: Row) {
-        TODO("Not yet implemented")
-    }
 }
 
