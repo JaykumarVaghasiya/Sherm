@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/offWhite"
     android:animateLayoutChanges="true"
     tools:context=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity">
 
@@ -79,7 +79,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:background="@color/white"
+        android:background="@color/offWhite"
         android:animateLayoutChanges="true"
         android:padding="12dp"
         app:layout_constraintBottom_toBottomOf="parent"

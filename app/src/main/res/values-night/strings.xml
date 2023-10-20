@@ -8,4 +8,8 @@
     <string name="save">Save</string>
     <string name="star">*</string>
     <string name="inspection_detail">Inspection Detail</string>
+    <string name="nothing_to_see_here">Nothing To See Here</string>
+    <string name="due_date_extended_apporval">Due Date Extend Review</string>
+    <string name="add_inspection">Schedule Inspection</string>
+    <string name="assign_ca">Assign CA</string>
 </resources>

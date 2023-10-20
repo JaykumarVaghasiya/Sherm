@@ -5,19 +5,17 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.showGenericDateDialog
+import com.jay.shermassignment.generic.showToast
 import com.jay.shermassignment.ui.dueDate.DueDateExtendRequest
 import com.jay.shermassignment.ui.dueDate.DueDateExtendedApproval
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -37,9 +35,9 @@ class CAViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_caview)
+        supportActionBar?.setTitle(R.string.add_inspection)
 
         val authToken = SessionManager(this).fetchAuthToken()
-
         initializeViews()
         setClickListeners()
 
@@ -62,67 +60,42 @@ class CAViewActivity : AppCompatActivity() {
     }
 
     private fun setClickListeners() {
-
-        dueDateRequest.setOnClickListener {
-            navigateToDueDateExtendRequest()
-        }
-
-        dueDateApproval.setOnClickListener {
-            navigateToDueDateExtendedApproval()
-        }
-
-        dueDateButton.setOnClickListener {
-            showGenericDateDialog(R.string.selectedDate.toString(), System.currentTimeMillis() , { selectedDate ->
-                val formattedDate = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(selectedDate))
-                dueDateText.text = formattedDate
-            }, this)
-        }
+        dueDateRequest.setOnClickListener { navigateToDueDateExtendRequest() }
+        dueDateApproval.setOnClickListener { navigateToDueDateExtendedApproval() }
+        dueDateButton.setOnClickListener { showDueDatePicker() }
     }
 
     private fun navigateToDueDateExtendRequest() {
-        val intent = Intent(this, DueDateExtendRequest::class.java)
-        val id = intent.getIntExtra("correctiveActionId",1)
-        intent.putExtra("id", id)
-        startActivity(intent)
+        val id = intent.getIntExtra("correctiveActionId", 1)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        navigateToActivity(DueDateExtendRequest::class.java, id)
     }
 
     private fun navigateToDueDateExtendedApproval() {
-        val intent = Intent(this, DueDateExtendedApproval::class.java)
-        val id = intent.getIntExtra("correctiveActionId",1)
-        intent.putExtra("id", id)
-        startActivity(intent)
+        val id = intent.getIntExtra("correctiveActionId", 1)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        navigateToActivity(DueDateExtendedApproval::class.java, id)
     }
 
     private suspend fun fetchData(authToken: String?) {
-        val id = intent.getIntExtra("correctiveActionId",1)
+        val id = intent.getIntExtra("correctiveActionId", 1)
         val cAViewResponse = try {
-
             CAViewInstance.api.getAllCAViewDetails(id, authToken!!)
-        } catch (e: HttpException) {
-            showToast(e.message)
-            return
-        } catch (e: IOException) {
-            showToast(e.message)
+        } catch (e: Exception) {
+            showToast(this,e.message)
             return
         }
 
         if (cAViewResponse.isSuccessful && cAViewResponse.body() != null) {
             val cAViewBody = cAViewResponse.body()!!.content
-            setupSpinnerWithArray(
-                caResponsiblePersonSpinner,
-                R.array.responsible_person,
-                cAViewBody.responsiblePersonName
-            )
-            setupSpinnerWithArray(
-                hierarchyOfControlSpinner,
-                R.array.assignCA,
-                cAViewBody.hierarchyOfControl.value
-            )
+            setupSpinnerWithArray(caResponsiblePersonSpinner, R.array.responsible_person, cAViewBody.responsiblePersonName)
+            setupSpinnerWithArray(hierarchyOfControlSpinner, R.array.assignCA, cAViewBody.hierarchyOfControl.value)
             setupSpinnerWithArray(statusSpinner, R.array.status, cAViewBody.status.toString())
             setupSpinnerWithArray(followUpSpinner, R.array.followUp,
                 cAViewBody.reviewDate?.toString()
             )
             correctiveActionText.setText(cAViewBody.action)
+
             val originalDate = cAViewBody.dueDate
             val originalDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
             val formattedDate = originalDateFormat.parse(originalDate)
@@ -149,7 +122,18 @@ class CAViewActivity : AppCompatActivity() {
         }
     }
 
-    private fun showToast(message: String?) {
-        Toast.makeText(this@CAViewActivity, message, Toast.LENGTH_SHORT).show()
+
+    private fun showDueDatePicker() {
+        showGenericDateDialog(R.string.selectedDate.toString(), System.currentTimeMillis() , { selectedDate ->
+            val formattedDate = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(selectedDate))
+            reviewDateText.text = formattedDate
+        }, this)
+    }
+
+    private fun <T> navigateToActivity(clazz: Class<T>, id: Int) {
+        val intent = Intent(this, clazz)
+        intent.putExtra("id", id)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        startActivity(intent)
     }
 }

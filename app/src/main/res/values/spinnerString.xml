@@ -41,6 +41,10 @@
 
     <string-array name="inspection_location">
         <item>Select</item>
+        <item>Drill Rig</item>
+        <item>Proplaster</item>
+        <item>Test</item>
+        <item>Subaru Outback</item>
     </string-array>
 
     <string-array name="responsible_person">
@@ -91,5 +95,13 @@
     <string-array name="reschedule">
         <item>Yes</item>
         <item>No</item>
+    </string-array>
+    <string-array name="hierarchyControl">
+        <item>Elimination</item>
+        <item>Substitution</item>
+        <item>Engineering</item>
+        <item>Isolation</item>
+        <item>Administration</item>
+        <item>PPE</item>
     </string-array>
 </resources>

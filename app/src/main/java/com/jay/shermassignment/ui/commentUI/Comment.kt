@@ -1,14 +1,15 @@
 package com.jay.shermassignment.ui.commentUI
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.jay.shermassignment.R
+import com.jay.shermassignment.generic.showToast
 import com.jay.shermassignment.model.comments.CommentBody
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
@@ -18,11 +19,14 @@ import java.io.IOException
 class Comment : AppCompatActivity() {
 
     private lateinit var comment: EditText
-    private val inspectionId = intent.getIntExtra("id", 0)
+    private val inspectionId: Int by lazy {
+        intent.getIntExtra("id", 0)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_comment)
+        supportActionBar?.setTitle(R.string.inspection_comments)
         comment = findViewById(R.id.etInspectionComment)
     }
 
@@ -33,39 +37,37 @@ class Comment : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        if (id == R.id.save) {
-            val commentText = comment.text.toString()
-            val authToken = SessionManager(this).fetchAuthToken()
-
-
-            val commentBody = CommentBody(commentText, inspectionId)
-
-            lifecycleScope.launch {
-                val commentResponse = try {
-                    CommentInstance.api.addCommentsForInspection(commentBody, authToken!!)
-                } catch (e: HttpException) {
-                    showToast(e.message)
-                    return@launch
-                } catch (e: IOException) {
-                    showToast(e.message)
-                    return@launch
-                }
-
-                if (commentResponse.isSuccessful && commentResponse.body() != null) {
-
-                }
-            }
-            finish()
-            overridePendingTransition(
-                com.google.android.material.R.anim.abc_grow_fade_in_from_bottom,
-                R.anim.slide_out_to_left
-            )
+        when (item.itemId) {
+            R.id.save -> saveComment()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showToast(message: String?) {
-        Toast.makeText(this@Comment, message, Toast.LENGTH_SHORT).show()
-    }
+    private fun saveComment() {
+        val commentText = comment.text.toString()
+        val authToken = SessionManager(this).fetchAuthToken()
+        val commentBody = CommentBody(commentText, inspectionId)
+
+        lifecycleScope.launch {
+            val commentResponse =
+            try {
+                CommentInstance.api.addCommentsForInspection(commentBody, authToken!!)
+            } catch (e: Exception) {
+                showToast(this@Comment, "Error: ${e.message}")
+                return@launch
+            } catch (e: HttpException) {
+                showToast(this@Comment, "Error: ${e.message}")
+                return@launch
+            } catch (e: IOException) {
+                showToast(this@Comment, "Error: ${e.message}")
+                return@launch
+            }
+            if (commentResponse.isSuccessful && commentResponse.body() != null) {
+                showToast(this@Comment,getString(R.string.successfully_comment))
+            }
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        finish()
+
+        }
 }

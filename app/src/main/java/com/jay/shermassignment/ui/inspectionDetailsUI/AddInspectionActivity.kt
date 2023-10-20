@@ -6,13 +6,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
+import com.jay.shermassignment.generic.BackCallBack
 import com.jay.shermassignment.generic.showGenericDateDialog
+import com.jay.shermassignment.generic.showToast
 import com.jay.shermassignment.model.addInspectionData.InspectionCategoryMaster
 import com.jay.shermassignment.model.addInspectionData.InspectionType
 import com.jay.shermassignment.model.addInspectionData.ResponsiblePerson
@@ -33,33 +34,53 @@ class AddInspectionActivity : AppCompatActivity() {
     private lateinit var inspectionTypeSpinner: Spinner
     private lateinit var inspectionLocationSpinner: Spinner
     private lateinit var site: Spinner
-    private lateinit var reportingTo: Spinner
+    private lateinit var reschedule: Spinner
     private lateinit var responsiblePersonSpinner: Spinner
     private lateinit var dueDate: MaterialTextView
     private lateinit var dateButton: MaterialButton
-    private lateinit var status: Spinner
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_inspection_actitvtity)
-
+        supportActionBar?.setTitle(R.string.add_inspections_completed)
+        initializeView()
+        spinnerValues()
+        btClickListener()
+        backBtListener()
+    }
+    private fun initializeView() {
         categorySpinner = findViewById(R.id.spCategory)
         inspectionTypeSpinner = findViewById(R.id.spInspectionType)
         inspectionLocationSpinner = findViewById(R.id.spInspectionLocation)
         site = findViewById(R.id.spSite)
-        reportingTo = findViewById(R.id.spReportingTo)
         responsiblePersonSpinner = findViewById(R.id.spResponsiblePerson)
         dueDate = findViewById(R.id.tvDueDate)
         dateButton = findViewById(R.id.btCalender)
-        status = findViewById(R.id.spStatus)
-
-
-
-        spinnerValues()
-
-
+        reschedule = findViewById(R.id.spReschedule)
     }
+
+    private fun btClickListener() {
+        dateButton.setOnClickListener {
+            showGenericDateDialog(
+                R.string.selectedDate.toString(),
+                System.currentTimeMillis(),
+                { selectedDate ->
+                    val formattedDate =
+                        SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(selectedDate))
+                    dueDate.text = formattedDate
+                },
+                this
+            )
+        }
+    }
+
+    private fun backBtListener() {
+        val onBackPressedCallback = BackCallBack {
+            finish()
+        }
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
@@ -70,57 +91,8 @@ class AddInspectionActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.save) {
-
-            val authToken = SessionManager(this).fetchAuthToken()
-            val category = categorySpinner.selectedItem.toString()
-            val inspectionType = inspectionTypeSpinner.selectedItem.toString()
-            val inspectionLocation = inspectionLocationSpinner.selectedItem.toString()
-            val site = site.selectedItem.toString()
-            val status = status.selectedItem
-            val reportingTo = reportingTo.selectedItem.toString()
-            val dueDate = dueDate.text.toString()
-            val responsiblePerson = responsiblePersonSpinner.selectedItem.toString()
-
-            lifecycleScope.launch {
-                val addInspection = addInspectionRef(
-                    id = null,
-                    assignerId = 1,
-                    reschedule = true,
-                    inspectionLocation = inspectionLocation,
-                    inspectionType = InspectionType(id = 425),
-                    workplaceInspection = WorkplaceInspection(
-                        id = 3500,
-                        inspectionCategoryMaster = InspectionCategoryMaster(id = 10),
-                        site = Site(id = 1)
-                    ),
-                    responsiblePerson = ResponsiblePerson(id = 102),
-                    dueDate = dueDate
-                )
-                val addInspectionResponse = try {
-
-                    ShowInspectionDetailsInstance.api.getAddInspectionData(
-                        addInspection,
-                        "Bearer $authToken"
-                    )
-
-                } catch (e: IOException) {
-                    Toast.makeText(this@AddInspectionActivity, e.message, Toast.LENGTH_SHORT).show()
-                    return@launch
-
-                } catch (e: HttpException) {
-                    Toast.makeText(this@AddInspectionActivity, e.message, Toast.LENGTH_SHORT).show()
-                    return@launch
-                }
-                if (addInspectionResponse.isSuccessful && addInspectionResponse.body() != null) {
-                    Toast.makeText(this@AddInspectionActivity, R.string.save, Toast.LENGTH_SHORT)
-                        .show()
-                    finish()
-                }
-            }
-            overridePendingTransition(
-                com.google.android.material.R.anim.abc_grow_fade_in_from_bottom,
-                R.anim.slide_out_to_left
-            )
+            saveInspectionData()
+            finish()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -133,24 +105,123 @@ class AddInspectionActivity : AppCompatActivity() {
             }
     }
 
-
     private fun spinnerValues() {
-
         setupSpinnerFromArray(categorySpinner, R.array.category)
         setupSpinnerFromArray(inspectionTypeSpinner, R.array.category_work_health_and_safety)
         setupSpinnerFromArray(site, R.array.site)
         setupSpinnerFromArray(inspectionLocationSpinner, R.array.inspection_location)
-        setupSpinnerFromArray(reportingTo, R.array.responsible_person)
+        setupSpinnerFromArray(reschedule, R.array.reschedule)
         setupSpinnerFromArray(responsiblePersonSpinner, R.array.responsible_person)
-        setupSpinnerFromArray(status, R.array.status)
-        dateButton.setOnClickListener {
-            showGenericDateDialog(R.string.selectedDate.toString(), System.currentTimeMillis() , { selectedDate ->
-                val formattedDate = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(selectedDate))
-                dueDate.text = formattedDate
-            }, this)
+    }
+
+    private fun saveInspectionData() {
+        val authToken = SessionManager(this).fetchAuthToken()
+        val category = categorySpinner.selectedItem.toString()
+        val inspectionType = inspectionTypeSpinner.selectedItem.toString()
+        val inspectionLocation = inspectionLocationSpinner.selectedItem.toString()
+        val site = site.selectedItem.toString()
+        val dueDate = dueDate.text.toString()
+        val responsiblePerson = responsiblePersonSpinner.selectedItem.toString()
+        val reschedule = reschedule.selectedItem.toString()
+
+        val categoryValue = getCategoryValue(category)
+        val inspectionTypeValue = getInspectionType(inspectionType)
+        val responsiblePersonType = getResponsiblePerson(responsiblePerson)
+        val reScheduleValue = getRescheduleValue(reschedule)
+        val siteValue = getSiteValue(site)
+        val assignerValue = getAssigner(responsiblePerson)
+
+        val addInspection = addInspectionRef(
+            id = null,
+            assignerId = responsiblePersonType,
+            reschedule = reScheduleValue!!,
+            inspectionLocation = inspectionLocation,
+            inspectionType = InspectionType(inspectionTypeValue),
+            workplaceInspection = WorkplaceInspection(
+                id = 3500,
+                inspectionCategoryMaster = InspectionCategoryMaster(categoryValue),
+                site = Site(siteValue)
+            ),
+            responsiblePerson = ResponsiblePerson(assignerValue),
+            dueDate = dueDate
+        )
+
+
+        lifecycleScope.launch {
+            val addInspectionResponse = try {
+                ShowInspectionDetailsInstance.api.getAddInspectionData(
+                    addInspection,
+                    "Bearer $authToken"
+                )
+            } catch (e: Exception) {
+                showToast(this@AddInspectionActivity, e.message)
+                return@launch
+            } catch (e: HttpException) {
+                showToast(this@AddInspectionActivity, e.message)
+                return@launch
+            } catch (e: IOException) {
+                showToast(this@AddInspectionActivity, e.message)
+                return@launch
+            }
+            if (addInspectionResponse.isSuccessful && addInspectionResponse.body() != null) {
+                showToast(this@AddInspectionActivity, getString(R.string.save))
+                finish()
+            } else {
+                showToast(this@AddInspectionActivity, getString(R.string.failed_to_save))
+            }
         }
     }
 
+    private fun getCategoryValue(categorySpinner: String): Int{
+        return when (categorySpinner) {
+            "Work Health and Safety" -> 10
+            else -> 0
+        }
+    }
 
+    private fun getInspectionType(inspectionTypeSpinner: String): Int {
+        return when (inspectionTypeSpinner) {
+            "Vehicle Pre-Start" -> 425
+            "Daily Pre-Start Checklist Inspection(Inline)" -> 626
+            "Site Workplace Inspection" -> 655
+            "Take 5" -> 607
+            else -> 0
+        }
+    }
+
+    private fun getSiteValue(siteSpinner: String): Int {
+        return when (siteSpinner) {
+            "Client Site" -> 18
+            "Wynnum" -> 1
+            else -> 0
+        }
+    }
+
+    private fun getResponsiblePerson(responsibleSpinner: String): Int {
+        return when (responsibleSpinner) {
+            "Caroline Kingston" -> 1
+            "Test Supervisor" -> 2
+            "Test Manager" -> 3
+            "Test Employee" -> 248
+            else -> 0
+        }
+    }
+
+    private fun getAssigner(responsibleSpinner: String): Int {
+        return when (responsibleSpinner) {
+            "Caroline Kingston" -> 1
+            "Test Supervisor" -> 2
+            "Test Manager" -> 3
+            "Test Employee" -> 248
+            else -> 0
+        }
+    }
+
+    private fun getRescheduleValue(rescheduleSpinner: String): Boolean? {
+        return when (rescheduleSpinner) {
+            "Yes" -> true
+            "No" -> false
+            else -> null
+        }
+    }
 }
-

@@ -1,8 +1,10 @@
 package com.jay.shermassignment.ui.dueDate
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
@@ -11,8 +13,8 @@ import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.showGenericDateDialog
 import com.jay.shermassignment.generic.showToast
 import com.jay.shermassignment.utils.SessionManager
-import retrofit2.HttpException
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -27,6 +29,7 @@ class DueDateExtendRequest : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_due_date_extend_request)
+        supportActionBar?.setTitle(R.string.due_date_extended_request)
 
         initializeViewsId()
 
@@ -36,6 +39,33 @@ class DueDateExtendRequest : AppCompatActivity() {
                 preferredDateText.text = formattedDate
             }, this)
         }
+
+
+    }
+    private fun initializeViewsId() {
+        preferredDateText=findViewById(R.id.tvPreferredDate)
+        preferredDateButton=findViewById(R.id.btnPreferredDate)
+        commentText=findViewById(R.id.etComments)
+    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.save_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (id == R.id.save) {
+            sendDueDateRequest()
+            finish()
+            overridePendingTransition(
+                com.google.android.material.R.anim.abc_grow_fade_in_from_bottom,
+                R.anim.slide_out_to_left
+            )
+        }
+        return super.onOptionsItemSelected(item)
+    }
+    private fun sendDueDateRequest(){
         val id = intent.getIntExtra("correctiveActionId",0)
 
         val authToken = SessionManager(this).fetchAuthToken()
@@ -43,29 +73,17 @@ class DueDateExtendRequest : AppCompatActivity() {
         lifecycleScope.launch {
             val dueDateExtendResponse=try{
                 DueDateInstance.api.getDueDateRequest(id,authToken!!)
-            }catch (e:HttpException){
-                showToast(e.message)
+            }catch (e: HttpException){
+                showToast(this@DueDateExtendRequest, e.message)
                 return@launch
-            }catch (e:IOException){
-                showToast(e.message)
+            }catch (e: IOException){
+                showToast(this@DueDateExtendRequest, e.message)
                 return@launch
             }
 
             if (dueDateExtendResponse.isSuccessful && dueDateExtendResponse.body() != null){
-                showToast(this@DueDateExtendRequest,"Due Date Request Created")
-
+                showToast(this@DueDateExtendRequest, getString(R.string.due_date_extended_request))
             }
         }
-
     }
-    private fun initializeViewsId() {
-        preferredDateText=findViewById(R.id.tvPreferredDate)
-        preferredDateButton=findViewById(R.id.btnPreferredDate)
-        commentText=findViewById(R.id.etComments)
-
-    }
-    private fun showToast(message: String?) {
-        Toast.makeText(this@DueDateExtendRequest, message, Toast.LENGTH_SHORT).show()
-    }
-
 }

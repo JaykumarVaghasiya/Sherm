@@ -52,4 +52,17 @@
     <string name="star">*</string>
     <string name="status">Status</string>
     <string name="inspection_detail">INSPECTION DETAIL</string>
+    <string name="due_date_extended_request">Due Date Request Created</string>
+    <string name="failed_to_save">Failed to save inspection data</string>
+    <string name="successfully_comment">Successfully Comment Added</string>
+    <string name="nothing_to_see_here">Nothing To See Here</string>
+    <string name="inspections">Inspections</string>
+    <string name="add_inspections_completed">Add Inspection Completed</string>
+    <string name="inspections_Comments">Inspections Comments</string>
+    <string name="schedule_inspections">Schedule Inspection</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="corrective_action">Corrective Action</string>
+    <string name="due_date_extended_apporval">Due Date Extend Review</string>
+    <string name="add_inspection">Schedule Inspection</string>
+    <string name="assign_ca">Assign CA</string>
 </resources>

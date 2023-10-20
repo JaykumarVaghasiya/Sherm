@@ -24,11 +24,8 @@ class SplashScreen : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
-            overridePendingTransition(
-                com.google.android.material.R.anim.abc_grow_fade_in_from_bottom,
-                R.anim.slide_out_to_left
-            )
             finish()
         }, 3000)
     }

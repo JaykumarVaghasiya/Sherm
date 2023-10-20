@@ -3,7 +3,6 @@ package com.jay.shermassignment.ui.correctiveaction
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
@@ -20,105 +19,105 @@ import com.jay.shermassignment.ui.correctiveactiondetails.CAViewActivity
 import com.jay.shermassignment.ui.correctiveevaluation.CorrectiveEvaluation
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 
 class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrectiveActionItemClick,
     CorrectiveActionAdapter.OnCorrectiveEvaluationClick {
+
     private lateinit var correctiveActionRecyclerView: RecyclerView
     private lateinit var correctiveActionAdapter: CorrectiveActionAdapter
     private lateinit var progressBar: ProgressBar
 
+    private lateinit var authToken: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_corrective_action)
-
-        correctiveActionRecyclerView = findViewById(R.id.rvCorrectiveAction)
-        progressBar = findViewById(R.id.pbCorrectiveAction)
-        progressBar.bringToFront()
-        progressBar.visibility = View.VISIBLE
-        correctiveActionAdapter = CorrectiveActionAdapter(this, this, this)
-
-        val inspectionLayoutManager = LinearLayoutManager(this)
-        correctiveActionRecyclerView.layoutManager = inspectionLayoutManager
-        correctiveActionRecyclerView.adapter = correctiveActionAdapter
-        val authToken = SessionManager(this).fetchAuthToken()
-
-        loadCorrectiveAction(authToken!!)
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                finish()
-            }
-        })
+        supportActionBar?.setTitle("${R.string.corrective_action}+ ( )")
+        setupViews()
+        setupAdapter()
+        setupListeners()
+        authToken = SessionManager(this).fetchAuthToken().toString()
+        loadCorrectiveAction(authToken)
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.ispection_menu, menu)
+        menuInflater.inflate(R.menu.ispection_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        if (id == R.id.add) {
-            val intent = Intent(this, CAViewActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(
-                com.google.android.material.R.anim.abc_grow_fade_in_from_bottom,
-                R.anim.slide_out_to_left
-            )
+        when (item.itemId) {
+            R.id.add -> openAddCorrectiveActionView()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun loadCorrectiveAction(authToken: String) {
-        lifecycleScope.launch {
-            val correctiveActionResponse = try {
-                CorrectiveActionInstance.api.getAllCorrectiveAction(
-                    CorrectiveActionData(
-                        2888, 1, "action", "asc", "Risk"
-                    ), "Bearer $authToken"
-                )
+    private fun setupViews() {
+        correctiveActionRecyclerView = findViewById(R.id.rvCorrectiveAction)
+        progressBar = findViewById(R.id.pbCorrectiveAction)
+        progressBar.bringToFront()
+        progressBar.visibility = View.VISIBLE
+    }
 
-            } catch (e: IOException) {
-                Toast.makeText(this@CorrectiveAction, e.message, Toast.LENGTH_SHORT).show()
-                return@launch
-            } catch (e: HttpException) {
-                Toast.makeText(this@CorrectiveAction, e.message, Toast.LENGTH_SHORT).show()
-                return@launch
-            }
+    private fun setupAdapter() {
+        correctiveActionAdapter = CorrectiveActionAdapter(this, this, this)
+        val inspectionLayoutManager = LinearLayoutManager(this)
+        correctiveActionRecyclerView.layoutManager = inspectionLayoutManager
+        correctiveActionRecyclerView.adapter = correctiveActionAdapter
+    }
 
-            if (correctiveActionResponse.isSuccessful && correctiveActionResponse.body() != null) {
-                correctiveActionAdapter.submitInspectionList(correctiveActionResponse.body()!!.content.rows)
-                progressBar.visibility = View.GONE
-            } else {
-                Toast.makeText(
-                    this@CorrectiveAction,
-                    R.string.empty_data_or_response,
-                    Toast.LENGTH_LONG
-                )
-                    .show()
-                progressBar.visibility = View.GONE
-            }
-        }
-
-
+    private fun setupListeners() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 finish()
             }
         })
+    }
+
+    private fun loadCorrectiveAction(authToken: String) {
+        lifecycleScope.launch {
+            try {
+                val correctiveActionResponse = CorrectiveActionInstance.api.getAllCorrectiveAction(
+                    CorrectiveActionData(2888, 1, "action", "asc", "Risk"),
+                    "Bearer $authToken"
+                )
+
+                if (correctiveActionResponse.isSuccessful && correctiveActionResponse.body() != null) {
+                    correctiveActionAdapter.submitInspectionList(correctiveActionResponse.body()!!.content.rows)
+                    progressBar.visibility = View.GONE
+                } else {
+                    showToast(getString(R.string.empty_data_or_response), Toast.LENGTH_LONG)
+                    progressBar.visibility = View.GONE
+                }
+            } catch (e: Exception) {
+                showToast(e.message, Toast.LENGTH_SHORT)
+            }
+        }
+    }
+
+    private fun openAddCorrectiveActionView() {
+        val intent = Intent(this, CAViewActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        startActivity(intent)
+
     }
 
     override fun onItemClick(row: Row) {
         val id = row.id
         val intent = Intent(this, CAViewActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         intent.putExtra("correctiveActionId", id)
         startActivity(intent)
     }
 
     override fun onCorrectiveEvaluationClick(row: Row) {
         val intent = Intent(this, CorrectiveEvaluation::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         intent.putExtra("correctiveActionId", row.id)
         startActivity(intent)
+    }
+
+    private fun showToast(message: String?, duration: Int) {
+        Toast.makeText(this, message, duration).show()
     }
 }

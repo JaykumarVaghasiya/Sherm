@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@color/white"
+    android:background="@color/offWhite"
     android:orientation="vertical"
     android:padding="12dp"
     tools:context=".ui.inspectionDetailsUI.AddInspectionFragment">
@@ -260,7 +260,7 @@
             android:textStyle="bold" />
     </LinearLayout>
     <Spinner
-        android:id="@+id/spStatus"
+        android:id="@+id/spReschedule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:spinnerMode="dialog"

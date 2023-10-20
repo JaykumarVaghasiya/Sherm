@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
+import com.jay.shermassignment.generic.BackCallBack
 
 class AddCorrectiveAction : AppCompatActivity() {
 
@@ -21,8 +22,16 @@ class AddCorrectiveAction : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_assign_corrective_action)
+        supportActionBar?.setTitle(R.string.assign_ca)
         initializeViewId()
+        backBtListener()
+    }
 
+    private fun backBtListener() {
+        val onBackPressedCallback = BackCallBack{
+            finish()
+        }
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     private fun initializeViewId() {
