@@ -1,10 +1,9 @@
 package com.jay.shermassignment.generic
 
-import android.content.Context
+import android.app.Activity
 import androidx.appcompat.app.AlertDialog
 
-fun showAlertDialog(
-    context: Context,
+fun Activity.showAlertDialog(
     title: String,
     message: String,
     positiveButtonLabel: String = "OK",
@@ -12,7 +11,7 @@ fun showAlertDialog(
     onPositiveButtonClick: () -> Unit = {},
     onNegativeButtonClick: () -> Unit = {}
 ) {
-    val builder = AlertDialog.Builder(context)
+    val builder = AlertDialog.Builder(this)
     builder.setTitle(title)
     builder.setMessage(message)
     builder.setPositiveButton(positiveButtonLabel) { dialog, _ ->

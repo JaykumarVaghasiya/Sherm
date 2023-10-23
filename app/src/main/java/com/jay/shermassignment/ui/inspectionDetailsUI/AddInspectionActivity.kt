@@ -64,13 +64,11 @@ class AddInspectionActivity : AppCompatActivity() {
             showGenericDateDialog(
                 R.string.selectedDate.toString(),
                 System.currentTimeMillis(),
-                { selectedDate ->
-                    val formattedDate =
-                        SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(selectedDate))
-                    dueDate.text = formattedDate
-                },
-                this
-            )
+            ) { selectedDate ->
+                val formattedDate =
+                    SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(selectedDate))
+                dueDate.text = formattedDate
+            }
         }
     }
 
@@ -154,20 +152,20 @@ class AddInspectionActivity : AppCompatActivity() {
                     "Bearer $authToken"
                 )
             } catch (e: Exception) {
-                showToast(this@AddInspectionActivity, e.message)
+                showToast( e.message)
                 return@launch
             } catch (e: HttpException) {
-                showToast(this@AddInspectionActivity, e.message)
+                showToast( e.message)
                 return@launch
             } catch (e: IOException) {
-                showToast(this@AddInspectionActivity, e.message)
+                showToast( e.message)
                 return@launch
             }
             if (addInspectionResponse.isSuccessful && addInspectionResponse.body() != null) {
-                showToast(this@AddInspectionActivity, getString(R.string.save))
+                showToast( getString(R.string.save))
                 finish()
             } else {
-                showToast(this@AddInspectionActivity, getString(R.string.failed_to_save))
+                showToast( getString(R.string.failed_to_save))
             }
         }
     }

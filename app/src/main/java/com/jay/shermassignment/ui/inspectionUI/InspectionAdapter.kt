@@ -78,6 +78,10 @@ class InspectionAdapter(
         Log.d("Debug", "inspectionList size: ${inspectionList.size}")
         notifyDataSetChanged()
     }
+    fun sortInspectionListDescending() {
+        inspectionList.sortByDescending { it.dueDate }
+        notifyDataSetChanged()
+    }
     interface OnDeleteListener {
         fun onDeleteClicked(row: Row)
     }

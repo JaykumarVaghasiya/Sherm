@@ -1,4 +1,4 @@
-package com.jay.shermassignment.ui.correctiveaction
+package com.jay.shermassignment.ui.corrective_action
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,7 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jay.shermassignment.R
 import com.jay.shermassignment.model.correctiveaction.CorrectiveActionData
 import com.jay.shermassignment.model.correctiveaction.Row
-import com.jay.shermassignment.ui.correctiveactiondetails.CAViewActivity
+import com.jay.shermassignment.ui.add_corrective_action.AddCorrectiveAction
+import com.jay.shermassignment.ui.corrective_action_details.CAViewActivity
 import com.jay.shermassignment.ui.correctiveevaluation.CorrectiveEvaluation
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
@@ -32,7 +33,7 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_corrective_action)
-        supportActionBar?.setTitle("${R.string.corrective_action}+ ( )")
+        supportActionBar?.title = "${getString(R.string.corrective_action)}( )"
         setupViews()
         setupAdapter()
         setupListeners()
@@ -49,6 +50,7 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
         when (item.itemId) {
             R.id.add -> openAddCorrectiveActionView()
         }
+
         return super.onOptionsItemSelected(item)
     }
 
@@ -96,7 +98,9 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
     }
 
     private fun openAddCorrectiveActionView() {
-        val intent = Intent(this, CAViewActivity::class.java)
+        val intent = Intent(this, AddCorrectiveAction::class.java)
+        val iId=intent.getIntExtra("ids",0)
+        intent.putExtra("iId",iId)
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         startActivity(intent)
 
@@ -105,6 +109,8 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
     override fun onItemClick(row: Row) {
         val id = row.id
         val intent = Intent(this, CAViewActivity::class.java)
+        val iId=intent.getIntExtra("ids",0)
+        intent.putExtra("iId",iId)
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         intent.putExtra("correctiveActionId", id)
         startActivity(intent)
@@ -113,6 +119,8 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
     override fun onCorrectiveEvaluationClick(row: Row) {
         val intent = Intent(this, CorrectiveEvaluation::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        val iId=intent.getIntExtra("ids",0)
+        intent.putExtra("iId",iId)
         intent.putExtra("correctiveActionId", row.id)
         startActivity(intent)
     }

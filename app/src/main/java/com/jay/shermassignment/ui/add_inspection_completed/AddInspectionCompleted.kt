@@ -1,4 +1,4 @@
-package com.jay.shermassignment.ui.addinpectioncompleted
+package com.jay.shermassignment.ui.add_inspection_completed
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -28,10 +28,11 @@ class AddInspectionCompleted : AppCompatActivity() {
 
     private fun buttonClickListener() {
         calendarInspectionCompleted.setOnClickListener {
-            showGenericDateDialog(R.string.selectedDate.toString(), System.currentTimeMillis() , { selectedDate ->
-                val formattedDate = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(selectedDate))
+            showGenericDateDialog(R.string.selectedDate.toString(), System.currentTimeMillis()) { selectedDate ->
+                val formattedDate =
+                    SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(selectedDate))
                 inspectionCompleted.text = formattedDate
-            }, this)
+            }
         }
     }
 

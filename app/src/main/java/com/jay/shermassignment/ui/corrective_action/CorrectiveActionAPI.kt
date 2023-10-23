@@ -1,4 +1,4 @@
-package com.jay.shermassignment.ui.correctiveaction
+package com.jay.shermassignment.ui.corrective_action
 
 import com.jay.shermassignment.model.correctiveaction.CorrectiveActionData
 import com.jay.shermassignment.model.correctiveaction.CorrectiveActionResponseX

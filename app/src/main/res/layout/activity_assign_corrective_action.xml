@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="12dp"
     android:background="@color/offWhite"
-    tools:context=".ui.addcorrectiveaction.AddCorrectiveAction">
+    tools:context=".ui.add_corrective_action.AddCorrectiveAction">
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
@@ -37,7 +37,8 @@
     <Spinner
         android:id="@+id/spResponsiblePersonAddCA"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"/>
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
@@ -65,7 +66,8 @@
     <Spinner
         android:id="@+id/spHierarchyOfControlAddCA"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"/>
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
@@ -138,7 +140,8 @@
     <Spinner
         android:id="@+id/spStatusAddCA"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"/>
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
@@ -153,7 +156,8 @@
     <Spinner
         android:id="@+id/spFollowUpAddCA"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"/>
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"

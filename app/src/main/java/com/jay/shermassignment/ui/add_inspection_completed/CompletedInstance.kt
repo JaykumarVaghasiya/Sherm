@@ -1,4 +1,4 @@
-package com.jay.shermassignment.ui.addinpectioncompleted
+package com.jay.shermassignment.ui.add_inspection_completed
 
 import com.jay.shermassignment.utils.RetrofitInstance
 

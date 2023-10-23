@@ -6,14 +6,12 @@ import android.os.Handler
 import android.os.Looper
 import android.view.WindowInsets
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
 import com.jay.shermassignment.R
 import com.jay.shermassignment.ui.login.LoginActivity
 
 class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(R.layout.activity_splash_screen)
 
         window.setFlags(
@@ -21,10 +19,8 @@ class SplashScreen : AppCompatActivity() {
             WindowInsets.Type.statusBars()
         )
 
-
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, LoginActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finish()
         }, 3000)

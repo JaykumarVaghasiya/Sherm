@@ -1,4 +1,4 @@
-package com.jay.shermassignment.ui.correctiveactiondetails
+package com.jay.shermassignment.ui.corrective_action_details
 
 import com.jay.shermassignment.utils.RetrofitInstance
 

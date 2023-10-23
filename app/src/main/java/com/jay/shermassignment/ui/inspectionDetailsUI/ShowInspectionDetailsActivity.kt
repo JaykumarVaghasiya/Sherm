@@ -1,6 +1,5 @@
 package com.jay.shermassignment.ui.inspectionDetailsUI
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -14,9 +13,9 @@ import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.BackCallBack
 import com.jay.shermassignment.generic.showAlertDialog
 import com.jay.shermassignment.generic.startActivityStart
-import com.jay.shermassignment.ui.addinpectioncompleted.AddInspectionCompleted
+import com.jay.shermassignment.ui.add_inspection_completed.AddInspectionCompleted
 import com.jay.shermassignment.ui.commentUI.Comment
-import com.jay.shermassignment.ui.correctiveaction.CorrectiveAction
+import com.jay.shermassignment.ui.corrective_action.CorrectiveAction
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
 
@@ -39,13 +38,23 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_inspection_details2)
-        supportActionBar?.setTitle("")
-
-
+        val id =intent.getStringExtra("inspectionId")
+        supportActionBar?.title = id
         initializeViews()
         setupClickListeners()
         retrieveInstanceState(savedInstanceState)
+        fetchData()
+        backBtListener()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch {
+            fetchData()
+        }
+    }
+
+    private fun fetchData() {
         val authToken = SessionManager(this).fetchAuthToken()
         progressBar.visibility = View.VISIBLE
 
@@ -78,7 +87,6 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
             }
         }
 
-        backBtListener()
     }
 
     private fun backBtListener() {
@@ -104,12 +112,18 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        correctiveAction.setOnClickListener { startActivityStart<CorrectiveAction>()
+        val id=intent.getIntExtra("id",0)
+        correctiveAction.setOnClickListener {
+            intent.putExtra("ids", id)
+            startActivityStart<CorrectiveAction>()
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION) }
-        comment.setOnClickListener { startActivityStart<Comment>()
+        comment.setOnClickListener {
+            intent.putExtra("ids", id)
+            startActivityStart<Comment>()
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)}
-        docUpload.setOnClickListener { showConfirmationDialog(this)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)}
+        docUpload.setOnClickListener {
+            showConfirmationDialog()
+           }
     }
 
     private fun retrieveInstanceState(savedInstanceState: Bundle?) {
@@ -140,15 +154,16 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun showConfirmationDialog(context: Context) {
+    private fun showConfirmationDialog() {
         showAlertDialog(
-            context = context,
             title = "Confirm",
             message = "Documents are uploaded?",
             positiveButtonLabel = "OK"
         ) {
-            startActivityStart<AddInspectionCompleted>()
+            val id = intent.getIntExtra("id", 0)
+            intent.putExtra("ids", id)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            startActivityStart<AddInspectionCompleted>()
         }
     }
 

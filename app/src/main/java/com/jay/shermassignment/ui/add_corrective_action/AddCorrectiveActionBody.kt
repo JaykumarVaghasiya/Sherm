@@ -1,4 +1,4 @@
-package com.jay.shermassignment.ui.addcorrectiveaction
+package com.jay.shermassignment.ui.add_corrective_action
 
 data class AddCorrectiveActionBody(
     val action: String,
@@ -6,9 +6,9 @@ data class AddCorrectiveActionBody(
     val hazardId: Int,
     val hierarchyOfControl: HierarchyOfControl,
     val id: Int,
-    val incidentId: Any,
-    val inspectionScheduleId: Any,
-    val issueId: Any,
+    val incidentId: Any?,
+    val inspectionScheduleId: Any?,
+    val issueId: Any?,
     val responsibleId: Int,
     val reviewDate: String,
     val status: Int

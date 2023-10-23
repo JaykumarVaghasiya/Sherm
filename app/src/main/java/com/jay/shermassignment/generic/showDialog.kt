@@ -1,19 +1,18 @@
 package com.jay.shermassignment.generic
 
-import android.content.Context
+import android.app.Activity
 import androidx.appcompat.app.AlertDialog
 
-fun showCustomDialog(
-    context: Context,
+fun Activity.showCustomDialog(
     titleResId: Int,
     messageResId: Int,
     positiveButtonLabel: String = "OK",
     onPositiveButtonClick: () -> Unit = {}
 ) {
-    val title = context.getString(titleResId)
-    val message = context.getString(messageResId)
+    val title = getString(titleResId)
+    val message =getString(messageResId)
 
-    AlertDialog.Builder(context)
+    AlertDialog.Builder(this)
         .setMessage(message)
         .setTitle(title)
         .setCancelable(true)

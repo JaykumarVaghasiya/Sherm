@@ -17,32 +17,35 @@
         android:theme="@style/ShermTheme"
         tools:targetApi="tiramisu">
         <activity
-            android:name=".CorrecitveEvalution"
-            android:exported="false" />
+            android:name=".CorrectiveEvaluation"
+            android:exported="false"
+            android:parentActivityName=".ui.corrective_action.CorrectiveAction"/>
         <activity
-            android:name=".ui.addinpectioncompleted.AddInspectionCompleted"
+            android:name=".ui.add_inspection_completed.AddInspectionCompleted"
             android:exported="false"
             android:parentActivityName=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity" />
         <activity
-            android:name=".ui.addcorrectiveaction.AddCorrectiveAction"
-            android:exported="false" />
+            android:name=".ui.add_corrective_action.AddCorrectiveAction"
+            android:exported="false"
+            android:parentActivityName=".ui.corrective_action.CorrectiveAction"/>
         <activity
             android:name=".ui.dueDate.DueDateExtendedApproval"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".ui.corrective_action_details.CAViewActivity"/>
         <activity
             android:name=".ui.dueDate.DueDateExtendRequest"
-            android:parentActivityName=".ui.correctiveactiondetails.CAViewActivity"
+            android:parentActivityName=".ui.corrective_action_details.CAViewActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.correctiveactiondetails.CAViewActivity"
+            android:name=".ui.corrective_action_details.CAViewActivity"
             android:exported="false"
-            android:parentActivityName=".ui.correctiveaction.CorrectiveAction" />
+            android:parentActivityName=".ui.corrective_action.CorrectiveAction" />
         <activity
             android:name=".Comment"
             android:exported="false"
             android:parentActivityName=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity" />
         <activity
-            android:name=".ui.correctiveaction.CorrectiveAction"
+            android:name=".ui.corrective_action.CorrectiveAction"
             android:exported="false"
             android:parentActivityName=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity" />
         <activity

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:background="@color/offWhite"
-    tools:context=".ui.correctiveactiondetails.CAViewActivity">
+    tools:context=".ui.corrective_action_details.CAViewActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

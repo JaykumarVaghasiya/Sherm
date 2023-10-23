@@ -1,4 +1,4 @@
-package com.jay.shermassignment.ui.correctiveactiondetails
+package com.jay.shermassignment.ui.corrective_action_details
 
 import android.content.Intent
 import android.os.Bundle
@@ -59,6 +59,7 @@ class CAViewActivity : AppCompatActivity() {
         correctiveActionText = findViewById(R.id.etmCorrectiveAction)
     }
 
+
     private fun setClickListeners() {
         dueDateRequest.setOnClickListener { navigateToDueDateExtendRequest() }
         dueDateApproval.setOnClickListener { navigateToDueDateExtendedApproval() }
@@ -82,7 +83,7 @@ class CAViewActivity : AppCompatActivity() {
         val cAViewResponse = try {
             CAViewInstance.api.getAllCAViewDetails(id, authToken!!)
         } catch (e: Exception) {
-            showToast(this,e.message)
+            showToast(e.message)
             return
         }
 
@@ -124,10 +125,10 @@ class CAViewActivity : AppCompatActivity() {
 
 
     private fun showDueDatePicker() {
-        showGenericDateDialog(R.string.selectedDate.toString(), System.currentTimeMillis() , { selectedDate ->
+        showGenericDateDialog(R.string.selectedDate.toString(), System.currentTimeMillis()) { selectedDate ->
             val formattedDate = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(selectedDate))
             reviewDateText.text = formattedDate
-        }, this)
+        }
     }
 
     private fun <T> navigateToActivity(clazz: Class<T>, id: Int) {

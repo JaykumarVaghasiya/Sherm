@@ -53,17 +53,17 @@ class Comment : AppCompatActivity() {
             try {
                 CommentInstance.api.addCommentsForInspection(commentBody, authToken!!)
             } catch (e: Exception) {
-                showToast(this@Comment, "Error: ${e.message}")
+                showToast("Error: ${e.message}")
                 return@launch
             } catch (e: HttpException) {
-                showToast(this@Comment, "Error: ${e.message}")
+                showToast("Error: ${e.message}")
                 return@launch
             } catch (e: IOException) {
-                showToast(this@Comment, "Error: ${e.message}")
+                showToast("Error: ${e.message}")
                 return@launch
             }
             if (commentResponse.isSuccessful && commentResponse.body() != null) {
-                showToast(this@Comment,getString(R.string.successfully_comment))
+                showToast(getString(R.string.successfully_comment))
             }
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)

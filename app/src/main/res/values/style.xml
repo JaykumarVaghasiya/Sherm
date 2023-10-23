@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.RemoveSplashScreenTheme" parent="@style/Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/green</item>
+        <item name="colorSecondary">@color/green</item>
         <item name="colorPrimaryDark">@color/lightGreen</item>
         <item name="colorAccent">@color/green</item>
         <item name="android:textColor">@color/black</item>

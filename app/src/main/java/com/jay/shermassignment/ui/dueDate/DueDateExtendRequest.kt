@@ -1,5 +1,6 @@
 package com.jay.shermassignment.ui.dueDate
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -34,10 +35,11 @@ class DueDateExtendRequest : AppCompatActivity() {
         initializeViewsId()
 
         preferredDateButton.setOnClickListener {
-            showGenericDateDialog(R.string.selectedDate.toString(), System.currentTimeMillis() , { selectedDate ->
-                val formattedDate = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(selectedDate))
+            showGenericDateDialog(R.string.selectedDate.toString(), System.currentTimeMillis()) { selectedDate ->
+                val formattedDate =
+                    SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(selectedDate))
                 preferredDateText.text = formattedDate
-            }, this)
+            }
         }
 
 
@@ -57,11 +59,8 @@ class DueDateExtendRequest : AppCompatActivity() {
         val id = item.itemId
         if (id == R.id.save) {
             sendDueDateRequest()
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             finish()
-            overridePendingTransition(
-                com.google.android.material.R.anim.abc_grow_fade_in_from_bottom,
-                R.anim.slide_out_to_left
-            )
         }
         return super.onOptionsItemSelected(item)
     }
@@ -74,15 +73,15 @@ class DueDateExtendRequest : AppCompatActivity() {
             val dueDateExtendResponse=try{
                 DueDateInstance.api.getDueDateRequest(id,authToken!!)
             }catch (e: HttpException){
-                showToast(this@DueDateExtendRequest, e.message)
+                showToast( e.message)
                 return@launch
             }catch (e: IOException){
-                showToast(this@DueDateExtendRequest, e.message)
+                showToast( e.message)
                 return@launch
             }
 
             if (dueDateExtendResponse.isSuccessful && dueDateExtendResponse.body() != null){
-                showToast(this@DueDateExtendRequest, getString(R.string.due_date_extended_request))
+                showToast( getString(R.string.due_date_extended_request))
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.jay.shermassignment.ui.addcorrectiveaction
+package com.jay.shermassignment.ui.add_corrective_action
 
 import com.jay.shermassignment.model.addcorrectiveaction.AddCorrectiveActionResponse
 import retrofit2.Response

@@ -64,18 +64,19 @@ class LoginActivity : AppCompatActivity() {
                     if (response.isSuccessful && response.body() != null) {
                         val userResponse = response.body()
                         userResponse?.content?.token?.let { sessionManager.saveAuthToken(it) }
-                        showToast(this@LoginActivity, getString(R.string.login))
+                        showToast( getString(R.string.login))
                         progressBar.visibility = View.GONE
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                         startActivity(intent)
                         finish()
-                    } else {
+                    }
+                    else {
                         showErrorDialog()
                     }
                 } catch (e: IOException) {
-                    showToast(this@LoginActivity, e.message)
+                    showToast( e.message)
                 } catch (e: HttpException) {
-                    showToast(this@LoginActivity, e.message)
+                    showToast( e.message)
                 } finally {
                     progressBar.visibility = View.GONE
                 }
@@ -85,7 +86,6 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showErrorDialog() {
         showCustomDialog(
-            this,
             R.string.invalid_credentials,
             R.string.request_valid_email_or_password
         )
@@ -93,7 +93,6 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showEmptyDialog() {
         showCustomDialog(
-            this,
             R.string.empty_credentials,
             R.string.request_email_or_password
         )

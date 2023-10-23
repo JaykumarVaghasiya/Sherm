@@ -1,4 +1,4 @@
-package com.jay.shermassignment.ui.correctiveaction
+package com.jay.shermassignment.ui.corrective_action
 
 import android.content.Context
 import android.util.Log

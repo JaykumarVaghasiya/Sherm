@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="@color/offWhite"
     android:padding="12dp"
-    tools:context=".ui.addinpectioncompleted.AddInspectionCompleted">
+    tools:context=".ui.add_inspection_completed.AddInspectionCompleted">
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"

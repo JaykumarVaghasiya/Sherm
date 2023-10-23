@@ -1,15 +1,14 @@
 package com.jay.shermassignment.generic
 
-import android.content.Context
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 
-fun showGenericDateDialog(
+fun Activity.showGenericDateDialog(
     title: String,
     initialSelection: Long,
-    onDateSelected: (Long) -> Unit,
-    context: Context
+    onDateSelected: (Long) -> Unit
 ) {
     val constraintsBuilder = CalendarConstraints.Builder()
     val currentDate = MaterialDatePicker.todayInUtcMilliseconds()
@@ -28,5 +27,5 @@ fun showGenericDateDialog(
         datePicker.dismiss()
     }
 
-    datePicker.show((context as AppCompatActivity).supportFragmentManager, "")
+    datePicker.show((this as AppCompatActivity).supportFragmentManager, "")
 }

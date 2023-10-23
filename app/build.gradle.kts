@@ -45,6 +45,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
+
     //retrofit
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.5.0")
@@ -52,7 +53,7 @@ dependencies {
 
 
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("com.facebook.shimmer:shimmer:0.5.0")
+    implementation("androidx.core:core-splashscreen:1.0.0")
 
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
