@@ -1,6 +1,8 @@
 package com.jay.shermassignment.ui.add_corrective_action
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.EditText
@@ -45,7 +47,6 @@ class AddCorrectiveAction : AppCompatActivity() {
         btClickListener()
         spinnerValue()
         backBtListener()
-        gatherData()
     }
 
     private fun initializeViewId() {
@@ -147,6 +148,20 @@ class AddCorrectiveAction : AppCompatActivity() {
 
         reviewDateTextView.text = formattedReviewDate
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.save_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.save -> {
+                gatherData()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun saveCorrectiveAction(body: AddCorrectiveActionBody) {

@@ -16,7 +16,7 @@
         android:textColor="@color/navyGreen"
         android:textStyle="bold" />
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
@@ -24,6 +24,7 @@
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
         android:text="@string/responsible_person"
         android:textColor="@color/black" />
         <com.google.android.material.textview.MaterialTextView
@@ -34,27 +35,33 @@
             android:textStyle="bold"
             android:textColor="@color/red" />
     </LinearLayout>
+
     <Spinner
         android:id="@+id/spResponsiblePersonAddCA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:spinnerMode="dialog"/>
+        android:layout_marginVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:spinnerMode="dialog" />
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
         android:paddingVertical="2dp">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hierarchy_of_control"
-        android:textColor="@color/black" />
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="8dp"
+            android:text="@string/hierarchy_of_control"
+            android:textColor="@color/black" />
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,27 +70,36 @@
             android:textStyle="bold"
             android:textColor="@color/red" />
     </LinearLayout>
+
     <Spinner
         android:id="@+id/spHierarchyOfControlAddCA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:spinnerMode="dialog"/>
+        android:layout_marginVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:spinnerMode="dialog" />
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:text="@string/due_date"
+        android:paddingHorizontal="8dp"
         android:textColor="@color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:layout_marginVertical="4dp"
+        android:gravity="center"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvDueDateAddCA"
@@ -103,17 +119,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
         android:paddingVertical="2dp">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/corrective_actions"
-        android:textColor="@color/black" />
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="8dp"
+            android:text="@string/corrective_actions"
+            android:textColor="@color/black" />
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -122,57 +140,78 @@
             android:textStyle="bold"
             android:textColor="@color/red" />
     </LinearLayout>
+
     <EditText
         android:id="@+id/etmAddCA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="start|top"
+        android:layout_marginVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
         android:inputType="textMultiLine"
         android:autofillHints="" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/status"
+        android:layout_marginTop="4dp"
+        android:paddingHorizontal="8dp"
         android:textColor="@color/black" />
 
     <Spinner
         android:id="@+id/spStatusAddCA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:spinnerMode="dialog"/>
+        android:layout_marginVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:spinnerMode="dialog" />
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/follow_up"
+        android:layout_marginTop="4dp"
+        android:paddingHorizontal="8dp"
         android:textColor="@color/black" />
 
     <Spinner
         android:id="@+id/spFollowUpAddCA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:spinnerMode="dialog"/>
+        android:layout_marginVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:spinnerMode="dialog" />
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/review_date"
+        android:layout_marginVertical="4dp"
+        android:layout_marginTop="4dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
         android:textColor="@color/black" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvReviewDateAddCA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
         android:textColor="@color/black" />
 
     <com.google.android.material.divider.MaterialDivider

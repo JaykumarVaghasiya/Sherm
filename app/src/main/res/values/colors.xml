@@ -2,11 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="green">#024b43</color>
+    <color name="green">#006F58</color>
     <color name="navyGreen">#0A1E1C</color>
     <color name="lightGreen">#168751</color>
     <color name="red">#D50000</color>
+    <color name="blue">#05374b</color>
+    <color name="lightBlue">#b1c9d1</color>
+    <color name="navyBlue">#1e4251</color>
     <color name="offWhite">#FAF9F6</color>
-    <color name="grey">#A6A6A6</color>
+    <color name="grey">#F6F6F6</color>
     <color name="darkGrey">#434343</color>
 </resources>

@@ -29,6 +29,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
             android:text="@string/category"
             android:textColor="@color/black" />
 
@@ -45,7 +46,9 @@
         android:id="@+id/spCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="2dp"
+        android:layout_marginVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
         android:spinnerMode="dialog"
         android:textColor="@color/black"
         android:visibility="visible" />
@@ -67,6 +70,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
             android:text="@string/inspection_type"
             android:textColor="@color/black" />
 
@@ -78,11 +82,14 @@
             android:textColor="@color/red"
             android:textStyle="bold" />
     </LinearLayout>
+
     <Spinner
         android:id="@+id/spInspectionType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="2dp"
+        android:layout_marginVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
         android:spinnerMode="dialog"
         android:textColor="@color/black"
         android:visibility="visible" />
@@ -105,6 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/site"
+            android:paddingHorizontal="8dp"
             android:textColor="@color/black" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -120,11 +128,12 @@
         android:id="@+id/spSite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="2dp"
+        android:layout_marginVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
         android:spinnerMode="dialog"
         android:textColor="@color/black"
-        android:visibility="visible"
-         />
+        android:visibility="visible" />
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider4"
@@ -142,6 +151,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/inspection_location"
+        android:paddingHorizontal="8dp"
         android:textColor="@color/black" />
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -152,11 +162,14 @@
             android:textStyle="bold" />
 
     </LinearLayout>
+
     <Spinner
         android:id="@+id/spInspectionLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="2dp"
+        android:layout_marginVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
         android:spinnerMode="dialog"
         android:textColor="@color/black"
         android:visibility="visible" />
@@ -178,6 +191,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/responsible_person"
+        android:paddingHorizontal="8dp"
         android:textColor="@color/black" />
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -192,7 +206,9 @@
         android:id="@+id/spResponsiblePerson"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="2dp"
+        android:layout_marginVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
         android:spinnerMode="dialog"
         android:textColor="@color/black"
         android:visibility="visible" />
@@ -209,6 +225,7 @@
         android:layout_height="wrap_content"
         android:text="@string/last_service_inspection_date"
         android:paddingVertical="2dp"
+        android:paddingHorizontal="8dp"
         android:layout_marginTop="8dp"
         android:textColor="@color/black" />
 
@@ -216,7 +233,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+
         android:orientation="horizontal">
 
         <com.google.android.material.textview.MaterialTextView
@@ -256,6 +276,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/reschedule"
+        android:paddingHorizontal="8dp"
         android:textColor="@color/black" />
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -269,6 +290,9 @@
         android:id="@+id/spReschedule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:layout_marginVertical="4dp"
         android:spinnerMode="dialog"
         android:textColor="@color/black"
         android:visibility="visible" />

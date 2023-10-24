@@ -1,8 +1,8 @@
 package com.jay.shermassignment.ui.dueDate
 
-import com.jay.shermassignment.model.duedateapproval.DueDateApprovalBody
-import com.jay.shermassignment.model.duedateapproval.DueDateAprrovalResponse
-import com.jay.shermassignment.model.duedaterequest.DueDateRequest
+import com.jay.shermassignment.response.duedateapproval.DueDateApprovalBody
+import com.jay.shermassignment.response.duedateapproval.DueDateAprrovalResponse
+import com.jay.shermassignment.response.duedaterequest.DueDateRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

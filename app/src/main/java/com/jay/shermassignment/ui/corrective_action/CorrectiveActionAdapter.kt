@@ -5,11 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
-import com.jay.shermassignment.model.correctiveaction.Row
+import com.jay.shermassignment.response.correctiveaction.Row
 
 class CorrectiveActionAdapter(
     private val context: Context,
@@ -26,7 +26,7 @@ class CorrectiveActionAdapter(
         private val assigner: MaterialTextView = itemView.findViewById(R.id.tvCorrectiveAssigner)
         private val inspectionName: MaterialTextView =
             itemView.findViewById(R.id.tvInspectionInCorrectiveActionName)
-        private val correctiveEvolution: MaterialButton =
+        private val correctiveEvolution: LinearLayout =
             itemView.findViewById(R.id.btCorrectiveEvolution)
 
         fun bind(row: Row) {

@@ -30,7 +30,7 @@
             android:layout_marginHorizontal="8dp"
             android:background="@drawable/calendar_view"
             android:padding="8dp"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
     </LinearLayout>
 
     <com.google.android.material.textview.MaterialTextView
@@ -41,22 +41,25 @@
         android:textColor="@color/black"
         android:textStyle="bold" />
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:paddingHorizontal="8dp"
+        android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:paddingVertical="2dp">
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_gravity="center_horizontal"
         android:text="@string/responsible_person"
         android:textColor="@color/black" />
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/star"
+            android:layout_gravity="center"
             android:layout_marginStart="4dp"
             android:textStyle="bold"
             android:textColor="@color/red" />
@@ -65,15 +68,19 @@
         android:id="@+id/spResponsiblePersonCA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:layout_marginVertical="4dp"
         android:spinnerMode="dialog"/>
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:paddingHorizontal="8dp"
         android:orientation="horizontal"
         android:paddingVertical="2dp">
     <com.google.android.material.textview.MaterialTextView
@@ -93,6 +100,9 @@
         android:id="@+id/spHierarchyOfControl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:layout_marginVertical="4dp"
         android:spinnerMode="dialog"/>
 
     <com.google.android.material.divider.MaterialDivider
@@ -100,15 +110,20 @@
         android:layout_height="wrap_content" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/due_date"
+        android:layout_marginTop="8dp"
+        android:paddingHorizontal="8dp"
         android:textColor="@color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:layout_marginVertical="4dp"
         android:gravity="center">
 
         <com.google.android.material.textview.MaterialTextView
@@ -129,9 +144,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:paddingHorizontal="8dp"
         android:orientation="horizontal"
         android:paddingVertical="2dp">
 
@@ -154,18 +170,26 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="start|top"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:layout_marginVertical="4dp"
         android:inputType="textMultiLine" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/status"
+        android:layout_marginTop="8dp"
+        android:paddingHorizontal="8dp"
         android:textColor="@color/black" />
 
     <Spinner
         android:id="@+id/spStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:layout_marginVertical="4dp"
         android:spinnerMode="dialog"/>
 
     <com.google.android.material.divider.MaterialDivider
@@ -173,15 +197,20 @@
         android:layout_height="wrap_content" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/follow_up"
+        android:layout_marginTop="8dp"
+        android:paddingHorizontal="8dp"
         android:textColor="@color/black" />
 
     <Spinner
         android:id="@+id/spFollowUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:layout_marginVertical="4dp"
         android:spinnerMode="dialog"/>
 
     <com.google.android.material.divider.MaterialDivider
@@ -192,12 +221,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/review_date"
+        android:layout_marginTop="8dp"
+        android:paddingHorizontal="8dp"
         android:textColor="@color/black" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvReviewDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:layout_marginVertical="4dp"
         android:textColor="@color/black" />
 
     <com.google.android.material.divider.MaterialDivider

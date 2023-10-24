@@ -13,11 +13,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jay.shermassignment.R
-import com.jay.shermassignment.model.correctiveaction.CorrectiveActionData
-import com.jay.shermassignment.model.correctiveaction.Row
+import com.jay.shermassignment.response.correctiveaction.CorrectiveActionData
+import com.jay.shermassignment.response.correctiveaction.Row
 import com.jay.shermassignment.ui.add_corrective_action.AddCorrectiveAction
 import com.jay.shermassignment.ui.corrective_action_details.CAViewActivity
-import com.jay.shermassignment.ui.correctiveevaluation.CorrectiveEvaluation
+import com.jay.shermassignment.ui.corrective_evaluation.CorrectiveEvaluation
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
 
@@ -111,6 +111,7 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
         val intent = Intent(this, CAViewActivity::class.java)
         val iId=intent.getIntExtra("ids",0)
         intent.putExtra("iId",iId)
+        intent.putExtra("cId",row.id)
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         intent.putExtra("correctiveActionId", id)
         startActivity(intent)

@@ -11,11 +11,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jay.shermassignment.R
-import com.jay.shermassignment.generic.BackCallBack
 import com.jay.shermassignment.generic.showToast
 import com.jay.shermassignment.generic.startActivityStart
-import com.jay.shermassignment.model.inspection.InspectionRef
-import com.jay.shermassignment.model.inspection.Row
+import com.jay.shermassignment.response.inspection.InspectionRef
+import com.jay.shermassignment.response.inspection.Row
 import com.jay.shermassignment.ui.inspectionDetailsUI.AddInspectionActivity
 import com.jay.shermassignment.ui.inspectionDetailsUI.ShowInspectionDetailsActivity
 import com.jay.shermassignment.utils.SessionManager
@@ -42,9 +41,9 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inspection)
         supportActionBar?.setTitle(R.string.inspections)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         initializeViews()
         setupRecyclerView()
-        setupBackButton()
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -140,12 +139,7 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
         }
     }
 
-    private fun setupBackButton() {
-        val onBackPressedCallback = BackCallBack {
-            finish()
-        }
-        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
-    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.ispection_menu, menu)
@@ -159,6 +153,10 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
                 startActivityStart<AddInspectionActivity>()
 
             }
+           android.R.id.home -> {
+               onBackPressed()
+               return true
+           }
         }
         return super.onOptionsItemSelected(item)
     }

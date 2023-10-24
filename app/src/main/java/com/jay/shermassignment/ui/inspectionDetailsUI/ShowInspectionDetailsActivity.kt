@@ -2,16 +2,16 @@ package com.jay.shermassignment.ui.inspectionDetailsUI
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
-import com.jay.shermassignment.generic.BackCallBack
 import com.jay.shermassignment.generic.showAlertDialog
+import com.jay.shermassignment.generic.showToast
 import com.jay.shermassignment.generic.startActivityStart
 import com.jay.shermassignment.ui.add_inspection_completed.AddInspectionCompleted
 import com.jay.shermassignment.ui.commentUI.Comment
@@ -32,7 +32,6 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
     private lateinit var responsiblePerson: MaterialTextView
     private lateinit var dueDate: MaterialTextView
     private lateinit var progressBar: ProgressBar
-
     private var inspectionId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,11 +39,13 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_show_inspection_details2)
         val id =intent.getStringExtra("inspectionId")
         supportActionBar?.title = id
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val iId = intent.getIntExtra("id", inspectionId)
         initializeViews()
         setupClickListeners()
         retrieveInstanceState(savedInstanceState)
         fetchData()
-        backBtListener()
+
     }
 
     override fun onResume() {
@@ -52,6 +53,14 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
         lifecycleScope.launch {
             fetchData()
         }
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+              finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun fetchData() {
@@ -89,12 +98,7 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
 
     }
 
-    private fun backBtListener() {
-        val onBackPressedCallback = BackCallBack {
-            finish()
-        }
-        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
-    }
+
 
     private fun initializeViews() {
         inspectionId = intent.getIntExtra("id", 0)
@@ -112,15 +116,18 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        val id=intent.getIntExtra("id",0)
+        val id = intent.getIntExtra("id", 0)
+        val intent = Intent(this, CorrectiveAction::class.java)
         correctiveAction.setOnClickListener {
             intent.putExtra("ids", id)
-            startActivityStart<CorrectiveAction>()
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION) }
+            startActivity(intent)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        }
         comment.setOnClickListener {
             intent.putExtra("ids", id)
             startActivityStart<Comment>()
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)}
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        }
         docUpload.setOnClickListener {
             showConfirmationDialog()
            }
@@ -150,9 +157,7 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
         outState.putString("reportingTo", reschedule.text.toString())
     }
 
-    private fun showToast(message: String?) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
+
 
     private fun showConfirmationDialog() {
         showAlertDialog(

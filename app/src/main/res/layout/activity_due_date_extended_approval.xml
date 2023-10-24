@@ -13,14 +13,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/preferred_date"
+        android:paddingHorizontal="8dp"
         android:textColor="@color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:layout_marginVertical="4dp"
         android:orientation="horizontal">
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvPreferredDateApproval"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -33,9 +39,10 @@
             android:background="@drawable/calender" />
     </LinearLayout>
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:paddingHorizontal="8dp"
         android:orientation="horizontal"
         android:paddingVertical="2dp">
 
@@ -59,6 +66,9 @@
         android:autofillHints=""
         android:background="@color/offWhite"
         android:ems="10"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="8dp"
+        android:layout_marginVertical="4dp"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:textColor="@color/black" />
@@ -66,6 +76,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton

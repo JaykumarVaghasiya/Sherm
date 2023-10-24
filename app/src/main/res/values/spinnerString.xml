@@ -92,6 +92,11 @@
         <item>UnAssigned</item>
     </string-array>
 
+    <string-array name="statusCE">
+        <item>Assigned</item>
+        <item>Closed</item>
+    </string-array>
+
     <string-array name="reschedule">
         <item>Yes</item>
         <item>No</item>

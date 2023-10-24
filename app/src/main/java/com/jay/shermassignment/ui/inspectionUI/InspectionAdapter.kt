@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
-import com.jay.shermassignment.model.inspection.Row
+import com.jay.shermassignment.response.inspection.Row
 
 class InspectionAdapter(
     private val context: Context,

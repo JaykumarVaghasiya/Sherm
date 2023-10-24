@@ -1,9 +1,9 @@
 package com.jay.shermassignment.ui.inspectionUI
 
 
-import com.jay.shermassignment.model.inspection.DeleteInspection
-import com.jay.shermassignment.model.inspection.InspectionRef
-import com.jay.shermassignment.model.inspection.InspectionResponse
+import com.jay.shermassignment.response.inspection.DeleteInspection
+import com.jay.shermassignment.response.inspection.InspectionRef
+import com.jay.shermassignment.response.inspection.InspectionResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
