@@ -1,6 +1,5 @@
 package com.jay.shermassignment.ui.commentUI
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -27,6 +26,7 @@ class Comment : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_comment)
         supportActionBar?.setTitle(R.string.inspection_comments)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         comment = findViewById(R.id.etInspectionComment)
     }
 
@@ -39,6 +39,7 @@ class Comment : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save -> saveComment()
+            android.R.id.home -> finish()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -66,8 +67,6 @@ class Comment : AppCompatActivity() {
                 showToast(getString(R.string.successfully_comment))
             }
         }
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         finish()
-
-        }
+    }
 }

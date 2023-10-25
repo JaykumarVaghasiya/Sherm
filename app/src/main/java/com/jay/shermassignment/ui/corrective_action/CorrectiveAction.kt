@@ -27,18 +27,23 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
     private lateinit var correctiveActionRecyclerView: RecyclerView
     private lateinit var correctiveActionAdapter: CorrectiveActionAdapter
     private lateinit var progressBar: ProgressBar
-
     private lateinit var authToken: String
+    private var inspectionId:Int =0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_corrective_action)
-        supportActionBar?.title = "${getString(R.string.corrective_action)}( )"
+        supportActionBar?.title = getString(R.string.corrective_action)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        inspectionId = intent.getIntExtra("ids", 1)
         setupViews()
         setupAdapter()
         setupListeners()
+
         authToken = SessionManager(this).fetchAuthToken().toString()
         loadCorrectiveAction(authToken)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -49,6 +54,7 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.add -> openAddCorrectiveActionView()
+            android.R.id.home -> finish()
         }
 
         return super.onOptionsItemSelected(item)
@@ -77,10 +83,11 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
     }
 
     private fun loadCorrectiveAction(authToken: String) {
+
         lifecycleScope.launch {
             try {
                 val correctiveActionResponse = CorrectiveActionInstance.api.getAllCorrectiveAction(
-                    CorrectiveActionData(2888, 1, "action", "asc", "Risk"),
+                    CorrectiveActionData(inspectionId, 1, "action", "asc", "Risk"),
                     "Bearer $authToken"
                 )
 
@@ -101,7 +108,6 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
         val intent = Intent(this, AddCorrectiveAction::class.java)
         val iId=intent.getIntExtra("ids",0)
         intent.putExtra("iId",iId)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         startActivity(intent)
 
     }
@@ -112,14 +118,12 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
         val iId=intent.getIntExtra("ids",0)
         intent.putExtra("iId",iId)
         intent.putExtra("cId",row.id)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         intent.putExtra("correctiveActionId", id)
         startActivity(intent)
     }
 
     override fun onCorrectiveEvaluationClick(row: Row) {
         val intent = Intent(this, CorrectiveEvaluation::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         val iId=intent.getIntExtra("ids",0)
         intent.putExtra("iId",iId)
         intent.putExtra("correctiveActionId", row.id)

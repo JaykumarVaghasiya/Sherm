@@ -3,7 +3,6 @@ package com.jay.shermassignment.response.addInspectionData
 data class addInspectionRef(
     val assignerId: Int,
     val dueDate: String,
-    val id: Any?,
     val inspectionLocation: String,
     val inspectionType: InspectionType,
     val reschedule: Boolean,

@@ -23,6 +23,7 @@ class CorrectiveEvaluation : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_correcitve_evalution)
         supportActionBar?.setTitle(R.string.corrective_evaluation)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         initializeView()
         spinnerValues()
     }
@@ -45,6 +46,9 @@ class CorrectiveEvaluation : AppCompatActivity() {
         when (item.itemId) {
             R.id.save -> {
                 saveCorrectiveEvaluation()
+            }
+            android.R.id.home ->{
+                finish()
             }
         }
         return super.onOptionsItemSelected(item)

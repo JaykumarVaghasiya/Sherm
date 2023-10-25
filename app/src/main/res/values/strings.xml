@@ -5,7 +5,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="button">Button</string>
-    <string name="login">Login</string>
+    <string name="login">LOGIN</string>
     <string name="sign_out">Sign out</string>
     <string name="logged_In">Logged In Successfully</string>
     <string name="request_valid_email_or_password">Please Enter valid Email and Password</string>
@@ -66,4 +66,8 @@
     <string name="add_inspection">Schedule Inspection</string>
     <string name="assign_ca">Assign CA</string>
     <string name="added">Successfully Added</string>
+    <string name="confirm">Confirm?</string>
+    <string name="document_are_uploaded">Document are uploaded?</string>
+    <string name="complted">Inspection completion added successfully</string>
+    <string name="sucess">Success</string>
 </resources>

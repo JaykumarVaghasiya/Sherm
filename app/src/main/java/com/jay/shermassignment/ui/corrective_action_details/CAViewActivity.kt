@@ -2,6 +2,7 @@ package com.jay.shermassignment.ui.corrective_action_details
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
@@ -36,6 +37,7 @@ class CAViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_caview)
         supportActionBar?.setTitle(R.string.add_inspection)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val authToken = SessionManager(this).fetchAuthToken()
         initializeViews()
@@ -65,6 +67,15 @@ class CAViewActivity : AppCompatActivity() {
         dueDateApproval.setOnClickListener { navigateToDueDateExtendedApproval() }
         dueDateButton.setOnClickListener { showDueDatePicker() }
     }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home ->{
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
     private fun navigateToDueDateExtendRequest() {
         val id = intent.getIntExtra("correctiveActionId", 1)

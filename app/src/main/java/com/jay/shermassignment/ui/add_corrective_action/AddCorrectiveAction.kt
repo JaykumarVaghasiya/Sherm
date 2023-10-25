@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
-import com.jay.shermassignment.generic.BackCallBack
 import com.jay.shermassignment.generic.setupSpinnerFromArray
 import com.jay.shermassignment.generic.showGenericDateDialog
 import com.jay.shermassignment.generic.showToast
@@ -41,12 +40,12 @@ class AddCorrectiveAction : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_assign_corrective_action)
         supportActionBar?.setTitle(R.string.assign_ca)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         inspectionScheduleId=intent.getIntExtra("ids",0)
         initializeViewId()
         spinnerValue()
         btClickListener()
         spinnerValue()
-        backBtListener()
     }
 
     private fun initializeViewId() {
@@ -69,12 +68,6 @@ class AddCorrectiveAction : AppCompatActivity() {
         setupSpinnerFromArray(statusSpinner, R.array.status)
     }
 
-    private fun backBtListener() {
-        val onBackPressedCallback = BackCallBack {
-            finish()
-        }
-        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
-    }
 
     private fun gatherData() {
 
@@ -100,7 +93,7 @@ class AddCorrectiveAction : AppCompatActivity() {
                 calendar.add(Calendar.MONTH, position + 1)
                 val dateAfterMonths = calendar.time
 
-                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val formattedDate = dateFormat.format(dateAfterMonths)
                 reviewDateTextView.text = formattedDate
             }
@@ -135,7 +128,7 @@ class AddCorrectiveAction : AppCompatActivity() {
             ) { selectedDate ->
                 selectedDueDate = selectedDate
                 val formattedDate =
-                    SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(selectedDate))
+                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(selectedDate))
                 dueDateTextView.text = formattedDate
                 calculateAndDisplayReviewDate(selectedDueDate)
             }
@@ -144,8 +137,7 @@ class AddCorrectiveAction : AppCompatActivity() {
 
     private fun calculateAndDisplayReviewDate(dueDate: Long) {
 
-        val formattedReviewDate = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(dueDate))
-
+        val formattedReviewDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(dueDate))
         reviewDateTextView.text = formattedReviewDate
 
     }
@@ -159,6 +151,10 @@ class AddCorrectiveAction : AppCompatActivity() {
         when (item.itemId) {
             R.id.save -> {
                 gatherData()
+                finish()
+            }
+            android.R.id.home ->{
+                finish()
             }
         }
         return super.onOptionsItemSelected(item)

@@ -139,8 +139,6 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
         }
     }
 
-
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.ispection_menu, menu)
         return true
@@ -149,13 +147,11 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.add -> {
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                startActivityStart<AddInspectionActivity>()
-
+              startActivityStart<AddInspectionActivity>()
             }
            android.R.id.home -> {
-               onBackPressed()
-               return true
+               finish()
+
            }
         }
         return super.onOptionsItemSelected(item)
@@ -187,7 +183,6 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener,
 
     override fun onInspectionClicked(row: Row) {
         val intent = Intent(this, ShowInspectionDetailsActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         intent.putExtra("inspectionId",row.inspectionId)
         intent.putExtra("id", row.id)
         startActivity(intent)

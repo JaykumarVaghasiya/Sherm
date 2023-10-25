@@ -12,4 +12,6 @@
     <string name="due_date_extended_apporval">Due Date Extend Review</string>
     <string name="add_inspection">Schedule Inspection</string>
     <string name="assign_ca">Assign CA</string>
+    <string name="complted">Inspection completion added successfully</string>
+    <string name="sucess">Success</string>
 </resources>

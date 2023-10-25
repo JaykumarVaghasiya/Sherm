@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
-import com.jay.shermassignment.generic.BackCallBack
 import com.jay.shermassignment.generic.showGenericDateDialog
 import com.jay.shermassignment.generic.showToast
 import com.jay.shermassignment.response.addInspectionData.InspectionCategoryMaster
@@ -43,10 +42,11 @@ class AddInspectionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_inspection_actitvtity)
         supportActionBar?.setTitle(R.string.add_inspections_completed)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         initializeView()
         spinnerValues()
         btClickListener()
-        backBtListener()
+
     }
     private fun initializeView() {
         categorySpinner = findViewById(R.id.spCategory)
@@ -62,23 +62,15 @@ class AddInspectionActivity : AppCompatActivity() {
     private fun btClickListener() {
         dateButton.setOnClickListener {
             showGenericDateDialog(
-                R.string.selectedDate.toString(),
+                getString(R.string.selectedDate),
                 System.currentTimeMillis(),
             ) { selectedDate ->
                 val formattedDate =
-                    SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(selectedDate))
+                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(selectedDate))
                 dueDate.text = formattedDate
             }
         }
     }
-
-    private fun backBtListener() {
-        val onBackPressedCallback = BackCallBack {
-            finish()
-        }
-        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
-    }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
@@ -90,6 +82,9 @@ class AddInspectionActivity : AppCompatActivity() {
         val id = item.itemId
         if (id == R.id.save) {
             saveInspectionData()
+            finish()
+        }
+        if (id == android.R.id.home) {
             finish()
         }
         return super.onOptionsItemSelected(item)
@@ -116,7 +111,6 @@ class AddInspectionActivity : AppCompatActivity() {
         val authToken = SessionManager(this).fetchAuthToken()
         val category = categorySpinner.selectedItem.toString()
         val inspectionType = inspectionTypeSpinner.selectedItem.toString()
-        val inspectionLocation = inspectionLocationSpinner.selectedItem.toString()
         val site = site.selectedItem.toString()
         val dueDate = dueDate.text.toString()
         val responsiblePerson = responsiblePersonSpinner.selectedItem.toString()
@@ -125,15 +119,14 @@ class AddInspectionActivity : AppCompatActivity() {
         val categoryValue = getCategoryValue(category)
         val inspectionTypeValue = getInspectionType(inspectionType)
         val responsiblePersonType = getResponsiblePerson(responsiblePerson)
-        val reScheduleValue = getRescheduleValue(reschedule)
+        getRescheduleValue(reschedule)
         val siteValue = getSiteValue(site)
         val assignerValue = getAssigner(responsiblePerson)
 
         val addInspection = addInspectionRef(
-            id = null,
             assignerId = responsiblePersonType,
-            reschedule = reScheduleValue!!,
-            inspectionLocation = inspectionLocation,
+            reschedule = true,
+            inspectionLocation = "Subaru Outback",
             inspectionType = InspectionType(inspectionTypeValue),
             workplaceInspection = WorkplaceInspection(
                 id = 3500,

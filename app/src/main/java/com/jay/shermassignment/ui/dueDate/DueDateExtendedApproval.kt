@@ -48,8 +48,7 @@ class DueDateExtendedApproval : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == android.R.id.home) {
-            onBackPressed()
-            return true
+           finish()
         }
         return super.onOptionsItemSelected(item)
     }

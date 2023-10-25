@@ -10,6 +10,8 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
 import com.jay.shermassignment.response.inspection.Row
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class InspectionAdapter(
     private val context: Context,
@@ -34,7 +36,11 @@ class InspectionAdapter(
         fun bind(row: Row) {
 
             inspectionId.text = row.inspectionId
-            dueDate.text = row.dueDate
+            val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val formattedDueDate = dateFormatter.parse(row.dueDate)
+            val formattedDueDateString = SimpleDateFormat("dd MMMM, yyyy", Locale.getDefault()).format(formattedDueDate!!)
+
+            dueDate.text = formattedDueDateString
             inspectionType.text = row.inspectionType
             inspectionLocation.text = row.inspectionLocation
             responsible.text = row.responsible
@@ -69,6 +75,7 @@ class InspectionAdapter(
     }
 
     fun submitInspectionList(newInspectionList: List<Row>){
+        inspectionList.clear()
         inspectionList.addAll(newInspectionList)
         Log.d("Debug", "newInspectionList size: ${newInspectionList.size}")
         notifyDataSetChanged()

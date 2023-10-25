@@ -2,12 +2,10 @@ package com.jay.shermassignment.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.showCustomDialog
 import com.jay.shermassignment.generic.showToast
@@ -24,21 +22,18 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var login: MaterialButton
     private lateinit var sessionManager: SessionManager
     private lateinit var retrofitInstance: RetrofitInstance
-    private lateinit var progressBar: CircularProgressIndicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         initializeViews()
-        progressBar.visibility = View.VISIBLE
         sessionManager = SessionManager(this)
         retrofitInstance = RetrofitInstance
-        progressBar.bringToFront()
         setupListeners()
     }
 
     private fun initializeViews() {
-        progressBar = findViewById(R.id.progressbar)
+
         emailEditText = findViewById(R.id.et_email)
         passwordEditText = findViewById(R.id.et_password)
         login = findViewById(R.id.bt_login)
@@ -59,13 +54,13 @@ class LoginActivity : AppCompatActivity() {
             val user = UserDetails(email, password)
             lifecycleScope.launch {
                 try {
-                    progressBar.visibility = View.VISIBLE
+
                     val response = UserDetailsInstance.api.getUserDetails(user)
                     if (response.isSuccessful && response.body() != null) {
                         val userResponse = response.body()
                         userResponse?.content?.token?.let { sessionManager.saveAuthToken(it) }
                         showToast( getString(R.string.login))
-                        progressBar.visibility = View.GONE
+
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                         startActivity(intent)
                         finish()
@@ -77,8 +72,6 @@ class LoginActivity : AppCompatActivity() {
                     showToast( e.message)
                 } catch (e: HttpException) {
                     showToast( e.message)
-                } finally {
-                    progressBar.visibility = View.GONE
                 }
             }
         }

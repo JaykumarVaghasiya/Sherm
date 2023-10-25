@@ -1,6 +1,5 @@
 package com.jay.shermassignment.ui.dueDate
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -59,7 +58,9 @@ class DueDateExtendRequest : AppCompatActivity() {
         val id = item.itemId
         if (id == R.id.save) {
             sendDueDateRequest()
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            finish()
+        }
+        if(id == android.R.id.home){
             finish()
         }
         return super.onOptionsItemSelected(item)

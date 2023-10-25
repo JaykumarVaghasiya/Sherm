@@ -20,17 +20,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:background="@color/white"
             android:padding="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="4dp">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tvCorrectiveStatus"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:paddingVertical="4dp"
                     android:layout_weight="1"
                     android:textColor="@color/black" />
 
@@ -38,6 +41,8 @@
                     android:id="@+id/tvCorrectiveDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingVertical="4dp"
                     android:layout_weight="1"
                     android:textColor="@color/black" />
             </LinearLayout>
@@ -51,26 +56,30 @@
                 android:id="@+id/tvCorrectiveAssign"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="2dp"
+                android:layout_marginTop="2dp"
+                android:paddingVertical="4dp"
                 android:textColor="@color/black" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvCorrectiveAssigner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="2dp"
+                android:layout_marginTop="2dp"
+                android:paddingVertical="4dp"
                 android:textColor="@color/black" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvInspectionInCorrectiveActionName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="2dp"
+                android:layout_marginTop="2dp"
+                android:paddingVertical="4dp"
                 android:textColor="@color/black" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:dividerColor="@color/black"
                 />
 
             <LinearLayout
