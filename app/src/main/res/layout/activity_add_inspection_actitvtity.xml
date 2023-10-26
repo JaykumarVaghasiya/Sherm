@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="8dp"
             android:text="@string/category"
-            android:textColor="@color/black" />
+            android:textColor="@color/darkGreen" />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -48,9 +48,11 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="4dp"
         android:paddingHorizontal="8dp"
+        android:entries="@array/category"
+        android:hapticFeedbackEnabled="true"
         android:paddingVertical="4dp"
         android:spinnerMode="dialog"
-        android:textColor="@color/black"
+        android:textColor="@color/darkGreen"
         android:visibility="visible" />
 
     <com.google.android.material.divider.MaterialDivider
@@ -72,7 +74,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="8dp"
             android:text="@string/inspection_type"
-            android:textColor="@color/black" />
+            android:textColor="@color/darkGreen" />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -90,8 +92,9 @@
         android:layout_marginVertical="4dp"
         android:paddingHorizontal="8dp"
         android:paddingVertical="4dp"
+        android:entries="@array/category_work_health_and_safety"
         android:spinnerMode="dialog"
-        android:textColor="@color/black"
+        android:textColor="@color/darkGreen"
         android:visibility="visible" />
 
     <com.google.android.material.divider.MaterialDivider
@@ -113,7 +116,7 @@
             android:layout_height="wrap_content"
             android:text="@string/site"
             android:paddingHorizontal="8dp"
-            android:textColor="@color/black" />
+            android:textColor="@color/darkGreen" />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -131,8 +134,9 @@
         android:layout_marginVertical="4dp"
         android:paddingHorizontal="8dp"
         android:paddingVertical="4dp"
+        android:entries="@array/site"
         android:spinnerMode="dialog"
-        android:textColor="@color/black"
+        android:textColor="@color/darkGreen"
         android:visibility="visible" />
 
     <com.google.android.material.divider.MaterialDivider
@@ -152,7 +156,7 @@
         android:layout_height="wrap_content"
         android:text="@string/inspection_location"
         android:paddingHorizontal="8dp"
-        android:textColor="@color/black" />
+        android:textColor="@color/darkGreen" />
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -169,9 +173,10 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="4dp"
         android:paddingHorizontal="8dp"
+        android:entries="@array/inspection_location"
         android:paddingVertical="4dp"
         android:spinnerMode="dialog"
-        android:textColor="@color/black"
+        android:textColor="@color/darkGreen"
         android:visibility="visible" />
 
     <com.google.android.material.divider.MaterialDivider
@@ -192,7 +197,7 @@
         android:layout_height="wrap_content"
         android:text="@string/responsible_person"
         android:paddingHorizontal="8dp"
-        android:textColor="@color/black" />
+        android:textColor="@color/darkGreen" />
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -208,9 +213,10 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="4dp"
         android:paddingHorizontal="8dp"
+        android:entries="@array/responsible_person"
         android:paddingVertical="4dp"
         android:spinnerMode="dialog"
-        android:textColor="@color/black"
+        android:textColor="@color/darkGreen"
         android:visibility="visible" />
 
     <com.google.android.material.divider.MaterialDivider
@@ -227,7 +233,7 @@
         android:paddingVertical="2dp"
         android:paddingHorizontal="8dp"
         android:layout_marginTop="8dp"
-        android:textColor="@color/black" />
+        android:textColor="@color/darkGreen" />
 
 
     <LinearLayout
@@ -245,7 +251,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="8"
             android:paddingVertical="2dp"
-            android:textColor="@color/black" />
+            android:textColor="@color/darkGreen" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btCalender"
@@ -254,7 +260,7 @@
             android:layout_weight="1"
             android:background="@drawable/calender"
             android:paddingVertical="2dp"
-            android:textColor="@color/black"
+            android:textColor="@color/darkGreen"
             android:visibility="visible" />
     </LinearLayout>
 
@@ -277,7 +283,7 @@
         android:layout_height="wrap_content"
         android:text="@string/reschedule"
         android:paddingHorizontal="8dp"
-        android:textColor="@color/black" />
+        android:textColor="@color/darkGreen" />
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -291,10 +297,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="4dp"
+        android:entries="@array/reschedule"
         android:paddingHorizontal="8dp"
         android:layout_marginVertical="4dp"
         android:spinnerMode="dialog"
-        android:textColor="@color/black"
+        android:textColor="@color/darkGreen"
         android:visibility="visible" />
 
     <com.google.android.material.divider.MaterialDivider

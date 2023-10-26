@@ -113,9 +113,8 @@ class AddCorrectiveAction : AppCompatActivity() {
             null,
             null,
             null,
-            responsiblePersonValue,
             reviewDateValue,
-            statusValue
+            responsiblePersonValue
         )
         saveCorrectiveAction(body)
     }

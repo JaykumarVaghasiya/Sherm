@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="category">
+        <item>Select Here…</item>
         <item>Environment</item>
         <item>Legal Compliance</item>
         <item>Quality</item>
@@ -8,18 +9,22 @@
     </string-array>
 
     <string-array name="category_environment">
+        <item>Select Here…</item>
         <item>Select</item>
     </string-array>
 
     <string-array name="category_legal_compliance">
+        <item>Select Here…</item>
         <item>Select</item>
     </string-array>
 
     <string-array name="category_quality">
+        <item>Select Here…</item>
         <item>Select</item>
     </string-array>
 
     <string-array name="category_work_health_and_safety">
+        <item>Select Here…</item>
         <item>Contractor Pre-Qualification Assessment</item>
         <item>Daily Pre-start Checklist Inspection(Inline)</item>
         <item>Electrical Test and Tag</item>
@@ -32,6 +37,7 @@
     </string-array>
 
     <string-array name="site">
+        <item>Select Here…</item>
         <item>Client Site</item>
         <item>Gladstone</item>
         <item>Offshore</item>
@@ -40,6 +46,7 @@
     </string-array>
 
     <string-array name="inspection_location">
+        <item>Select Here…</item>
         <item>Select</item>
         <item>Drill Rig</item>
         <item>Proplaster</item>
@@ -48,6 +55,7 @@
     </string-array>
 
     <string-array name="responsible_person">
+        <item>Select Here…</item>
         <item>Caroline Kingston</item>
         <item>Hitesh Gangadiya</item>
         <item>Marnie Cruickshank</item>
@@ -64,6 +72,7 @@
     </string-array>
 
     <string-array name="assignCA">
+        <item>Select Here…</item>
         <item>Elimination</item>
         <item>Substitution</item>
         <item>Engineering</item>
@@ -73,6 +82,8 @@
     </string-array>
 
     <string-array name="followUp">
+
+        <item>Select Here…</item>
         <item>1 Month</item>
         <item>2 Month</item>
         <item>3 Month</item>
@@ -88,20 +99,24 @@
     </string-array>
 
     <string-array name="status">
+        <item>Select Here…</item>
         <item>Assigned</item>
         <item>UnAssigned</item>
     </string-array>
 
     <string-array name="statusCE">
+        <item>Select Here…</item>
         <item>Assigned</item>
         <item>Closed</item>
     </string-array>
 
     <string-array name="reschedule">
+        <item>Select Here…</item>
         <item>Yes</item>
         <item>No</item>
     </string-array>
     <string-array name="hierarchyControl">
+        <item>Select Here…</item>
         <item>Elimination</item>
         <item>Substitution</item>
         <item>Engineering</item>

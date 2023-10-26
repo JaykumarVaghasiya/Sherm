@@ -1,6 +1,6 @@
 package com.jay.shermassignment.ui.inspectionDetailsUI
 
-import com.jay.shermassignment.response.addInspectionData.addInspectionRef
+import com.jay.shermassignment.response.addInspectionData.AddInspectionRef
 import com.jay.shermassignment.response.addinspection.AddInspectionResponse
 import com.jay.shermassignment.response.showInspection.ShowInspectionDetails
 import retrofit2.Response
@@ -15,6 +15,6 @@ interface ShowInspectionDetailsAPI {
     suspend fun getShowInspectionDetails(@Query ("id") id : Int , @Header("Authorization") authToken: String): Response<ShowInspectionDetails>
 
     @POST("/OHSClient/rest/v2/inspection/saveUpdateInspection.do")
-    suspend fun getAddInspectionData(@Body addInspectionBody:addInspectionRef, @Header("Authorization")authToken: String):Response<AddInspectionResponse>
+    suspend fun getAddInspectionData(@Body addInspectionBody:AddInspectionRef, @Header("Authorization")authToken: String):Response<AddInspectionResponse>
 
 }

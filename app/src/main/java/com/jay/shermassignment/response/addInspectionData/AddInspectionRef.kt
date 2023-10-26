@@ -1,6 +1,7 @@
 package com.jay.shermassignment.response.addInspectionData
 
-data class addInspectionRef(
+data class AddInspectionRef(
+    val id : Int?= null,
     val assignerId: Int,
     val dueDate: String,
     val inspectionLocation: String,

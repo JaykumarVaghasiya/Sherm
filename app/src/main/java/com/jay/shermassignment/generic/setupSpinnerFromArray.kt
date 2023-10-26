@@ -10,4 +10,9 @@ fun Activity.setupSpinnerFromArray(spinner: Spinner, arrayResId: Int) {
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = arrayAdapter
         }
+    val firstItem = spinner.getChildAt(0)
+    if (firstItem != null) {
+        firstItem.isEnabled = false
+        firstItem.isClickable = false
+    }
 }

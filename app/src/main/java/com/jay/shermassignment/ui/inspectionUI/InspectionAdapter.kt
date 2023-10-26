@@ -75,7 +75,7 @@ class InspectionAdapter(
     }
 
     fun submitInspectionList(newInspectionList: List<Row>){
-        inspectionList.clear()
+//        inspectionList.clear()
         inspectionList.addAll(newInspectionList)
         Log.d("Debug", "newInspectionList size: ${newInspectionList.size}")
         notifyDataSetChanged()

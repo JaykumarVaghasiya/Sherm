@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
@@ -11,14 +13,16 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
+import com.jay.shermassignment.api.inspection.SpinnerInstance
+import com.jay.shermassignment.generic.setupSpinnerFromArray
 import com.jay.shermassignment.generic.showGenericDateDialog
 import com.jay.shermassignment.generic.showToast
+import com.jay.shermassignment.response.addInspectionData.AddInspectionRef
 import com.jay.shermassignment.response.addInspectionData.InspectionCategoryMaster
 import com.jay.shermassignment.response.addInspectionData.InspectionType
 import com.jay.shermassignment.response.addInspectionData.ResponsiblePerson
 import com.jay.shermassignment.response.addInspectionData.Site
 import com.jay.shermassignment.response.addInspectionData.WorkplaceInspection
-import com.jay.shermassignment.response.addInspectionData.addInspectionRef
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -26,6 +30,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+
 
 class AddInspectionActivity : AppCompatActivity() {
 
@@ -37,14 +42,22 @@ class AddInspectionActivity : AppCompatActivity() {
     private lateinit var responsiblePersonSpinner: Spinner
     private lateinit var dueDate: MaterialTextView
     private lateinit var dateButton: MaterialButton
+    private var categoryId: Int = 0
+    private var inspectionTypeId: Int = 0
+    private var siteId: Int = 0
+    private var responsiblePersonId: Int = 0
+    private var inspectionId: Int = 0
+    private var authToken: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_inspection_actitvtity)
         supportActionBar?.setTitle(R.string.add_inspections_completed)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        authToken = "Bearer ${SessionManager(this).fetchAuthToken()}"
         initializeView()
         spinnerValues()
+        onViewClick()
         btClickListener()
 
     }
@@ -89,22 +102,28 @@ class AddInspectionActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
-    private fun setupSpinnerFromArray(spinner: Spinner, arrayResId: Int) {
-        ArrayAdapter.createFromResource(this, arrayResId, android.R.layout.simple_spinner_item)
-            .also { arrayAdapter ->
-                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spinner.adapter = arrayAdapter
+    private fun onViewClick(){
+        categorySpinner.onItemSelectedListener =
+        object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                getInspectionType()
             }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+        }
     }
+
 
     private fun spinnerValues() {
         setupSpinnerFromArray(categorySpinner, R.array.category)
-        setupSpinnerFromArray(inspectionTypeSpinner, R.array.category_work_health_and_safety)
-        setupSpinnerFromArray(site, R.array.site)
-        setupSpinnerFromArray(inspectionLocationSpinner, R.array.inspection_location)
-        setupSpinnerFromArray(reschedule, R.array.reschedule)
-        setupSpinnerFromArray(responsiblePersonSpinner, R.array.responsible_person)
+
     }
 
     private fun saveInspectionData() {
@@ -116,21 +135,20 @@ class AddInspectionActivity : AppCompatActivity() {
         val responsiblePerson = responsiblePersonSpinner.selectedItem.toString()
         val reschedule = reschedule.selectedItem.toString()
 
-        val categoryValue = getCategoryValue(category)
-        val inspectionTypeValue = getInspectionType(inspectionType)
+        categoryId = getCategoryValue(category)
         val responsiblePersonType = getResponsiblePerson(responsiblePerson)
         getRescheduleValue(reschedule)
         val siteValue = getSiteValue(site)
         val assignerValue = getAssigner(responsiblePerson)
 
-        val addInspection = addInspectionRef(
+        val addInspection = AddInspectionRef(
             assignerId = responsiblePersonType,
             reschedule = true,
             inspectionLocation = "Subaru Outback",
-            inspectionType = InspectionType(inspectionTypeValue),
+            inspectionType = InspectionType(inspectionId),
             workplaceInspection = WorkplaceInspection(
                 id = 3500,
-                inspectionCategoryMaster = InspectionCategoryMaster(categoryValue),
+                inspectionCategoryMaster = InspectionCategoryMaster(categoryId),
                 site = Site(siteValue)
             ),
             responsiblePerson = ResponsiblePerson(assignerValue),
@@ -163,21 +181,64 @@ class AddInspectionActivity : AppCompatActivity() {
         }
     }
 
-    private fun getCategoryValue(categorySpinner: String): Int{
+    private fun getCategoryValue(categorySpinner: String): Int {
         return when (categorySpinner) {
             "Work Health and Safety" -> 10
             else -> 0
         }
     }
 
-    private fun getInspectionType(inspectionTypeSpinner: String): Int {
-        return when (inspectionTypeSpinner) {
-            "Vehicle Pre-Start" -> 425
-            "Daily Pre-Start Checklist Inspection(Inline)" -> 626
-            "Site Workplace Inspection" -> 655
-            "Take 5" -> 607
-            else -> 0
+    private fun getInspectionType() {
+        lifecycleScope.launch {
+            categoryId=getCategoryValue(categorySpinner.selectedItem.toString())
+            val inspectionTypeResponse = try {
+                SpinnerInstance.api.getInspectionTypeFromCategory(categoryId, authToken)
+            } catch (e: Exception) {
+                showToast(e.message)
+                return@launch
+            } catch (e: HttpException) {
+                showToast(e.message)
+                return@launch
+            } catch (e: IOException) {
+                showToast(e.message)
+                return@launch
+            }
+            if (inspectionTypeResponse.isSuccessful && inspectionTypeResponse.body() != null) {
+                val body = inspectionTypeResponse.body()
+
+                val inspectionNames = body?.content?.map { inspection ->
+                    inspection.name
+                }
+                val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                    this@AddInspectionActivity,
+                    android.R.layout.simple_spinner_item,
+                    inspectionNames ?: emptyList()
+                )
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                inspectionTypeSpinner.adapter = adapter
+                inspectionTypeSpinner.onItemSelectedListener =
+                    object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View?,
+                            position: Int,
+                            id: Long
+                        ) {
+
+                            inspectionTypeId = body?.content?.get(position)?.id ?: 0
+                            showToast("{$inspectionTypeId}")
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                        }
+                    }
+
+            }
+
         }
+
+
     }
 
     private fun getSiteValue(siteSpinner: String): Int {

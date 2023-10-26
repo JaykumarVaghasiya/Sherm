@@ -30,6 +30,7 @@ class LoginActivity : AppCompatActivity() {
         sessionManager = SessionManager(this)
         retrofitInstance = RetrofitInstance
         setupListeners()
+
     }
 
     private fun initializeViews() {
@@ -46,7 +47,6 @@ class LoginActivity : AppCompatActivity() {
     private fun loginUser() {
         val email = emailEditText.text.toString()
         val password = passwordEditText.text.toString()
-        val intent = Intent(this, MainActivity::class.java)
 
         if (email.isEmpty() && password.isEmpty()) {
             showEmptyDialog()
@@ -60,10 +60,7 @@ class LoginActivity : AppCompatActivity() {
                         val userResponse = response.body()
                         userResponse?.content?.token?.let { sessionManager.saveAuthToken(it) }
                         showToast( getString(R.string.login))
-
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                        startActivity(intent)
-                        finish()
+                        startMainActivity()
                     }
                     else {
                         showErrorDialog()
@@ -89,5 +86,10 @@ class LoginActivity : AppCompatActivity() {
             R.string.empty_credentials,
             R.string.request_email_or_password
         )
+    }
+    private fun startMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

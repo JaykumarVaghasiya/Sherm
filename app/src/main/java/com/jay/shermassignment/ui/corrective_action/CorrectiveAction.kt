@@ -87,7 +87,7 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
         lifecycleScope.launch {
             try {
                 val correctiveActionResponse = CorrectiveActionInstance.api.getAllCorrectiveAction(
-                    CorrectiveActionData(inspectionId, 1, "action", "asc", "Risk"),
+                    CorrectiveActionData(inspectionId, 1, "action", "asc", "Inspection"),
                     "Bearer $authToken"
                 )
 

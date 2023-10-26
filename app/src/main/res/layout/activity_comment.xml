@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="@string/inspection_comments"
-            android:textColor="@color/black" />
+            android:textColor="@color/darkGreen" />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
@@ -37,6 +37,6 @@
         android:inputType="textMultiLine"
         android:layout_marginTop="8dp"
         android:padding="8dp"
-        android:textColor="@color/black" />
+        android:textColor="@color/darkGreen" />
 
 </LinearLayout>

@@ -12,7 +12,6 @@ import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.startActivityStart
 import com.jay.shermassignment.response.dashboard.Dashboard
 import com.jay.shermassignment.ui.inspectionUI.Inspection
-import com.jay.shermassignment.ui.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -64,8 +63,6 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.signOut -> {
-                startActivityStart<LoginActivity>()
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 Toast.makeText(this, R.string.sign_out, Toast.LENGTH_SHORT).show()
                 finish()
                 return true

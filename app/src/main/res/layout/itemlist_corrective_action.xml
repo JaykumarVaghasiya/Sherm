@@ -35,7 +35,7 @@
                     android:layout_height="match_parent"
                     android:paddingVertical="4dp"
                     android:layout_weight="1"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/darkGreen" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tvCorrectiveDate"
@@ -44,7 +44,7 @@
                     android:gravity="end"
                     android:paddingVertical="4dp"
                     android:layout_weight="1"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/darkGreen" />
             </LinearLayout>
 
             <com.google.android.material.divider.MaterialDivider
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:paddingVertical="4dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/darkGreen" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvCorrectiveAssigner"
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:paddingVertical="4dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/darkGreen" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvInspectionInCorrectiveActionName"
@@ -74,12 +74,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:paddingVertical="4dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/darkGreen" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:dividerColor="@color/black"
+                app:dividerColor="@color/darkGreen"
                 />
 
             <LinearLayout

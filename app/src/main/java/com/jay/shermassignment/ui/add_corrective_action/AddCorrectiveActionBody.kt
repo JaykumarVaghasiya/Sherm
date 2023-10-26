@@ -5,11 +5,10 @@ data class AddCorrectiveActionBody(
     val dueDate: String,
     val hazardId: Int,
     val hierarchyOfControl: HierarchyOfControl,
-    val id: Int,
     val incidentId: Any?,
     val inspectionScheduleId: Any?,
     val issueId: Any?,
-    val responsibleId: Int,
+    val responsibleId: Int?,
     val reviewDate: String,
-    val status: Int
+    val status: Int = 1
 )
