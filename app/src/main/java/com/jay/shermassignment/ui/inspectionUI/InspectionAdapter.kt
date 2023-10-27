@@ -68,6 +68,7 @@ class InspectionAdapter(
         holder.itemView.setOnClickListener {
             inspectionListener.onInspectionClicked(inspectionList[position])
         }
+
     }
 
     override fun getItemCount(): Int {

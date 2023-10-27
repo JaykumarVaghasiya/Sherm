@@ -15,6 +15,6 @@ interface ShowInspectionDetailsAPI {
     suspend fun getShowInspectionDetails(@Query ("id") id : Int , @Header("Authorization") authToken: String): Response<ShowInspectionDetails>
 
     @POST("/OHSClient/rest/v2/inspection/saveUpdateInspection.do")
-    suspend fun getAddInspectionData(@Body addInspectionBody:AddInspectionRef, @Header("Authorization")authToken: String):Response<AddInspectionResponse>
+    suspend fun getAddInspectionData(@Body addInspectionBody:AddInspectionRef, @Header("Authorization") authToken: String):Response<AddInspectionResponse>
 
 }

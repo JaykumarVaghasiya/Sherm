@@ -1,6 +1,7 @@
 package com.jay.shermassignment.ui.inspectionDetailsUI
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -10,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
@@ -42,24 +44,23 @@ class AddInspectionActivity : AppCompatActivity() {
     private lateinit var responsiblePersonSpinner: Spinner
     private lateinit var dueDate: MaterialTextView
     private lateinit var dateButton: MaterialButton
+    private lateinit var loading: LottieAnimationView
     private var categoryId: Int = 0
     private var inspectionTypeId: Int = 0
     private var siteId: Int = 0
     private var responsiblePersonId: Int = 0
     private var inspectionId: Int = 0
-    private var authToken: String = ""
+    private var inspectionLocationName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_inspection_actitvtity)
-        supportActionBar?.setTitle(R.string.add_inspections_completed)
+        supportActionBar?.setTitle(R.string.schedule_inspection)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        authToken = "Bearer ${SessionManager(this).fetchAuthToken()}"
         initializeView()
         spinnerValues()
         onViewClick()
         btClickListener()
-
     }
     private fun initializeView() {
         categorySpinner = findViewById(R.id.spCategory)
@@ -70,6 +71,9 @@ class AddInspectionActivity : AppCompatActivity() {
         dueDate = findViewById(R.id.tvDueDate)
         dateButton = findViewById(R.id.btCalender)
         reschedule = findViewById(R.id.spReschedule)
+        loading = findViewById(R.id.pbLoading)
+        loading.bringToFront()
+        loading.visibility = View.GONE
     }
 
     private fun btClickListener() {
@@ -85,101 +89,45 @@ class AddInspectionActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.save_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        if (id == R.id.save) {
-            saveInspectionData()
-            finish()
-        }
-        if (id == android.R.id.home) {
-            finish()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-    private fun onViewClick(){
+    private fun onViewClick() {
         categorySpinner.onItemSelectedListener =
-        object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                getInspectionType()
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    getInspectionType()
+                    getInspectionLocation()
+                    onInspectionType()
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+
+                }
+            }
+        inspectionTypeSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    getInspectionLocation()
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+
+                }
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
-        }
     }
-
-
     private fun spinnerValues() {
         setupSpinnerFromArray(categorySpinner, R.array.category)
-
     }
 
-    private fun saveInspectionData() {
-        val authToken = SessionManager(this).fetchAuthToken()
-        val category = categorySpinner.selectedItem.toString()
-        val inspectionType = inspectionTypeSpinner.selectedItem.toString()
-        val site = site.selectedItem.toString()
-        val dueDate = dueDate.text.toString()
-        val responsiblePerson = responsiblePersonSpinner.selectedItem.toString()
-        val reschedule = reschedule.selectedItem.toString()
-
-        categoryId = getCategoryValue(category)
-        val responsiblePersonType = getResponsiblePerson(responsiblePerson)
-        getRescheduleValue(reschedule)
-        val siteValue = getSiteValue(site)
-        val assignerValue = getAssigner(responsiblePerson)
-
-        val addInspection = AddInspectionRef(
-            assignerId = responsiblePersonType,
-            reschedule = true,
-            inspectionLocation = "Subaru Outback",
-            inspectionType = InspectionType(inspectionId),
-            workplaceInspection = WorkplaceInspection(
-                id = 3500,
-                inspectionCategoryMaster = InspectionCategoryMaster(categoryId),
-                site = Site(siteValue)
-            ),
-            responsiblePerson = ResponsiblePerson(assignerValue),
-            dueDate = dueDate
-        )
-
-
-        lifecycleScope.launch {
-            val addInspectionResponse = try {
-                ShowInspectionDetailsInstance.api.getAddInspectionData(
-                    addInspection,
-                    "Bearer $authToken"
-                )
-            } catch (e: Exception) {
-                showToast( e.message)
-                return@launch
-            } catch (e: HttpException) {
-                showToast( e.message)
-                return@launch
-            } catch (e: IOException) {
-                showToast( e.message)
-                return@launch
-            }
-            if (addInspectionResponse.isSuccessful && addInspectionResponse.body() != null) {
-                showToast( getString(R.string.save))
-                finish()
-            } else {
-                showToast( getString(R.string.failed_to_save))
-            }
-        }
-    }
 
     private fun getCategoryValue(categorySpinner: String): Int {
         return when (categorySpinner) {
@@ -189,10 +137,11 @@ class AddInspectionActivity : AppCompatActivity() {
     }
 
     private fun getInspectionType() {
+        val authToken = SessionManager(this).fetchAuthToken()
         lifecycleScope.launch {
             categoryId=getCategoryValue(categorySpinner.selectedItem.toString())
             val inspectionTypeResponse = try {
-                SpinnerInstance.api.getInspectionTypeFromCategory(categoryId, authToken)
+                SpinnerInstance.api.getInspectionTypeFromCategory(categoryId, "Bearer $authToken")
             } catch (e: Exception) {
                 showToast(e.message)
                 return@launch
@@ -224,7 +173,6 @@ class AddInspectionActivity : AppCompatActivity() {
                             position: Int,
                             id: Long
                         ) {
-
                             inspectionTypeId = body?.content?.get(position)?.id ?: 0
                             showToast("{$inspectionTypeId}")
                         }
@@ -234,11 +182,30 @@ class AddInspectionActivity : AppCompatActivity() {
                         }
                     }
 
+            } else {
+                showToast("Avengers Assemble ")
             }
 
         }
 
 
+    }
+
+    private fun onInspectionType() {
+        site.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                getInspectionLocation()
+                getResponsiblePerson()
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
     }
 
     private fun getSiteValue(siteSpinner: String): Int {
@@ -249,23 +216,114 @@ class AddInspectionActivity : AppCompatActivity() {
         }
     }
 
-    private fun getResponsiblePerson(responsibleSpinner: String): Int {
-        return when (responsibleSpinner) {
-            "Caroline Kingston" -> 1
-            "Test Supervisor" -> 2
-            "Test Manager" -> 3
-            "Test Employee" -> 248
-            else -> 0
+
+    private fun getInspectionLocation() {
+        val authToken = SessionManager(this).fetchAuthToken()
+
+        lifecycleScope.launch {
+            categoryId = getCategoryValue(categorySpinner.selectedItem.toString())
+            siteId = getSiteValue(site.selectedItem.toString())
+            Log.d("Marvel", "{$inspectionTypeId}")
+            val inspectionLocationResponse = try {
+                SpinnerInstance.api.getLocationFromCatInsTypeSite(
+                    categoryId,
+                    siteId,
+                    inspectionTypeId,
+                    "Bearer $authToken"
+                )
+            } catch (e: Exception) {
+                showToast(e.message)
+                return@launch
+            } catch (e: HttpException) {
+                showToast(e.message)
+                return@launch
+            } catch (e: IOException) {
+                showToast(e.message)
+                return@launch
+            }
+            if (inspectionLocationResponse.isSuccessful && inspectionLocationResponse.body() != null) {
+                val body = inspectionLocationResponse.body()
+
+                val inspectionLocation = body?.content?.map { location ->
+                    location.inspectionLocation
+                }
+                val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                    this@AddInspectionActivity,
+                    android.R.layout.simple_spinner_item,
+                    inspectionLocation ?: emptyList()
+                )
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                inspectionLocationSpinner.adapter = adapter
+                inspectionLocationSpinner.onItemSelectedListener =
+                    object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View?,
+                            position: Int,
+                            id: Long
+                        ) {
+                            inspectionLocationName =
+                                body?.content?.get(position)?.inspectionLocation ?: ""
+                            showToast("{$inspectionLocationName}")
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
+                        }
+                    }
+            } else {
+                showToast("Fir se Likh code")
+            }
         }
     }
 
-    private fun getAssigner(responsibleSpinner: String): Int {
-        return when (responsibleSpinner) {
-            "Caroline Kingston" -> 1
-            "Test Supervisor" -> 2
-            "Test Manager" -> 3
-            "Test Employee" -> 248
-            else -> 0
+    private fun getResponsiblePerson() {
+        val authToken = SessionManager(this).fetchAuthToken()
+        lifecycleScope.launch {
+            val responsiblePersonResponse = try {
+                SpinnerInstance.api.getResponsiblePersonBySite(siteId, "Bearer $authToken")
+            } catch (e: Exception) {
+                showToast(e.message)
+                return@launch
+            } catch (e: HttpException) {
+                showToast(e.message)
+                return@launch
+            } catch (e: IOException) {
+                showToast(e.message)
+                return@launch
+            }
+            if (responsiblePersonResponse.isSuccessful && responsiblePersonResponse.body() != null) {
+                val body = responsiblePersonResponse.body()
+
+                val inspectionNames = body?.content?.map {
+                    it.fullName
+                }
+                val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                    this@AddInspectionActivity,
+                    android.R.layout.simple_spinner_item,
+                    inspectionNames ?: emptyList()
+                )
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                responsiblePersonSpinner.adapter = adapter
+                responsiblePersonSpinner.onItemSelectedListener =
+                    object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View?,
+                            position: Int,
+                            id: Long
+                        ) {
+                            responsiblePersonId = body?.content?.get(position)?.id ?: 0
+                            showToast("{$responsiblePersonId}")
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
+                        }
+                    }
+
+            } else {
+                showToast("Avengers Assemble ")
+            }
+
         }
     }
 
@@ -274,6 +332,70 @@ class AddInspectionActivity : AppCompatActivity() {
             "Yes" -> true
             "No" -> false
             else -> null
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.save_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (id == R.id.save) {
+            saveInspectionData()
+        }
+        if (id == android.R.id.home) {
+            finish()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
+    private fun saveInspectionData() {
+        val authToken = SessionManager(this).fetchAuthToken()
+        val category = categorySpinner.selectedItem.toString()
+        val dueDate = dueDate.text.toString()
+        val reschedule = reschedule.selectedItem.toString()
+        categoryId = getCategoryValue(category)
+        getRescheduleValue(reschedule)
+
+        val addInspection = AddInspectionRef(
+            assignerId = responsiblePersonId,
+            reschedule = true,
+            inspectionLocation = inspectionLocationName,
+            inspectionType = InspectionType(inspectionTypeId),
+            workplaceInspection = WorkplaceInspection(
+                id = 3500,
+                inspectionCategoryMaster = InspectionCategoryMaster(categoryId),
+                site = Site(siteId)
+            ),
+            responsiblePerson = ResponsiblePerson(responsiblePersonId),
+            dueDate = dueDate
+        )
+        lifecycleScope.launch {
+            val addInspectionResponse = try {
+                ShowInspectionDetailsInstance.api.getAddInspectionData(
+                    addInspection,
+                    "Bearer $authToken"
+                )
+            } catch (e: Exception) {
+                showToast(e.message)
+                return@launch
+            } catch (e: HttpException) {
+                showToast(e.message)
+                return@launch
+            } catch (e: IOException) {
+                showToast(e.message)
+                return@launch
+            }
+            if (addInspectionResponse.isSuccessful && addInspectionResponse.body() != null) {
+                showToast(getString(R.string.save))
+                finish()
+            } else {
+                showToast(getString(R.string.failed_to_save))
+            }
         }
     }
 }

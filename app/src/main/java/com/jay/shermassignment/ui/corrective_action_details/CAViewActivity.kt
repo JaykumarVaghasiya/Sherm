@@ -100,7 +100,7 @@ class CAViewActivity : AppCompatActivity() {
 
         if (cAViewResponse.isSuccessful && cAViewResponse.body() != null) {
             val cAViewBody = cAViewResponse.body()!!.content
-            setupSpinnerWithArray(caResponsiblePersonSpinner, R.array.responsible_person, cAViewBody.responsiblePersonName)
+//            setupSpinnerWithArray(caResponsiblePersonSpinner, R.array.responsible_person, cAViewBody.responsiblePersonName)
             setupSpinnerWithArray(hierarchyOfControlSpinner, R.array.assignCA, cAViewBody.hierarchyOfControl.value)
             setupSpinnerWithArray(statusSpinner, R.array.status, cAViewBody.status.toString())
             setupSpinnerWithArray(followUpSpinner, R.array.followUp,

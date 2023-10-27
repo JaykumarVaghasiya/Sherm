@@ -62,7 +62,7 @@ class AddCorrectiveAction : AppCompatActivity() {
 
     private fun spinnerValue() {
 
-        setupSpinnerFromArray(responsiblePersonSpinner, R.array.responsible_person)
+//        setupSpinnerFromArray(responsiblePersonSpinner, R.array.responsible_person)
         setupSpinnerFromArray(hierarchyOfControlSpinner, R.array.hierarchyControl)
         setupSpinnerFromArray(followUpSpinner, R.array.followUp)
         setupSpinnerFromArray(statusSpinner, R.array.status)

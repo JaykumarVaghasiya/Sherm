@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@color/offWhite"
     tools:context=".ui.inspectionUI.Inspection">
 
@@ -11,8 +12,8 @@
         android:id="@+id/rvInspection"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/white"
-        android:backgroundTint="@color/white"
+        android:scrollbars="vertical"
+        android:background="@color/offWhite"
         app:layout_constraintBottom_toTopOf="@+id/pbPagination"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,11 +21,15 @@
         tools:listitem="@layout/itemlist_inspection" />
 
 
-    <ProgressBar
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_gravity="center"
+        app:lottie_url="REPLACE_JSON_URL"
+        app:lottie_rawRes="@raw/animation_lo87ylip"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
         android:visibility="gone"
         android:progressBackgroundTint="@color/lightGreen"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -32,11 +37,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/rvInspection" />
 
-    <ProgressBar
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/pbPagination"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:lottie_url="REPLACE_JSON_URL"
+        app:lottie_rawRes="@raw/animation_lo87ylip"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

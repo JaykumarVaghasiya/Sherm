@@ -43,7 +43,7 @@
     <string name="comments">Comments </string>
     <string name="reject">REJECT</string>
     <string name="approve">APPROVE</string>
-    <string name="schedule_inspection">SCHEDULE INSPECTION</string>
+    <string name="schedule_inspection">Schedule Inspection</string>
     <string name="last_service_inspection_date">Last Service Inspection Date</string>
     <string name="add_corrective_action">Add Corrective Action</string>
     <string name="completeddate">Completed Date</string>

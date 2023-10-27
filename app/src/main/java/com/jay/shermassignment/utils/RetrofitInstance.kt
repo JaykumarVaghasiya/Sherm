@@ -1,8 +1,6 @@
 package com.jay.shermassignment.utils
 
-import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
-import okhttp3.Protocol
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -17,11 +15,11 @@ object RetrofitInstance {
 
     private val client: OkHttpClient? = OkHttpClient.Builder().apply {
         this.addInterceptor(interceptor)
-            .callTimeout(3, TimeUnit.SECONDS)
-            .readTimeout(20, TimeUnit.SECONDS)
-            .writeTimeout(25, TimeUnit.SECONDS)
-            .connectionPool(ConnectionPool(0, 1, TimeUnit.NANOSECONDS))
-            .protocols(listOf(Protocol.HTTP_1_1))
+            .callTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .retryOnConnectionFailure(true)
+
 
     }.build()
 

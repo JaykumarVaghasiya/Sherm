@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.showToast
 import com.jay.shermassignment.generic.startActivityStart
@@ -26,8 +26,8 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var inspectionAdapter: InspectionAdapter
-    private lateinit var progressBar: ProgressBar
-    private lateinit var progressBarPagination: ProgressBar
+    private lateinit var progressBar: LottieAnimationView
+    private lateinit var progressBarPagination: LottieAnimationView
 
     private val visibleThreshold = 1
     private var isLoading = false
@@ -43,6 +43,7 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
         initializeViews()
         setupRecyclerView()
 
+
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -56,14 +57,16 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
                 }
             }
         })
-       loadNextPage()
         sortData()
     }
 
     private fun initializeViews() {
         progressBar = findViewById(R.id.progressBar)
         recyclerView = findViewById(R.id.rvInspection)
+        recyclerView.overScrollMode = View.OVER_SCROLL_ALWAYS
         progressBarPagination = findViewById(R.id.pbPagination)
+        progressBar.visibility = View.VISIBLE
+        progressBarPagination.visibility = View.GONE
     }
 
     private fun setupRecyclerView() {
@@ -71,6 +74,7 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
         val inspectionLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = inspectionLayoutManager
         recyclerView.adapter = inspectionAdapter
+
     }
 
     private fun sortData() {
@@ -85,7 +89,15 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
         val authToken = SessionManager(this).fetchAuthToken()
         isLoading = true
 
-        progressBarPagination.visibility = View.VISIBLE
+        if (currentPage == 0) {
+
+            progressBar.visibility = View.VISIBLE
+            progressBarPagination.visibility = View.GONE
+        } else {
+
+            progressBar.visibility = View.GONE
+            progressBarPagination.visibility = View.VISIBLE
+        }
         currentPage++
 
         lifecycleScope.launch {
@@ -123,12 +135,14 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
             } finally {
                 isLoading = false
                 progressBarPagination.visibility = View.GONE
+                progressBar.visibility = View.GONE
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
+        loadNextPage()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
