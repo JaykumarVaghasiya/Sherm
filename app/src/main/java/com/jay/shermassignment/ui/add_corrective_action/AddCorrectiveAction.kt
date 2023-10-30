@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
+import com.jay.shermassignment.api.inspection.SpinnerInstance
 import com.jay.shermassignment.generic.setupSpinnerFromArray
 import com.jay.shermassignment.generic.showGenericDateDialog
 import com.jay.shermassignment.generic.showToast
@@ -34,6 +36,7 @@ class AddCorrectiveAction : AppCompatActivity() {
     private lateinit var correctiveActionMultilineEditText: EditText
     private lateinit var followUpSpinner: Spinner
     private lateinit var reviewDateTextView: MaterialTextView
+    private var responsibleId: Int = 0
     private var inspectionScheduleId: Int = 0
     private var selectedDueDate: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,12 +44,66 @@ class AddCorrectiveAction : AppCompatActivity() {
         setContentView(R.layout.activity_assign_corrective_action)
         supportActionBar?.setTitle(R.string.assign_ca)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        inspectionScheduleId=intent.getIntExtra("ids",0)
         initializeViewId()
         spinnerValue()
+        getAllResponsiblePerson()
         btClickListener()
         spinnerValue()
     }
+
+    private fun getAllResponsiblePerson() {
+
+        val authToken = SessionManager(this).fetchAuthToken()
+        lifecycleScope.launch {
+            val responsiblePerson = try {
+                SpinnerInstance.api.getAlLResponsiblePerson("Bearer $authToken")
+            } catch (e: Exception) {
+                showToast(e.message)
+                return@launch
+            } catch (e: HttpException) {
+                showToast(e.message)
+                return@launch
+            } catch (e: IOException) {
+                showToast(e.message)
+                return@launch
+            }
+
+            if (responsiblePerson.isSuccessful && responsiblePerson.body() != null) {
+                val body = responsiblePerson.body()
+
+                val responsiblePersonName = body?.content?.map { reportingTo ->
+                    reportingTo.fullName
+                }
+                val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                    this@AddCorrectiveAction,
+                    android.R.layout.simple_spinner_item,
+                    responsiblePersonName ?: emptyList()
+                )
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                responsiblePersonSpinner.adapter = adapter
+                responsiblePersonSpinner.onItemSelectedListener =
+                    object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View?,
+                            position: Int,
+                            id: Long
+                        ) {
+                            responsibleId = body?.content?.get(position)?.id ?: 0
+                            showToast("{$responsibleId}")
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                        }
+                    }
+
+            } else {
+                showToast("Avengers Assemble ")
+            }
+        }
+    }
+
 
     private fun initializeViewId() {
         responsiblePersonSpinner = findViewById(R.id.spResponsiblePersonAddCA)
@@ -61,8 +118,6 @@ class AddCorrectiveAction : AppCompatActivity() {
     }
 
     private fun spinnerValue() {
-
-//        setupSpinnerFromArray(responsiblePersonSpinner, R.array.responsible_person)
         setupSpinnerFromArray(hierarchyOfControlSpinner, R.array.hierarchyControl)
         setupSpinnerFromArray(followUpSpinner, R.array.followUp)
         setupSpinnerFromArray(statusSpinner, R.array.status)
@@ -71,16 +126,14 @@ class AddCorrectiveAction : AppCompatActivity() {
 
     private fun gatherData() {
 
-        val responsiblePerson = responsiblePersonSpinner.selectedItem.toString()
-        val responsiblePersonValue = getResponsiblePerson(responsiblePerson)
         val hierarchyOfControl = hierarchyOfControlSpinner.selectedItem.toString()
         val hierarchyOfControlValue = getHierarchyControl(hierarchyOfControl)
         val correctiveAction = correctiveActionMultilineEditText.text.toString()
         val dueDateText = dueDateTextView.text.toString()
-        val status = statusSpinner.selectedItem.toString()
-        val statusValue = getStatus(status)
         followUpSpinner.selectedItem.toString()
         val reviewDateValue = reviewDateTextView.text.toString()
+        val authToken = SessionManager(this).fetchAuthToken()
+        inspectionScheduleId = intent.getIntExtra("iId", 1)
 
         followUpSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -103,26 +156,46 @@ class AddCorrectiveAction : AppCompatActivity() {
             }
         }
 
-
         val body = AddCorrectiveActionBody(
+            null,
             correctiveAction,
             dueDateText,
             2888,
             HierarchyOfControl(hierarchyOfControlValue),
-            9573,
             null,
             null,
             null,
-            reviewDateValue,
-            responsiblePersonValue
+            responsibleId,
+            reviewDateValue
         )
-        saveCorrectiveAction(body)
+
+        lifecycleScope.launch {
+            val addCorrectiveAction = try {
+                AddCorrectiveActionInstance.api.addCorrectiveAction(body, "Bearer $authToken")
+            } catch (e: Exception) {
+                showToast(e.message)
+                return@launch
+            } catch (e: HttpException) {
+                showToast(e.message)
+                return@launch
+            } catch (e: IOException) {
+                showToast(e.message)
+                return@launch
+            }
+            if (addCorrectiveAction.isSuccessful && addCorrectiveAction.body() != null) {
+                showToast(getString(R.string.added))
+                finish()
+            } else {
+                showToast("FF")
+            }
+        }
+
     }
 
     private fun btClickListener() {
         dueDateButton.setOnClickListener {
             showGenericDateDialog(
-                R.string.selectedDate.toString(),
+                getString(R.string.selectedDate),
                 System.currentTimeMillis()
             ) { selectedDate ->
                 selectedDueDate = selectedDate
@@ -150,45 +223,12 @@ class AddCorrectiveAction : AppCompatActivity() {
         when (item.itemId) {
             R.id.save -> {
                 gatherData()
-                finish()
             }
             android.R.id.home ->{
                 finish()
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun saveCorrectiveAction(body: AddCorrectiveActionBody) {
-        val authToken = SessionManager(this).fetchAuthToken()
-        lifecycleScope.launch {
-            val addCorrectiveAction = try {
-                AddCorrectiveActionInstance.api.addCorrectiveAction(body, authToken!!)
-            } catch (e: Exception) {
-                showToast(e.message)
-                return@launch
-            } catch (e: HttpException) {
-                showToast(e.message)
-                return@launch
-            } catch (e: IOException) {
-                showToast(e.message)
-                return@launch
-            }
-            if (addCorrectiveAction.isSuccessful && addCorrectiveAction.body() != null) {
-                showToast(getString(R.string.added))
-            }
-        }
-
-    }
-
-    private fun getResponsiblePerson(responsibleSpinner: String): Int {
-        return when (responsibleSpinner) {
-            "Caroline Kingston" -> 1
-            "Test Supervisor" -> 2
-            "Test Manager" -> 3
-            "Test Employee" -> 248
-            else -> 0
-        }
     }
 
     private fun getHierarchyControl(hierarchyOfControl: String): Int {
@@ -199,13 +239,6 @@ class AddCorrectiveAction : AppCompatActivity() {
             "Isolation" -> 4
             "Administration" -> 5
             else -> 6
-        }
-    }
-
-    private fun getStatus(status: String): Int {
-        return when (status) {
-            "Assigned" -> 1
-            else -> 2
         }
     }
 

@@ -70,4 +70,8 @@
     <string name="document_are_uploaded">Document are uploaded?</string>
     <string name="complted">Inspection completion added successfully</string>
     <string name="sucess">Success</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="logout">Would you like to Logout</string>
+    <string name="deleteThis">Are you sure you want to delete this Inspection?</string>
+    <string name="n0_corrective_action_found">No Corrective Action Found</string>
 </resources>

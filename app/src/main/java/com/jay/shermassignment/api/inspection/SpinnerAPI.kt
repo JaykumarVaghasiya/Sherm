@@ -1,6 +1,7 @@
 package com.jay.shermassignment.api.inspection
 
 import com.jay.shermassignment.response.inspectiontype.InspectionTypeResponse
+import com.jay.shermassignment.response.reportingTo.ReportingToResponse
 import com.jay.shermassignment.response.responsibleperson.ResponsiblePersonResponse
 import com.jay.shermassignment.ui.location.InspectionLocationResponse
 import retrofit2.Response
@@ -17,15 +18,20 @@ interface SpinnerAPI {
 
     @GET("OHSClient/rest/v2/inspection/getInspectionLocationFromCategoryAndType.do")
     suspend fun getLocationFromCatInsTypeSite(
-        @Query("categoryId") catId:Int,
-        @Query("siteId") siteId:Int,
-        @Query("inspectionTypeId") inspectionTypeId:Int,
+        @Query("categoryId") catId: Int,
+        @Query("siteId") siteId: Int,
+        @Query("inspectionTypeId") inspectionTypeId: Int,
         @Header("Authorization") authToken: String
-    ):Response<InspectionLocationResponse>
+    ): Response<InspectionLocationResponse>
 
     @GET("/OHSClient/rest/v2/inspection/getAllSiteInspectionResponsiblePerson.do")
     suspend fun getResponsiblePersonBySite(
-        @Query("siteId") siteId:Int,
+        @Query("siteId") siteId: Int,
         @Header("Authorization") authToken: String
-    ):Response<ResponsiblePersonResponse>
+    ): Response<ResponsiblePersonResponse>
+
+    @GET("/OHSClient/rest/v2/getAllReportedBy.do")
+    suspend fun getAlLResponsiblePerson(
+        @Header("Authorization") authToken: String
+    ): Response<ReportingToResponse>
 }

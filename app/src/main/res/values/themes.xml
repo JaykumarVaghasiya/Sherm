@@ -1,12 +1,12 @@
 <resources>
     <style name="Base.Theme.ShermTheme" parent="Theme.Material3.Light">
-        <item name="colorPrimary">@color/green</item>
         <item name="colorSurface">@color/green</item>
+        <item name="colorPrimary">@color/green</item>
         <item name="materialCardViewStyle">@style/cardView</item>
         <item name="colorOnSurface">@color/white</item>
         <item name="colorOnSurfaceVariant">@color/white</item>
         <item name="actionMenuTextColor">@color/white</item>
-        <item name="materialCalendarStyle">@style/ThemeOverlay.App.DatePicker</item>
+       <item name="materialCalendarTheme">@style/ThemeOverlay.ShermTheme.DatePicker</item>
         <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
     </style>
 
@@ -14,17 +14,13 @@
         <item name="colorOnSurface">@color/offWhite</item>
     </style>
 
-    <style name="ThemeOverlay.App.DatePicker" parent="Base.Theme.ShermTheme">
-        <item name="backgroundTint">@color/red</item>
-        <item name="materialCalendarHeaderTitle">@color/white</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="materialCalendarHeaderSelection">@color/darkGreen</item>
+    <style name="ThemeOverlay.ShermTheme.DatePicker" parent="ThemeOverlay.Material3.MaterialCalendar">
         <item name="colorOnSurface">@color/white</item>
-        <item name="dayTodayStyle">@color/darkGreen</item>
-        <item name="materialCalendarMonthNavigationButton">@color/white</item>
-            <item name="materialCalendarYearNavigationButton">@color/white</item>
-        <item name="daySelectedStyle">@color/offWhite</item>
-        <item name="materialCalendarHeaderCancelButton">@color/white</item>
-        <item name="materialCalendarHeaderConfirmButton">@color/white</item>
+        <item name="colorSurface">@color/green</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorOnSurfaceVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/darkGreen</item>
+
     </style>
+
 </resources>

@@ -24,6 +24,7 @@ class AddInspectionCompleted : AppCompatActivity() {
 
     private lateinit var inspectionCompleted:MaterialTextView
     private lateinit var calendarInspectionCompleted: MaterialButton
+    private var inspectionId: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_inspection_completed)
@@ -42,7 +43,7 @@ class AddInspectionCompleted : AppCompatActivity() {
         calendarInspectionCompleted.setOnClickListener {
             showGenericDateDialog(R.string.selectedDate.toString(), System.currentTimeMillis()) { selectedDate ->
                 val formattedDate =
-                    SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(selectedDate))
+                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(selectedDate))
                 inspectionCompleted.text = formattedDate
             }
         }
@@ -60,7 +61,6 @@ class AddInspectionCompleted : AppCompatActivity() {
             }
             R.id.save ->{
                 saveData()
-                finish()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -68,9 +68,9 @@ class AddInspectionCompleted : AppCompatActivity() {
 
     private fun saveData() {
         val authToken = SessionManager(this).fetchAuthToken()
-        val id = intent.getIntExtra("iId",0)
+        inspectionId= intent.getIntExtra("ids",0)
         val completedDate=inspectionCompleted.text.toString()
-        val body = CompletedInspectionBody(completedDate,id)
+        val body = CompletedInspectionBody(completedDate,inspectionId)
 
         lifecycleScope.launch {
             val response = try {
@@ -91,7 +91,9 @@ class AddInspectionCompleted : AppCompatActivity() {
                     R.string.sucess,
                     R.string.complted
                 )
+                finish()
             }
         }
+
     }
 }

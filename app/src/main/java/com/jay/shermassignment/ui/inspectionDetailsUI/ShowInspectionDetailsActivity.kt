@@ -5,14 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.ProgressBar
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.showToast
-import com.jay.shermassignment.generic.startActivityStart
 import com.jay.shermassignment.ui.add_inspection_completed.AddInspectionCompleted
 import com.jay.shermassignment.ui.commentUI.Comment
 import com.jay.shermassignment.ui.corrective_action.CorrectiveAction
@@ -31,7 +30,7 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
     private lateinit var inspectionLocation: MaterialTextView
     private lateinit var responsiblePerson: MaterialTextView
     private lateinit var dueDate: MaterialTextView
-    private lateinit var progressBar: ProgressBar
+    private lateinit var progressBar: LinearLayout
     private var inspectionId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,9 +42,7 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         initializeViews()
         setupClickListeners()
-        retrieveInstanceState(savedInstanceState)
         fetchData()
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -60,8 +57,6 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
     private fun fetchData() {
         val authToken = SessionManager(this).fetchAuthToken()
         progressBar.visibility = View.VISIBLE
-
-
         lifecycleScope.launch {
             val showInspectionResponse = try {
                 ShowInspectionDetailsInstance.api.getShowInspectionDetails(
@@ -81,7 +76,7 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
                 category.text = data.inspectionCategoryMaster.name
                 inspectionType.text = data.inspectionType.name
                 inspectionLocation.text = data.inspectionLocation
-                responsiblePerson.text = data.responsiblePerson.user.username
+                responsiblePerson.text = data.responsiblePerson.user.employee.fullName
                 dueDate.text = data.dueDate
                 site.text = data.workplaceInspection.site.name
                 reschedule.text = data.reschedule.toString()
@@ -92,7 +87,8 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
     }
 
     private fun initializeViews() {
-        progressBar = findViewById(R.id.progressBar3)
+        progressBar = findViewById(R.id.overLay)
+        progressBar.bringToFront()
         category = findViewById(R.id.tvCategory)
         inspectionType = findViewById(R.id.tvInspectionType)
         site = findViewById(R.id.tvSite)
@@ -122,29 +118,6 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
            }
     }
 
-    private fun retrieveInstanceState(savedInstanceState: Bundle?) {
-        if (savedInstanceState != null) {
-            category.text = savedInstanceState.getString("category", "")
-            inspectionType.text = savedInstanceState.getString("inspectionType", "")
-            site.text = savedInstanceState.getString("site", "")
-            inspectionLocation.text = savedInstanceState.getString("inspectionLocation", "")
-            responsiblePerson.text = savedInstanceState.getString("responsiblePerson", "")
-            dueDate.text = savedInstanceState.getString("dueDate", "")
-            reschedule.text = savedInstanceState.getString("reportingTo", "")
-        }
-    }
-
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("category", category.text.toString())
-        outState.putString("inspectionType", inspectionType.text.toString())
-        outState.putString("site", site.text.toString())
-        outState.putString("inspectionLocation", inspectionLocation.text.toString())
-        outState.putString("responsiblePerson", responsiblePerson.text.toString())
-        outState.putString("dueDate", dueDate.text.toString())
-        outState.putString("reportingTo", reschedule.text.toString())
-    }
     private fun showConfirmationDialog() {
 
         val dialog = AlertDialog.Builder(this)
@@ -152,8 +125,9 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
         dialog.setMessage(getString(R.string.document_are_uploaded))
         dialog.setPositiveButton("OK") { d, _ ->
             val id = intent.getIntExtra("id", 0)
+            val intent=Intent(this,AddInspectionCompleted::class.java)
             intent.putExtra("ids", id)
-            startActivityStart<AddInspectionCompleted>()
+            startActivity(intent)
             d.dismiss()
         }
         dialog.setNegativeButton("Cancel") { d, _ ->

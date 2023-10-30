@@ -3,10 +3,10 @@ package com.jay.shermassignment.generic
 import android.app.Activity
 import androidx.appcompat.app.AlertDialog
 
-fun Activity.showCustomDialog(
+fun Activity.showConfirmationDialog(
     titleResId: Int,
     messageResId: Int,
-    positiveButtonLabel: String = "Yes",
+    positiveButtonLabel: String = "OK",
     onPositiveButtonClick: () -> Unit = {}
 ) {
     val title = getString(titleResId)
@@ -17,10 +17,6 @@ fun Activity.showCustomDialog(
         .setTitle(title)
         .setCancelable(true)
         .setPositiveButton(positiveButtonLabel) { dialog, _ ->
-            onPositiveButtonClick()
-            dialog.dismiss()
-        }
-        .setNegativeButton("No"){dialog,_ ->
             dialog.dismiss()
         }
         .create()

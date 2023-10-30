@@ -4,14 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jay.shermassignment.R
+import com.jay.shermassignment.generic.showCustomDialog
 import com.jay.shermassignment.generic.startActivityStart
 import com.jay.shermassignment.response.dashboard.Dashboard
 import com.jay.shermassignment.ui.inspectionUI.Inspection
+import com.jay.shermassignment.ui.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -63,8 +64,13 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.signOut -> {
-                Toast.makeText(this, R.string.sign_out, Toast.LENGTH_SHORT).show()
-                finish()
+                showCustomDialog(
+                    R.string.are_you_sure,
+                    R.string.logout,
+                    positiveButtonLabel = "Yes"
+                ){
+                    startActivityStart<LoginActivity>()
+                }
                 return true
             }
         }

@@ -2,7 +2,9 @@ package com.jay.shermassignment.ui.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
@@ -22,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var login: MaterialButton
     private lateinit var sessionManager: SessionManager
     private lateinit var retrofitInstance: RetrofitInstance
+    private lateinit var overLay:LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +41,9 @@ class LoginActivity : AppCompatActivity() {
         emailEditText = findViewById(R.id.et_email)
         passwordEditText = findViewById(R.id.et_password)
         login = findViewById(R.id.bt_login)
+        overLay=findViewById(R.id.overLay)
+        overLay.bringToFront()
+
     }
 
     private fun setupListeners() {
@@ -52,6 +58,7 @@ class LoginActivity : AppCompatActivity() {
             showEmptyDialog()
         } else {
             val user = UserDetails(email, password)
+            overLay.visibility= View.VISIBLE
             lifecycleScope.launch {
                 try {
 
@@ -59,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
                     if (response.isSuccessful && response.body() != null) {
                         val userResponse = response.body()
                         userResponse?.content?.token?.let { sessionManager.saveAuthToken(it) }
-                        showToast( getString(R.string.login))
+
                         startMainActivity()
                     }
                     else {
@@ -75,6 +82,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showErrorDialog() {
+        overLay.visibility= View.GONE
         showCustomDialog(
             R.string.invalid_credentials,
             R.string.request_valid_email_or_password
@@ -82,6 +90,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showEmptyDialog() {
+        overLay.visibility= View.GONE
         showCustomDialog(
             R.string.empty_credentials,
             R.string.request_email_or_password
@@ -89,6 +98,7 @@ class LoginActivity : AppCompatActivity() {
     }
     private fun startMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
+        overLay.visibility= View.GONE
         startActivity(intent)
         finish()
     }

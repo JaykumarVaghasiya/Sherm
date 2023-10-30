@@ -1,6 +1,7 @@
 package com.jay.shermassignment.ui.add_corrective_action
 
 data class AddCorrectiveActionBody(
+    var id:Int?,
     val action: String,
     val dueDate: String,
     val hazardId: Int,

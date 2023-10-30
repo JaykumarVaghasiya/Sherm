@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.jay.shermassignment.R
+import com.jay.shermassignment.generic.showConfirmationDialog
+import com.jay.shermassignment.generic.showCustomDialog
 import com.jay.shermassignment.generic.showToast
 import com.jay.shermassignment.generic.startActivityStart
 import com.jay.shermassignment.response.inspection.InspectionRef
@@ -26,10 +29,9 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var inspectionAdapter: InspectionAdapter
-    private lateinit var progressBar: LottieAnimationView
+    private lateinit var overlay:LinearLayout
     private lateinit var progressBarPagination: LottieAnimationView
 
-    private val visibleThreshold = 1
     private var isLoading = false
     private var isLastPage = false
     private var currentPage = 0
@@ -49,10 +51,10 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
                 super.onScrolled(recyclerView, dx, dy)
 
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+                val lastVisibleItemPosition = layoutManager.findLastCompletelyVisibleItemPosition()
                 val totalItemCount = layoutManager.itemCount
 
-                if (!isLoading && !isLastPage && totalItemCount - 1 <= lastVisibleItemPosition + visibleThreshold) {
+                if (!isLoading && !isLastPage && totalItemCount - 1 <= lastVisibleItemPosition) {
                     loadNextPage()
                 }
             }
@@ -61,11 +63,11 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
     }
 
     private fun initializeViews() {
-        progressBar = findViewById(R.id.progressBar)
         recyclerView = findViewById(R.id.rvInspection)
         recyclerView.overScrollMode = View.OVER_SCROLL_ALWAYS
+        overlay=findViewById(R.id.overLay)!!
         progressBarPagination = findViewById(R.id.pbPagination)
-        progressBar.visibility = View.VISIBLE
+        overlay.visibility = View.VISIBLE
         progressBarPagination.visibility = View.GONE
     }
 
@@ -85,21 +87,18 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
         if (isLoading || isLastPage) {
             return
         }
-
-        val authToken = SessionManager(this).fetchAuthToken()
         isLoading = true
-
         if (currentPage == 0) {
-
-            progressBar.visibility = View.VISIBLE
+            overlay.visibility = View.VISIBLE
             progressBarPagination.visibility = View.GONE
         } else {
 
-            progressBar.visibility = View.GONE
+            overlay.visibility = View.GONE
             progressBarPagination.visibility = View.VISIBLE
         }
         currentPage++
 
+        val authToken = SessionManager(this).fetchAuthToken()
         lifecycleScope.launch {
             try {
                 val inspectionResponse = InspectionDetailsInstance.api.getInspectionDetails(
@@ -135,7 +134,7 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
             } finally {
                 isLoading = false
                 progressBarPagination.visibility = View.GONE
-                progressBar.visibility = View.GONE
+                overlay.visibility = View.GONE
             }
         }
     }
@@ -172,9 +171,15 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
                     "Bearer $authToken"
                 )
                 if (inspectionResponse.isSuccessful) {
-                    inspectionAdapter.deleteInspection(row)
+                    showCustomDialog(
+                        R.string.sherm,
+                        R.string.deleteThis
+                    ) {
+                        inspectionAdapter.deleteInspection(row)
+                    }
                 } else {
-                    showToast(getString(R.string.cantdeleted))
+                    showConfirmationDialog(R.string.sherm, R.string.cantdeleted
+                    )
                 }
             } catch (e: IOException) {
                 showToast(e.message)

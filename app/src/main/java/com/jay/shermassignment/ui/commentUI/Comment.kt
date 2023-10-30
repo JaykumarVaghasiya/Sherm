@@ -18,9 +18,7 @@ import java.io.IOException
 class Comment : AppCompatActivity() {
 
     private lateinit var comment: EditText
-    private val inspectionId: Int by lazy {
-        intent.getIntExtra("id", 0)
-    }
+    private var inspectionId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +26,7 @@ class Comment : AppCompatActivity() {
         supportActionBar?.setTitle(R.string.inspection_comments)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         comment = findViewById(R.id.etInspectionComment)
+        inspectionId = intent.getIntExtra("ids", 0)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -65,8 +64,8 @@ class Comment : AppCompatActivity() {
             }
             if (commentResponse.isSuccessful && commentResponse.body() != null) {
                 showToast(getString(R.string.successfully_comment))
+                finish()
             }
         }
-        finish()
     }
 }

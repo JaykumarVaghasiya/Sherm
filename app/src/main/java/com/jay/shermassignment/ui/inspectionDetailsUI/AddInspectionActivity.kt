@@ -8,10 +8,10 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
@@ -44,12 +44,11 @@ class AddInspectionActivity : AppCompatActivity() {
     private lateinit var responsiblePersonSpinner: Spinner
     private lateinit var dueDate: MaterialTextView
     private lateinit var dateButton: MaterialButton
-    private lateinit var loading: LottieAnimationView
+    private lateinit var loading: LinearLayout
     private var categoryId: Int = 0
     private var inspectionTypeId: Int = 0
     private var siteId: Int = 0
     private var responsiblePersonId: Int = 0
-    private var inspectionId: Int = 0
     private var inspectionLocationName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,7 +70,7 @@ class AddInspectionActivity : AppCompatActivity() {
         dueDate = findViewById(R.id.tvDueDate)
         dateButton = findViewById(R.id.btCalender)
         reschedule = findViewById(R.id.spReschedule)
-        loading = findViewById(R.id.pbLoading)
+        loading=findViewById(R.id.overLay)
         loading.bringToFront()
         loading.visibility = View.GONE
     }

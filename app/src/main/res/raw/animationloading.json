@@ -48,6 +48,9 @@
               ],
               "e": [
                 360
+              ],
+              "__fnct": [
+                null
               ]
             },
             {
@@ -103,7 +106,8 @@
                 ]
               },
               "nm": "Ellipse Path 1",
-              "mn": "ADBE Vector Shape - Ellipse"
+              "mn": "ADBE Vector Shape - Ellipse",
+              "_render": true
             },
             {
               "ty": "st",
@@ -111,7 +115,7 @@
                 "a": 0,
                 "k": [
                   0,
-                  0,
+                  0.4,
                   0,
                   1
                 ]
@@ -128,16 +132,17 @@
               "lj": 1,
               "ml": 4,
               "nm": "Stroke 1",
-              "mn": "ADBE Vector Graphic - Stroke"
+              "mn": "ADBE Vector Graphic - Stroke",
+              "_render": true
             },
             {
               "ty": "fl",
               "c": {
                 "a": 0,
                 "k": [
-                  0.996078431372549,
-                  0.7843137254901961,
-                  0.18823529411764706,
+                  0.3137,
+                  0.7569,
+                  0.3294,
                   1
                 ]
               },
@@ -147,7 +152,8 @@
               },
               "r": 1,
               "nm": "Fill 1",
-              "mn": "ADBE Vector Graphic - Fill"
+              "mn": "ADBE Vector Graphic - Fill",
+              "_render": true
             },
             {
               "ty": "tr",
@@ -195,21 +201,24 @@
                 "k": 0,
                 "ix": 5
               },
-              "nm": "Transform"
+              "nm": "Transform",
+              "_render": true
             }
           ],
           "nm": "Ellipse 1",
           "np": 3,
           "cix": 2,
           "ix": 1,
-          "mn": "ADBE Vector Group"
+          "mn": "ADBE Vector Group",
+          "_render": true
         }
       ],
       "ip": 20,
       "op": 620,
       "st": 20,
       "bm": 0,
-      "sr": 1
+      "sr": 1,
+      "completed": true
     },
     {
       "ddd": 0,
@@ -250,6 +259,9 @@
               ],
               "e": [
                 360
+              ],
+              "__fnct": [
+                null
               ]
             },
             {
@@ -305,7 +317,8 @@
                 ]
               },
               "nm": "Ellipse Path 1",
-              "mn": "ADBE Vector Shape - Ellipse"
+              "mn": "ADBE Vector Shape - Ellipse",
+              "_render": true
             },
             {
               "ty": "st",
@@ -313,7 +326,7 @@
                 "a": 0,
                 "k": [
                   0,
-                  0,
+                  0.4,
                   0,
                   1
                 ]
@@ -330,16 +343,17 @@
               "lj": 1,
               "ml": 4,
               "nm": "Stroke 1",
-              "mn": "ADBE Vector Graphic - Stroke"
+              "mn": "ADBE Vector Graphic - Stroke",
+              "_render": true
             },
             {
               "ty": "fl",
               "c": {
                 "a": 0,
                 "k": [
-                  0.996078431372549,
-                  0.7843137254901961,
-                  0.18823529411764706,
+                  0.3137,
+                  0.7569,
+                  0.3294,
                   1
                 ]
               },
@@ -349,7 +363,8 @@
               },
               "r": 1,
               "nm": "Fill 1",
-              "mn": "ADBE Vector Graphic - Fill"
+              "mn": "ADBE Vector Graphic - Fill",
+              "_render": true
             },
             {
               "ty": "tr",
@@ -397,21 +412,24 @@
                 "k": 0,
                 "ix": 5
               },
-              "nm": "Transform"
+              "nm": "Transform",
+              "_render": true
             }
           ],
           "nm": "Ellipse 1",
           "np": 3,
           "cix": 2,
           "ix": 1,
-          "mn": "ADBE Vector Group"
+          "mn": "ADBE Vector Group",
+          "_render": true
         }
       ],
       "ip": 15,
       "op": 615,
       "st": 15,
       "bm": 0,
-      "sr": 1
+      "sr": 1,
+      "completed": true
     },
     {
       "ddd": 0,
@@ -452,6 +470,9 @@
               ],
               "e": [
                 360
+              ],
+              "__fnct": [
+                null
               ]
             },
             {
@@ -507,7 +528,8 @@
                 ]
               },
               "nm": "Ellipse Path 1",
-              "mn": "ADBE Vector Shape - Ellipse"
+              "mn": "ADBE Vector Shape - Ellipse",
+              "_render": true
             },
             {
               "ty": "st",
@@ -515,7 +537,7 @@
                 "a": 0,
                 "k": [
                   0,
-                  0,
+                  0.4,
                   0,
                   1
                 ]
@@ -532,16 +554,17 @@
               "lj": 1,
               "ml": 4,
               "nm": "Stroke 1",
-              "mn": "ADBE Vector Graphic - Stroke"
+              "mn": "ADBE Vector Graphic - Stroke",
+              "_render": true
             },
             {
               "ty": "fl",
               "c": {
                 "a": 0,
                 "k": [
-                  0.996078431372549,
-                  0.7843137254901961,
-                  0.18823529411764706,
+                  0.3137,
+                  0.7569,
+                  0.3294,
                   1
                 ]
               },
@@ -551,7 +574,8 @@
               },
               "r": 1,
               "nm": "Fill 1",
-              "mn": "ADBE Vector Graphic - Fill"
+              "mn": "ADBE Vector Graphic - Fill",
+              "_render": true
             },
             {
               "ty": "tr",
@@ -599,21 +623,24 @@
                 "k": 0,
                 "ix": 5
               },
-              "nm": "Transform"
+              "nm": "Transform",
+              "_render": true
             }
           ],
           "nm": "Ellipse 1",
           "np": 3,
           "cix": 2,
           "ix": 1,
-          "mn": "ADBE Vector Group"
+          "mn": "ADBE Vector Group",
+          "_render": true
         }
       ],
       "ip": 10,
       "op": 610,
       "st": 10,
       "bm": 0,
-      "sr": 1
+      "sr": 1,
+      "completed": true
     },
     {
       "ddd": 0,
@@ -654,6 +681,9 @@
               ],
               "e": [
                 360
+              ],
+              "__fnct": [
+                null
               ]
             },
             {
@@ -709,7 +739,8 @@
                 ]
               },
               "nm": "Ellipse Path 1",
-              "mn": "ADBE Vector Shape - Ellipse"
+              "mn": "ADBE Vector Shape - Ellipse",
+              "_render": true
             },
             {
               "ty": "st",
@@ -717,7 +748,7 @@
                 "a": 0,
                 "k": [
                   0,
-                  0,
+                  0.4,
                   0,
                   1
                 ]
@@ -734,16 +765,17 @@
               "lj": 1,
               "ml": 4,
               "nm": "Stroke 1",
-              "mn": "ADBE Vector Graphic - Stroke"
+              "mn": "ADBE Vector Graphic - Stroke",
+              "_render": true
             },
             {
               "ty": "fl",
               "c": {
                 "a": 0,
                 "k": [
-                  0.996078431372549,
-                  0.7843137254901961,
-                  0.18823529411764706,
+                  0.3137,
+                  0.7569,
+                  0.3294,
                   1
                 ]
               },
@@ -753,7 +785,8 @@
               },
               "r": 1,
               "nm": "Fill 1",
-              "mn": "ADBE Vector Graphic - Fill"
+              "mn": "ADBE Vector Graphic - Fill",
+              "_render": true
             },
             {
               "ty": "tr",
@@ -801,21 +834,24 @@
                 "k": 0,
                 "ix": 5
               },
-              "nm": "Transform"
+              "nm": "Transform",
+              "_render": true
             }
           ],
           "nm": "Ellipse 1",
           "np": 3,
           "cix": 2,
           "ix": 1,
-          "mn": "ADBE Vector Group"
+          "mn": "ADBE Vector Group",
+          "_render": true
         }
       ],
       "ip": 5,
       "op": 605,
       "st": 5,
       "bm": 0,
-      "sr": 1
+      "sr": 1,
+      "completed": true
     },
     {
       "ddd": 0,
@@ -856,6 +892,9 @@
               ],
               "e": [
                 360
+              ],
+              "__fnct": [
+                null
               ]
             },
             {
@@ -932,6 +971,10 @@
                     "e": [
                       40,
                       40
+                    ],
+                    "__fnct": [
+                      null,
+                      null
                     ]
                   },
                   {
@@ -967,6 +1010,10 @@
                     "e": [
                       50,
                       50
+                    ],
+                    "__fnct": [
+                      null,
+                      null
                     ]
                   },
                   {
@@ -982,7 +1029,8 @@
                 ]
               },
               "nm": "Ellipse Path 1",
-              "mn": "ADBE Vector Shape - Ellipse"
+              "mn": "ADBE Vector Shape - Ellipse",
+              "_render": true
             },
             {
               "ty": "st",
@@ -990,7 +1038,7 @@
                 "a": 0,
                 "k": [
                   0,
-                  0,
+                  0.4,
                   0,
                   1
                 ]
@@ -1007,16 +1055,17 @@
               "lj": 1,
               "ml": 4,
               "nm": "Stroke 1",
-              "mn": "ADBE Vector Graphic - Stroke"
+              "mn": "ADBE Vector Graphic - Stroke",
+              "_render": true
             },
             {
               "ty": "fl",
               "c": {
                 "a": 0,
                 "k": [
-                  0.996078431372549,
-                  0.7843137254901961,
-                  0.18823529411764706,
+                  0.3137,
+                  0.7569,
+                  0.3294,
                   1
                 ]
               },
@@ -1026,7 +1075,8 @@
               },
               "r": 1,
               "nm": "Fill 1",
-              "mn": "ADBE Vector Graphic - Fill"
+              "mn": "ADBE Vector Graphic - Fill",
+              "_render": true
             },
             {
               "ty": "tr",
@@ -1074,21 +1124,25 @@
                 "k": 0,
                 "ix": 5
               },
-              "nm": "Transform"
+              "nm": "Transform",
+              "_render": true
             }
           ],
           "nm": "Ellipse 1",
           "np": 3,
           "cix": 2,
           "ix": 1,
-          "mn": "ADBE Vector Group"
+          "mn": "ADBE Vector Group",
+          "_render": true
         }
       ],
       "ip": 0,
       "op": 600,
       "st": 0,
       "bm": 0,
-      "sr": 1
+      "sr": 1,
+      "completed": true
     }
-  ]
+  ],
+  "__complete": true
 }
