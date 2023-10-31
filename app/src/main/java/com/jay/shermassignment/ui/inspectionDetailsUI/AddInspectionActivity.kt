@@ -1,7 +1,6 @@
 package com.jay.shermassignment.ui.inspectionDetailsUI
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -16,9 +15,10 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
 import com.jay.shermassignment.api.inspection.SpinnerInstance
+import com.jay.shermassignment.generic.commonDateToISODate
 import com.jay.shermassignment.generic.setupSpinnerFromArray
+import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.generic.showGenericDateDialog
-import com.jay.shermassignment.generic.showToast
 import com.jay.shermassignment.response.addInspectionData.AddInspectionRef
 import com.jay.shermassignment.response.addInspectionData.InspectionCategoryMaster
 import com.jay.shermassignment.response.addInspectionData.InspectionType
@@ -82,7 +82,7 @@ class AddInspectionActivity : AppCompatActivity() {
                 System.currentTimeMillis(),
             ) { selectedDate ->
                 val formattedDate =
-                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(selectedDate))
+                    SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date(selectedDate))
                 dueDate.text = formattedDate
             }
         }
@@ -142,13 +142,13 @@ class AddInspectionActivity : AppCompatActivity() {
             val inspectionTypeResponse = try {
                 SpinnerInstance.api.getInspectionTypeFromCategory(categoryId, "Bearer $authToken")
             } catch (e: Exception) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm), e.message)
                 return@launch
             } catch (e: HttpException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm), e.message)
                 return@launch
             } catch (e: IOException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm), e.message)
                 return@launch
             }
             if (inspectionTypeResponse.isSuccessful && inspectionTypeResponse.body() != null) {
@@ -173,21 +173,14 @@ class AddInspectionActivity : AppCompatActivity() {
                             id: Long
                         ) {
                             inspectionTypeId = body?.content?.get(position)?.id ?: 0
-                            showToast("{$inspectionTypeId}")
                         }
 
                         override fun onNothingSelected(parent: AdapterView<*>?) {
 
                         }
                     }
-
-            } else {
-                showToast("Avengers Assemble ")
             }
-
         }
-
-
     }
 
     private fun onInspectionType() {
@@ -222,7 +215,6 @@ class AddInspectionActivity : AppCompatActivity() {
         lifecycleScope.launch {
             categoryId = getCategoryValue(categorySpinner.selectedItem.toString())
             siteId = getSiteValue(site.selectedItem.toString())
-            Log.d("Marvel", "{$inspectionTypeId}")
             val inspectionLocationResponse = try {
                 SpinnerInstance.api.getLocationFromCatInsTypeSite(
                     categoryId,
@@ -231,13 +223,13 @@ class AddInspectionActivity : AppCompatActivity() {
                     "Bearer $authToken"
                 )
             } catch (e: Exception) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             } catch (e: HttpException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             } catch (e: IOException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             }
             if (inspectionLocationResponse.isSuccessful && inspectionLocationResponse.body() != null) {
@@ -263,14 +255,11 @@ class AddInspectionActivity : AppCompatActivity() {
                         ) {
                             inspectionLocationName =
                                 body?.content?.get(position)?.inspectionLocation ?: ""
-                            showToast("{$inspectionLocationName}")
                         }
 
                         override fun onNothingSelected(parent: AdapterView<*>?) {
                         }
                     }
-            } else {
-                showToast("Fir se Likh code")
             }
         }
     }
@@ -281,13 +270,13 @@ class AddInspectionActivity : AppCompatActivity() {
             val responsiblePersonResponse = try {
                 SpinnerInstance.api.getResponsiblePersonBySite(siteId, "Bearer $authToken")
             } catch (e: Exception) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             } catch (e: HttpException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             } catch (e: IOException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             }
             if (responsiblePersonResponse.isSuccessful && responsiblePersonResponse.body() != null) {
@@ -312,17 +301,12 @@ class AddInspectionActivity : AppCompatActivity() {
                             id: Long
                         ) {
                             responsiblePersonId = body?.content?.get(position)?.id ?: 0
-                            showToast("{$responsiblePersonId}")
                         }
 
                         override fun onNothingSelected(parent: AdapterView<*>?) {
                         }
                     }
-
-            } else {
-                showToast("Avengers Assemble ")
             }
-
         }
     }
 
@@ -355,7 +339,7 @@ class AddInspectionActivity : AppCompatActivity() {
     private fun saveInspectionData() {
         val authToken = SessionManager(this).fetchAuthToken()
         val category = categorySpinner.selectedItem.toString()
-        val dueDate = dueDate.text.toString()
+        val dueDate = commonDateToISODate(dueDate.text.toString())
         val reschedule = reschedule.selectedItem.toString()
         categoryId = getCategoryValue(category)
         getRescheduleValue(reschedule)
@@ -380,20 +364,20 @@ class AddInspectionActivity : AppCompatActivity() {
                     "Bearer $authToken"
                 )
             } catch (e: Exception) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             } catch (e: HttpException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             } catch (e: IOException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             }
             if (addInspectionResponse.isSuccessful && addInspectionResponse.body() != null) {
-                showToast(getString(R.string.save))
+                showConfirmationDialog(getString(R.string.sucess),getString(R.string.added_insp))
                 finish()
             } else {
-                showToast(getString(R.string.failed_to_save))
+                showConfirmationDialog(getString(R.string.failed),getString(R.string.failed_to_save))
             }
         }
     }

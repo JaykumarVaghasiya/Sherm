@@ -36,7 +36,11 @@
         android:hint="@string/type_here"
         android:inputType="textMultiLine"
         android:layout_marginTop="8dp"
+        android:background="@color/offWhite"
         android:padding="8dp"
         android:textColor="@color/darkGreen" />
 
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

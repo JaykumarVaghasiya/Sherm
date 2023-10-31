@@ -12,4 +12,10 @@ interface CAViewAPI {
         @Query("id") correctiveActionId: Int,
         @Header("Authorization") authToken: String
     ): Response<CorrectiveActionDetailsResponse>
+
+    @GET("/OHSClient/rest/v2/getExtendDueDateRequest.do")
+    suspend fun getDueDateExtendedRequest(
+        @Query("correctiveActionId") correctiveActionId: Int,
+        @Header("Authorization") authToken: String
+    ): Response<CorrectiveActionDetailsResponse>
 }

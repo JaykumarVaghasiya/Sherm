@@ -8,9 +8,9 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
+import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.generic.showCustomDialog
 import com.jay.shermassignment.generic.showGenericDateDialog
-import com.jay.shermassignment.generic.showToast
 import com.jay.shermassignment.response.addinspectioncompletted.CompletedInspectionBody
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
@@ -76,13 +76,13 @@ class AddInspectionCompleted : AppCompatActivity() {
             val response = try {
                 CompletedInstance.api.completedScheduledInspection(body,authToken!!)
             }catch (e:Exception){
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             }catch (e:HttpException){
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             }catch (e:IOException){
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             }
 

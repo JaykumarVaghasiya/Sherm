@@ -4,20 +4,19 @@ import android.app.Activity
 import androidx.appcompat.app.AlertDialog
 
 fun Activity.showConfirmationDialog(
-    titleResId: Int,
-    messageResId: Int,
+    titleResId: String?,
+    messageResId: String?,
     positiveButtonLabel: String = "OK",
     onPositiveButtonClick: () -> Unit = {}
 ) {
-    val title = getString(titleResId)
-    val message =getString(messageResId)
 
     AlertDialog.Builder(this)
-        .setMessage(message)
-        .setTitle(title)
+        .setMessage(messageResId)
+        .setTitle(titleResId)
         .setCancelable(true)
         .setPositiveButton(positiveButtonLabel) { dialog, _ ->
             dialog.dismiss()
+            onPositiveButtonClick()
         }
         .create()
         .show()

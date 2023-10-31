@@ -72,6 +72,7 @@ class CorrectiveActionAdapter(
     }
 
     fun submitInspectionList(newCorrectiveAction: List<Row>) {
+        correctiveActionList.clear()
         correctiveActionList.addAll(newCorrectiveAction)
         Log.d("Debug", "newInspectionList size: ${newCorrectiveAction.size}")
         notifyDataSetChanged()

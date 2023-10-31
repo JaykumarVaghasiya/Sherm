@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.setupSpinnerFromArray
-import com.jay.shermassignment.generic.showToast
+import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -74,17 +74,17 @@ class CorrectiveEvaluation : AppCompatActivity() {
             val correctiveEvaluation = try {
                 CorrectiveEvaluationInstance.api.addEvaluation(body, authToken!!)
             } catch (e: Exception) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             } catch (e: HttpException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             } catch (e: IOException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             }
             if(correctiveEvaluation.isSuccessful && correctiveEvaluation.body() != null){
-                showToast(getString(R.string.added))
+                showConfirmationDialog(getString(R.string.sherm),getString(R.string.added))
                 finish()
             }
         }

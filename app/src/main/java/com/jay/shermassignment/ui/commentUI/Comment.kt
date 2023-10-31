@@ -8,7 +8,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.jay.shermassignment.R
-import com.jay.shermassignment.generic.showToast
+import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.response.comments.CommentBody
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
@@ -45,6 +45,9 @@ class Comment : AppCompatActivity() {
 
     private fun saveComment() {
         val commentText = comment.text.toString()
+        if(commentText.isEmpty()){
+            showConfirmationDialog(getString(R.string.error),getString(R.string.comment_required))
+        }
         val authToken = SessionManager(this).fetchAuthToken()
         val commentBody = CommentBody(commentText, inspectionId)
 
@@ -53,18 +56,19 @@ class Comment : AppCompatActivity() {
             try {
                 CommentInstance.api.addCommentsForInspection(commentBody, authToken!!)
             } catch (e: Exception) {
-                showToast("Error: ${e.message}")
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             } catch (e: HttpException) {
-                showToast("Error: ${e.message}")
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             } catch (e: IOException) {
-                showToast("Error: ${e.message}")
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             }
             if (commentResponse.isSuccessful && commentResponse.body() != null) {
-                showToast(getString(R.string.successfully_comment))
-                finish()
+                showConfirmationDialog(getString(R.string.sherm),getString(R.string.successfully_comment)){
+                    finish()
+                }
             }
         }
     }

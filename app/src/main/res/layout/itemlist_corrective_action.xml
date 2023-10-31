@@ -10,7 +10,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="16dp"
+        app:cardElevation="4dp"
         android:padding="8dp"
         android:background="@color/offWhite"
         app:cardCornerRadius="8dp"
@@ -50,7 +50,7 @@
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:dividerColor="@color/green"/>
+                />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvCorrectiveAssign"
@@ -79,7 +79,6 @@
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:dividerColor="@color/darkGreen"
                 />
 
             <LinearLayout

@@ -72,4 +72,10 @@
     <string name="complted">Inspection completion added successfully</string>
     <string name="sucess">Success</string>
     <string name="deleteThis">Are you sure you want to delete this Inspection?</string>
+    <string name="saved_sucessfully">Saved Successfully</string>
+    <string name="reject_sucessfully">Rehected Sucessfully</string>
+    <string name="approve_sucessfully">Approved Successfully</string>
+    <string name="comment_required">Comments required</string>
+    <string name="error">Error</string>
+    <string name="caview">CA View</string>
 </resources>

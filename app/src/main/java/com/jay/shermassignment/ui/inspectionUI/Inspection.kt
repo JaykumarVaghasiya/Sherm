@@ -14,7 +14,6 @@ import com.airbnb.lottie.LottieAnimationView
 import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.generic.showCustomDialog
-import com.jay.shermassignment.generic.showToast
 import com.jay.shermassignment.generic.startActivityStart
 import com.jay.shermassignment.response.inspection.InspectionRef
 import com.jay.shermassignment.response.inspection.Row
@@ -68,6 +67,7 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
         overlay=findViewById(R.id.overLay)!!
         progressBarPagination = findViewById(R.id.pbPagination)
         overlay.visibility = View.VISIBLE
+        overlay.bringToFront()
         progressBarPagination.visibility = View.GONE
     }
 
@@ -125,12 +125,12 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
 
                     inspectionAdapter.submitInspectionList(rows)
                 } else {
-                    showToast(getString(R.string.empty_data_or_response))
+                    showConfirmationDialog(getString(R.string.sherm),getString(R.string.empty_data_or_response))
                 }
             } catch (e: IOException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
             } catch (e: HttpException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
             } finally {
                 isLoading = false
                 progressBarPagination.visibility = View.GONE
@@ -141,7 +141,48 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
 
     override fun onResume() {
         super.onResume()
-        loadNextPage()
+
+        val authToken = SessionManager(this).fetchAuthToken()
+        overlay.visibility = View.VISIBLE
+
+        lifecycleScope.launch {
+            try {
+                val inspectionResponse = InspectionDetailsInstance.api.getInspectionDetails(
+                    InspectionRef(
+                        inspectionId = "",
+                        inspectionLocation = "",
+                        page = currentPage,
+                        responsibleId = null,
+                        sidx = "inspectionId",
+                        siteId = arrayListOf(),
+                        sord = "desc",
+                        status = "false"
+                    ), "Bearer $authToken"
+                )
+
+                if (inspectionResponse.isSuccessful && inspectionResponse.body() != null) {
+                    val rows = inspectionResponse.body()?.content?.rows ?: emptyList()
+                    val result = inspectionResponse.body()
+                    totalRecords = result?.content?.records ?: totalRecords
+
+                    if (rows.isEmpty()) {
+                        isLastPage = true
+                    }
+
+                    inspectionAdapter.submitInspectionList(rows)
+                } else {
+                    showConfirmationDialog(getString(R.string.sherm),getString(R.string.empty_data_or_response))
+                }
+            } catch (e: IOException) {
+                showConfirmationDialog(getString(R.string.sherm),e.message)
+            } catch (e: HttpException) {
+                showConfirmationDialog(getString(R.string.sherm),e.message)
+            } finally {
+                isLoading = false
+                progressBarPagination.visibility = View.GONE
+                overlay.visibility = View.GONE
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -178,13 +219,13 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
                         inspectionAdapter.deleteInspection(row)
                     }
                 } else {
-                    showConfirmationDialog(R.string.sherm, R.string.cantdeleted
+                    showConfirmationDialog(getString(R.string.sherm),getString( R.string.cantdeleted)
                     )
                 }
             } catch (e: IOException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
             } catch (e: HttpException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
             }
         }
     }

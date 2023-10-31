@@ -1,10 +1,9 @@
 package com.jay.shermassignment.response.duedaterequest
 
 data class DueDateExtension(
-    val approverComment: Any,
-    val id: Any,
-    val prefferedDate: Any,
-    val requestorComment: Any,
-    val status: Any,
-    val version: Int
+    val approverComment: String,
+    val id: Int? =null,
+    val prefferedDate: String,
+    val requestorComment: String,
+    val status: String
 )

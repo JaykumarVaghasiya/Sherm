@@ -11,7 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
-import com.jay.shermassignment.generic.showToast
+import com.jay.shermassignment.generic.showConfirmationDialog
+import com.jay.shermassignment.generic.timestampToDate
 import com.jay.shermassignment.ui.add_inspection_completed.AddInspectionCompleted
 import com.jay.shermassignment.ui.commentUI.Comment
 import com.jay.shermassignment.ui.corrective_action.CorrectiveAction
@@ -64,7 +65,7 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
                     "Bearer $authToken"
                 )
             } catch (e: Exception) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             } finally {
                 progressBar.visibility = View.GONE
@@ -77,11 +78,9 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
                 inspectionType.text = data.inspectionType.name
                 inspectionLocation.text = data.inspectionLocation
                 responsiblePerson.text = data.responsiblePerson.user.employee.fullName
-                dueDate.text = data.dueDate
+                dueDate.text = timestampToDate(data.dueDate)
                 site.text = data.workplaceInspection.site.name
                 reschedule.text = data.reschedule.toString()
-            } else {
-                showToast(getString(R.string.nothing_to_see_here))
             }
         }
     }

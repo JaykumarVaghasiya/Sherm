@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
-import com.jay.shermassignment.generic.showToast
+import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.response.correctiveaction.CorrectiveActionData
 import com.jay.shermassignment.response.correctiveaction.Row
 import com.jay.shermassignment.ui.add_corrective_action.AddCorrectiveAction
@@ -41,8 +41,6 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
         setupViews()
         setupAdapter()
         setupListeners()
-        loadCorrectiveAction()
-
     }
 
     override fun onResume() {
@@ -118,17 +116,17 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
         lifecycleScope.launch {
             val correctiveActionResponse = try {
                 CorrectiveActionInstance.api.getAllCorrectiveAction(
-                    CorrectiveActionData(2888, 1, "action", "asc", "Risk"),
+                    CorrectiveActionData(inspectionId, 1, "id", "desc", "Inspection"),
                     "Bearer $authToken"
                 )
             } catch (e: Exception) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             } catch (e: IOException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             } catch (e: HttpException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             }
             if (correctiveActionResponse.isSuccessful && correctiveActionResponse.body() != null) {
@@ -151,7 +149,6 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
         val iId = intent.getIntExtra("ids", 0)
         val intent = Intent(this, CAViewActivity::class.java)
         intent.putExtra("iId",iId)
-        intent.putExtra("cId",row.id)
         intent.putExtra("correctiveActionId", id)
         startActivity(intent)
     }

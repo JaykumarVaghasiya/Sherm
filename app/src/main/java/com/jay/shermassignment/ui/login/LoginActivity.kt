@@ -9,8 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.jay.shermassignment.R
-import com.jay.shermassignment.generic.showCustomDialog
-import com.jay.shermassignment.generic.showToast
+import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.ui.dashboardUI.MainActivity
 import com.jay.shermassignment.utils.RetrofitInstance
 import com.jay.shermassignment.utils.SessionManager
@@ -61,21 +60,19 @@ class LoginActivity : AppCompatActivity() {
             overLay.visibility= View.VISIBLE
             lifecycleScope.launch {
                 try {
-
                     val response = UserDetailsInstance.api.getUserDetails(user)
                     if (response.isSuccessful && response.body() != null) {
                         val userResponse = response.body()
                         userResponse?.content?.token?.let { sessionManager.saveAuthToken(it) }
-
                         startMainActivity()
                     }
                     else {
                         showErrorDialog()
                     }
                 } catch (e: IOException) {
-                    showToast( e.message)
+                    showConfirmationDialog(getString(R.string.sherm),e.message)
                 } catch (e: HttpException) {
-                    showToast( e.message)
+                    showConfirmationDialog(getString(R.string.sherm),e.message)
                 }
             }
         }
@@ -83,17 +80,17 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showErrorDialog() {
         overLay.visibility= View.GONE
-        showCustomDialog(
-            R.string.invalid_credentials,
-            R.string.request_valid_email_or_password
+        showConfirmationDialog(
+            getString(R.string.invalid_credentials),
+            getString(R.string.request_valid_email_or_password)
         )
     }
 
     private fun showEmptyDialog() {
         overLay.visibility= View.GONE
-        showCustomDialog(
-            R.string.empty_credentials,
-            R.string.request_email_or_password
+        showConfirmationDialog(
+            getString(R.string.empty_credentials),
+            getString(R.string.request_email_or_password)
         )
     }
     private fun startMainActivity() {

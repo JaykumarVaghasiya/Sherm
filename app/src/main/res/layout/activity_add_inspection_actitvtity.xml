@@ -79,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider"
-            app:dividerColor="@color/darkGrey" />
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -120,7 +120,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider"
-            app:dividerColor="@color/darkGrey" />
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -162,7 +162,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider"
-            app:dividerColor="@color/darkGrey" />
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -204,7 +204,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider"
-            app:dividerColor="@color/darkGrey" />
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -245,7 +245,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider"
-            app:dividerColor="@color/darkGrey" />
+            />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -290,7 +290,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider"
-            app:dividerColor="@color/darkGrey" />
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -332,6 +332,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider"
-            app:dividerColor="@color/darkGrey" />
+            />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

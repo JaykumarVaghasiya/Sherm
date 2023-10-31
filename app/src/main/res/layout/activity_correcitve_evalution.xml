@@ -33,20 +33,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/type_here"
+        android:padding="2dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/offWhite"
         android:inputType="textImeMultiLine"
         android:textColor="@color/darkGreen"/>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/status"
+        android:padding="2dp"
+        android:layout_marginTop="12dp"
         android:textColor="@color/darkGreen"
-        android:padding="8dp"/>
+       />
 
     <Spinner
         android:id="@+id/spStatusCorrectiveEvaluation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:spinnerMode="dialog"/>
+        android:spinnerMode="dialog"
+        android:padding="2dp"
+        android:layout_marginTop="12dp"/>
 
 </LinearLayout>

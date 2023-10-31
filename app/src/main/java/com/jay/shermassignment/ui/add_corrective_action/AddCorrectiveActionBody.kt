@@ -4,7 +4,7 @@ data class AddCorrectiveActionBody(
     var id:Int?,
     val action: String,
     val dueDate: String,
-    val hazardId: Int,
+    val hazardId: Int?,
     val hierarchyOfControl: HierarchyOfControl,
     val incidentId: Any?,
     val inspectionScheduleId: Any?,

@@ -10,8 +10,11 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
+import com.jay.shermassignment.generic.commonDateToISODate
+import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.generic.showGenericDateDialog
-import com.jay.shermassignment.generic.showToast
+import com.jay.shermassignment.response.duedaterequest.DueDateBody
+import com.jay.shermassignment.response.duedaterequest.DueDateExtension
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -30,18 +33,20 @@ class DueDateExtendRequest : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_due_date_extend_request)
         supportActionBar?.setTitle(R.string.due_date_extended_request)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         initializeViewsId()
 
         preferredDateButton.setOnClickListener {
-            showGenericDateDialog(R.string.selectedDate.toString(), System.currentTimeMillis()) { selectedDate ->
+            showGenericDateDialog(
+                getString(R.string.selectedDate),
+                System.currentTimeMillis()
+            ) { selectedDate ->
                 val formattedDate =
                     SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(selectedDate))
                 preferredDateText.text = formattedDate
             }
         }
-
-
     }
     private fun initializeViewsId() {
         preferredDateText=findViewById(R.id.tvPreferredDate)
@@ -58,31 +63,60 @@ class DueDateExtendRequest : AppCompatActivity() {
         val id = item.itemId
         if (id == R.id.save) {
             sendDueDateRequest()
-            finish()
         }
         if(id == android.R.id.home){
             finish()
         }
         return super.onOptionsItemSelected(item)
     }
-    private fun sendDueDateRequest(){
-        val id = intent.getIntExtra("correctiveActionId",0)
+    private fun sendDueDateRequest() {
+        val id = intent.getIntExtra("cID", 0)
+        val comment = commentText.text.toString()
+        val preferredDate = preferredDateText.text.toString()
+
 
         val authToken = SessionManager(this).fetchAuthToken()
 
         lifecycleScope.launch {
-            val dueDateExtendResponse=try{
-                DueDateInstance.api.getDueDateRequest(id,authToken!!)
-            }catch (e: HttpException){
-                showToast( e.message)
+            val dueDateExtendResponse = try {
+                val body = DueDateBody(
+                    id,
+                    DueDateExtension(
+                        comment,
+                        null,
+                        commonDateToISODate(preferredDate) ,
+                        comment,
+                        status = ""
+                    )
+                )
+                DueDateInstance.api.getDueDateRequest("request", body, "Bearer $authToken")
+            } catch (e: Exception) {
+                showConfirmationDialog(
+                    getString(R.string.sherm),
+                    getString(R.string.empty_data_or_response)
+                )
                 return@launch
-            }catch (e: IOException){
-                showToast( e.message)
+            } catch (e: HttpException) {
+                showConfirmationDialog(
+                    getString(R.string.sherm),
+                    getString(R.string.empty_data_or_response)
+                )
+                return@launch
+            } catch (e: IOException) {
+                showConfirmationDialog(
+                    getString(R.string.sherm),
+                    getString(R.string.empty_data_or_response)
+                )
                 return@launch
             }
 
-            if (dueDateExtendResponse.isSuccessful && dueDateExtendResponse.body() != null){
-                showToast( getString(R.string.due_date_extended_request))
+            if (dueDateExtendResponse.isSuccessful && dueDateExtendResponse.body() != null) {
+                showConfirmationDialog(
+                    getString(R.string.sherm),
+                    getString(R.string.saved_sucessfully)
+                ) {
+                    finish()
+                }
             }
         }
     }

@@ -14,9 +14,10 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
 import com.jay.shermassignment.api.inspection.SpinnerInstance
+import com.jay.shermassignment.generic.commonDateToISODate
 import com.jay.shermassignment.generic.setupSpinnerFromArray
+import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.generic.showGenericDateDialog
-import com.jay.shermassignment.generic.showToast
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -58,13 +59,13 @@ class AddCorrectiveAction : AppCompatActivity() {
             val responsiblePerson = try {
                 SpinnerInstance.api.getAlLResponsiblePerson("Bearer $authToken")
             } catch (e: Exception) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             } catch (e: HttpException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             } catch (e: IOException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             }
 
@@ -90,7 +91,6 @@ class AddCorrectiveAction : AppCompatActivity() {
                             id: Long
                         ) {
                             responsibleId = body?.content?.get(position)?.id ?: 0
-                            showToast("{$responsibleId}")
                         }
 
                         override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -98,8 +98,6 @@ class AddCorrectiveAction : AppCompatActivity() {
                         }
                     }
 
-            } else {
-                showToast("Avengers Assemble ")
             }
         }
     }
@@ -130,66 +128,44 @@ class AddCorrectiveAction : AppCompatActivity() {
         val hierarchyOfControlValue = getHierarchyControl(hierarchyOfControl)
         val correctiveAction = correctiveActionMultilineEditText.text.toString()
         val dueDateText = dueDateTextView.text.toString()
-        followUpSpinner.selectedItem.toString()
         val reviewDateValue = reviewDateTextView.text.toString()
         val authToken = SessionManager(this).fetchAuthToken()
         inspectionScheduleId = intent.getIntExtra("iId", 1)
 
-        followUpSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parentView: AdapterView<*>?,
-                selectedItemView: View?,
-                position: Int,
-                id: Long
-            ) {
-                val calendar = Calendar.getInstance()
-                calendar.add(Calendar.MONTH, position + 1)
-                val dateAfterMonths = calendar.time
 
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                val formattedDate = dateFormat.format(dateAfterMonths)
-                reviewDateTextView.text = formattedDate
-            }
-
-            override fun onNothingSelected(parentView: AdapterView<*>?) {
-                // Do nothing
-            }
-        }
 
         val body = AddCorrectiveActionBody(
             null,
             correctiveAction,
-            dueDateText,
-            2888,
+            commonDateToISODate(dueDateText),
+            null,
             HierarchyOfControl(hierarchyOfControlValue),
             null,
-            null,
+            inspectionScheduleId,
             null,
             responsibleId,
-            reviewDateValue
+            commonDateToISODate(reviewDateValue)
         )
 
         lifecycleScope.launch {
             val addCorrectiveAction = try {
                 AddCorrectiveActionInstance.api.addCorrectiveAction(body, "Bearer $authToken")
             } catch (e: Exception) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.error),e.message)
                 return@launch
             } catch (e: HttpException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.error),e.message)
                 return@launch
             } catch (e: IOException) {
-                showToast(e.message)
+                showConfirmationDialog(getString(R.string.error),e.message)
                 return@launch
             }
             if (addCorrectiveAction.isSuccessful && addCorrectiveAction.body() != null) {
-                showToast(getString(R.string.added))
-                finish()
-            } else {
-                showToast("FF")
+                showConfirmationDialog(getString(R.string.sucess),getString(R.string.added)){
+                    finish()
+                }
             }
         }
-
     }
 
     private fun btClickListener() {
@@ -200,18 +176,40 @@ class AddCorrectiveAction : AppCompatActivity() {
             ) { selectedDate ->
                 selectedDueDate = selectedDate
                 val formattedDate =
-                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(selectedDate))
+                    SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date(selectedDate))
                 dueDateTextView.text = formattedDate
-                calculateAndDisplayReviewDate(selectedDueDate)
+
+                // Calculate and display the review date based on the selected follow-up duration
+
+                calculateReviewDate()
+            }
+        }
+        followUpSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>?,
+                selectedItemView: View?,
+                position: Int,
+                id: Long
+            ) {
+                calculateReviewDate()
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+                // Do nothing
             }
         }
     }
 
-    private fun calculateAndDisplayReviewDate(dueDate: Long) {
+    private fun calculateReviewDate() {
+        val selectedFollowUpItem = followUpSpinner.selectedItem.toString()
+        val followUpMonths = selectedFollowUpItem.split(" ")[0].toInt()
 
-        val formattedReviewDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(dueDate))
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = selectedDueDate
+        calendar.add(Calendar.MONTH, followUpMonths)
+
+        val formattedReviewDate = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(calendar.time)
         reviewDateTextView.text = formattedReviewDate
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
