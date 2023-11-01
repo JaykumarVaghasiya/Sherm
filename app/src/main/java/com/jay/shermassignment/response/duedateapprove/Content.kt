@@ -1,4 +1,4 @@
-package com.jay.shermassignment.response.duedaterequest
+package com.jay.shermassignment.response.duedateapprove
 
 data class Content(
     val dueDateExtension: DueDateExtensionX

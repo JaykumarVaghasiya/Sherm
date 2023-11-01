@@ -13,8 +13,8 @@ import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.commonDateToISODate
 import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.generic.showGenericDateDialog
-import com.jay.shermassignment.response.duedaterequest.DueDateBody
-import com.jay.shermassignment.response.duedaterequest.DueDateExtension
+import com.jay.shermassignment.response.extenddate.DueDateExtension
+import com.jay.shermassignment.response.extenddate.ExtendDateBody
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -79,7 +79,7 @@ class DueDateExtendRequest : AppCompatActivity() {
 
         lifecycleScope.launch {
             val dueDateExtendResponse = try {
-                val body = DueDateBody(
+                val body = ExtendDateBody(
                     id,
                     DueDateExtension(
                         comment,

@@ -1,104 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="12dp"
-    android:background="@color/offWhite"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    tools:context=".ui.dueDate.DueDateExtendedApproval">
+    tools:context=".ui.dueDate.DueDateExtendedApproval"
+    >
 
-    <com.google.android.material.textview.MaterialTextView
+    <include
+        android:id="@+id/overLay"
+        layout="@layout/loading_screen"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/preferred_date"
-        android:paddingHorizontal="8dp"
-        android:textColor="@color/darkGreen" />
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/llCalender"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:clickable="true"
-        android:paddingVertical="4dp"
-        android:paddingHorizontal="8dp"
-        android:layout_marginVertical="4dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:background="@color/offWhite"
+        android:orientation="vertical"
+        android:padding="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+      >
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvPreferredDateApproval"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:paddingHorizontal="8dp"
+            android:text="@string/preferred_date"
             android:textColor="@color/darkGreen" />
 
-        <com.google.android.material.button.MaterialButton
+        <LinearLayout
+            android:id="@+id/llCalender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="4dp"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp">
 
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/calender" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:paddingHorizontal="8dp"
-        android:orientation="horizontal"
-        android:paddingVertical="2dp">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvPreferredDateApproval"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/darkGreen" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/comments"
-        android:textColor="@color/darkGreen" />
-        <com.google.android.material.textview.MaterialTextView
+            <com.google.android.material.button.MaterialButton
+
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/calender" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/star"
-            android:layout_marginStart="4dp"
-            android:textStyle="bold"
-            android:textColor="@color/red" />
-    </LinearLayout>
-    <EditText
-        android:id="@+id/etmComment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:background="@color/offWhite"
-        android:ems="10"
-        android:paddingVertical="4dp"
-        android:paddingHorizontal="8dp"
-        android:layout_marginVertical="4dp"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:textColor="@color/darkGreen" />
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal">
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/comments"
+                android:textColor="@color/darkGreen" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnReject"
-            android:layout_width="0dp"
-            android:layout_marginHorizontal="12dp"
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@string/star"
+                android:textColor="@color/red"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/etmComment"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:cornerRadius="4dp"
-            android:text="@string/reject" />
+            android:layout_marginVertical="4dp"
+            android:autofillHints=""
+            android:background="@color/offWhite"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textColor="@color/darkGreen" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnApprove"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:cornerRadius="4dp"
-            android:layout_marginHorizontal="12dp"
-            android:text="@string/approve" />
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnReject"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_weight="1"
+                android:text="@string/reject"
+                app:cornerRadius="4dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnApprove"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_weight="1"
+                android:text="@string/approve"
+                app:cornerRadius="4dp" />
+        </LinearLayout>
+
+
     </LinearLayout>
-
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

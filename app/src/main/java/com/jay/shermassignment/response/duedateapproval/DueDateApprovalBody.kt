@@ -1,6 +1,7 @@
 package com.jay.shermassignment.response.duedateapproval
 
 data class DueDateApprovalBody(
-    val correctiveActionId: Int,
-    val dueDateExtension: DueDateExtension
+    val action: String,
+    val comment: String,
+    val correctiveActionId: Int
 )

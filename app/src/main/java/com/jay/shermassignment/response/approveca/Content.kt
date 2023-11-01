@@ -1,4 +1,4 @@
-package com.jay.shermassignment.response.duedateapproval
+package com.jay.shermassignment.response.approveca
 
 data class Content(
     val comment: String,

@@ -13,4 +13,5 @@
     <color name="offWhite">#F7F7F6</color>
     <color name="grey">#F6F6F6</color>
     <color name="darkGrey">#434343</color>
+    <color name="gray100">#837C7C</color>
 </resources>

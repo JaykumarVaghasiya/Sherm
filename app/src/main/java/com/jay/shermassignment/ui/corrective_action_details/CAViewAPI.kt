@@ -1,6 +1,7 @@
 package com.jay.shermassignment.ui.corrective_action_details
 
 import com.jay.shermassignment.response.correctiveactionalldetails.CorrectiveActionDetailsResponse
+import com.jay.shermassignment.response.duedate.GetDueDateResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -14,8 +15,8 @@ interface CAViewAPI {
     ): Response<CorrectiveActionDetailsResponse>
 
     @GET("/OHSClient/rest/v2/getExtendDueDateRequest.do")
-    suspend fun getDueDateExtendedRequest(
+    suspend fun checkDueDateExtend(
         @Query("correctiveActionId") correctiveActionId: Int,
         @Header("Authorization") authToken: String
-    ): Response<CorrectiveActionDetailsResponse>
+    ): Response<GetDueDateResponse>
 }

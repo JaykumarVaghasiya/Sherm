@@ -17,9 +17,14 @@
         android:theme="@style/Base.Theme.ShermTheme"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".ui.approve_ca.ApproveCA"
+            android:exported="false" />
+        <activity
+            android:name=".generic.Test"
+            android:exported="false" />
+        <activity
             android:name=".ui.corrective_evaluation.CorrectiveEvaluation"
-            android:exported="false"
-             />
+            android:exported="false" />
         <activity
             android:name=".ui.add_inspection_completed.AddInspectionCompleted"
             android:exported="false" />
@@ -28,8 +33,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.dueDate.DueDateExtendedApproval"
-            android:exported="false"
-            />
+            android:exported="false" />
         <activity
             android:name=".ui.dueDate.DueDateExtendRequest"
             android:exported="false" />
@@ -50,9 +54,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.inspectionDetailsUI.ShowInspectionDetailsActivity"
-            android:exported="false"
-            />
-
+            android:exported="false" />
         <activity
             android:name=".ui.inspectionUI.Inspection"
             android:exported="false" />
@@ -69,8 +71,8 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="false"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
-            android:theme="@style/Theme.RemoveSplashScreenTheme" />
+            android:theme="@style/Theme.RemoveSplashScreenTheme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
             android:name=".ui.dashboardUI.MainActivity"
             android:exported="false" />

@@ -4,123 +4,59 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Spinner
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
-import com.jay.shermassignment.api.inspection.SpinnerInstance
 import com.jay.shermassignment.generic.showConfirmationDialog
-import com.jay.shermassignment.generic.showGenericDateDialog
+import com.jay.shermassignment.generic.timestampToDate
+import com.jay.shermassignment.ui.approve_ca.ApproveCA
 import com.jay.shermassignment.ui.dueDate.DueDateExtendRequest
 import com.jay.shermassignment.ui.dueDate.DueDateExtendedApproval
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class CAViewActivity : AppCompatActivity() {
 
     private lateinit var dueDateRequest: MaterialButton
     private lateinit var dueDateApproval: MaterialButton
-    private lateinit var dueDateButton: MaterialButton
-    private lateinit var dueDateText: MaterialTextView
-    private lateinit var reviewDateText: MaterialTextView
-    private lateinit var caResponsiblePersonSpinner: Spinner
-    private lateinit var hierarchyOfControlSpinner: Spinner
-    private lateinit var statusSpinner: Spinner
-    private lateinit var followUpSpinner: Spinner
-    private lateinit var correctiveActionText: EditText
-    private var responsibleId: Int = 0
+    private lateinit var dueDateApproveCA: MaterialButton
+    private lateinit var loading:LinearLayout
+    private lateinit var dueDate: MaterialTextView
+    private lateinit var reviewDate: MaterialTextView
+    private lateinit var responsiblePerson: MaterialTextView
+    private lateinit var hierarchyOfControl: MaterialTextView
+    private lateinit var followUp: MaterialTextView
+    private lateinit var status: MaterialTextView
+    private lateinit var correctiveActionText: MaterialTextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_caview)
         supportActionBar?.setTitle(R.string.caview)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        val authToken = SessionManager(this).fetchAuthToken()
         initializeViews()
-        lifecycleScope.launch {
-            fetchData(authToken)
-            getRequestInfo()
-        }
-        getResponsiblePerson()
+        getDate()
+        fetchData()
         setClickListeners()
-
-
     }
 
     override fun onResume() {
         super.onResume()
-        getRequestInfo()
-
+        getDate()
     }
 
-    private fun getResponsiblePerson() {
-        val authToken = SessionManager(this).fetchAuthToken()
-        lifecycleScope.launch {
-            val responsiblePerson = try {
-                SpinnerInstance.api.getAlLResponsiblePerson("Bearer $authToken")
-            } catch (e: Exception) {
-                showConfirmationDialog(getString(R.string.sherm), e.message)
-                return@launch
-            } catch (e: HttpException) {
-                showConfirmationDialog(getString(R.string.sherm), e.message)
-                return@launch
-            } catch (e: IOException) {
-                showConfirmationDialog(getString(R.string.sherm), e.message)
-                return@launch
-            }
-
-            if (responsiblePerson.isSuccessful && responsiblePerson.body() != null) {
-                val body = responsiblePerson.body()
-
-                val responsiblePersonName = body?.content?.map { reportingTo ->
-                    reportingTo.fullName
-                }
-                val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-                    this@CAViewActivity,
-                    android.R.layout.simple_spinner_item,
-                    responsiblePersonName ?: emptyList()
-                )
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                caResponsiblePersonSpinner.adapter = adapter
-                caResponsiblePersonSpinner.onItemSelectedListener =
-                    object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
-                            responsibleId = body?.content?.get(position)?.id ?: 0
-                        }
-
-                        override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                        }
-                    }
-
-            }
-        }
-    }
-
-    private fun getRequestInfo() {
-
+    private fun getDate() {
         val id = intent.getIntExtra("correctiveActionId", 1)
         val authToken = SessionManager(this).fetchAuthToken()
 
         lifecycleScope.launch {
             val requestResponse = try {
-                CAViewInstance.api.getDueDateExtendedRequest(id, "Bearer $authToken")
+                CAViewInstance.api.checkDueDateExtend(id, "Bearer $authToken")
             } catch (e: Exception) {
                 showConfirmationDialog(getString(R.string.error), e.message)
                 return@launch
@@ -132,32 +68,47 @@ class CAViewActivity : AppCompatActivity() {
                 return@launch
             }
             if (requestResponse.isSuccessful && requestResponse.body() != null) {
-                dueDateApproval.visibility = View.VISIBLE
-            }else{
-                dueDateApproval.visibility = View.GONE
+                val body = requestResponse.body()!!
+                val dueDateId = body.content.dueDateExtension.id
+                if (dueDateId == null) {
+                    dueDateApproval.visibility = View.GONE
+                }
+
             }
         }
     }
 
+
     private fun initializeViews() {
         dueDateRequest = findViewById(R.id.btnDueDateRequest)
         dueDateApproval = findViewById(R.id.btnDueDateApproval)
-        dueDateButton = findViewById(R.id.btnDueDate)
-        dueDateText = findViewById(R.id.tvDueDateCA)
-        reviewDateText = findViewById(R.id.tvReviewDate)
-        caResponsiblePersonSpinner = findViewById(R.id.spResponsiblePersonCA)
-        hierarchyOfControlSpinner = findViewById(R.id.spHierarchyOfControl)
-        statusSpinner = findViewById(R.id.spStatus)
-        followUpSpinner = findViewById(R.id.spFollowUp)
+        dueDateApproveCA=findViewById(R.id.btnCApprove)
+        dueDate = findViewById(R.id.tvDueDateCA)
+        reviewDate = findViewById(R.id.tvReviewDate)
+        loading=findViewById(R.id.overLay)
+        loading.bringToFront()
+        loading.visibility=View.VISIBLE
+        responsiblePerson = findViewById(R.id.spResponsiblePersonCA)
+        hierarchyOfControl = findViewById(R.id.spHierarchyOfControl)
+        status = findViewById(R.id.spStatus)
         correctiveActionText = findViewById(R.id.etmCorrectiveAction)
+        followUp = findViewById(R.id.tvFollowUp)
     }
 
 
     private fun setClickListeners() {
         dueDateRequest.setOnClickListener { navigateToDueDateExtendRequest() }
         dueDateApproval.setOnClickListener { navigateToDueDateExtendedApproval() }
-        dueDateButton.setOnClickListener { showDueDatePicker() }
+        dueDateApproveCA.setOnClickListener { navigateToApproveCA() }
     }
+
+    private fun navigateToApproveCA() {
+        val id = intent.getIntExtra("correctiveActionId", 1)
+        val intent=Intent(this, ApproveCA::class.java)
+        intent.putExtra("cID", id)
+        startActivity(intent)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home ->{
@@ -182,57 +133,47 @@ class CAViewActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private suspend fun fetchData(authToken: String?) {
+    private fun fetchData() {
+        val authToken = SessionManager(this).fetchAuthToken()
         val id = intent.getIntExtra("correctiveActionId", 1)
-        val cAViewResponse = try {
-            CAViewInstance.api.getAllCAViewDetails(id, authToken!!)
-        } catch (e: Exception) {
-            showConfirmationDialog(getString(R.string.sherm), e.message)
-            return
-        }
+        lifecycleScope.launch {
+            val cAViewResponse = try {
+                CAViewInstance.api.getAllCAViewDetails(id, "Bearer $authToken")
+            } catch (e: Exception) {
+                showConfirmationDialog(getString(R.string.sherm), e.message)
+                return@launch
+            } catch (e: HttpException) {
+                showConfirmationDialog(getString(R.string.sherm), e.message)
+                return@launch
+            } catch (e: IOException) {
+                showConfirmationDialog(getString(R.string.sherm), e.message)
+                return@launch
+            }
 
-        if (cAViewResponse.isSuccessful && cAViewResponse.body() != null) {
-            val cAViewBody = cAViewResponse.body()!!.content
-            setupSpinnerWithArray(hierarchyOfControlSpinner, R.array.assignCA, cAViewBody.hierarchyOfControl.value)
-            setupSpinnerWithArray(statusSpinner, R.array.status, cAViewBody.status.toString())
-            setupSpinnerWithArray(followUpSpinner, R.array.followUp,
-                cAViewBody.reviewDate?.toString()
-            )
-            correctiveActionText.setText(cAViewBody.action)
-
-            val originalDate = cAViewBody.dueDate
-            val originalDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-            val formattedDate = originalDateFormat.parse(originalDate)
-
-            val desiredDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.US)
-            val formattedDateString = formattedDate?.let { desiredDateFormat.format(it) }
-
-            dueDateText.text = formattedDateString
-            reviewDateText.text = cAViewBody.reviewDate?.toString()
-        }
-    }
-
-    private fun setupSpinnerWithArray(spinner: Spinner, arrayResId: Int, selectedItem: String?) {
-        val items = resources.getStringArray(arrayResId)
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter
-
-        if (!selectedItem.isNullOrBlank()) {
-            val selectedIndex = items.indexOf(selectedItem)
-            if (selectedIndex != -1) {
-                spinner.setSelection(selectedIndex)
+            if (cAViewResponse.isSuccessful && cAViewResponse.body() != null) {
+                val cAViewBody = cAViewResponse.body()!!.content
+                correctiveActionText.text = cAViewBody.action
+                responsiblePerson.text = cAViewBody.responsiblePersonName
+                hierarchyOfControl.text = cAViewBody.hierarchyOfControl.value
+                status.text = getStatus(cAViewBody.status)
+                followUp.text = cAViewBody.parentType
+                dueDate.text = timestampToDate(cAViewBody.createdOn)
+                reviewDate.text = timestampToDate(cAViewBody.dueDate)
+                if(status.text == "Closed"){
+                    dueDateApproval.visibility = View.GONE
+                    dueDateRequest.visibility = View.GONE
+                    dueDateApproveCA.visibility=View.VISIBLE
+                }
+                loading.visibility=View.GONE
             }
         }
     }
 
-
-    private fun showDueDatePicker() {
-        showGenericDateDialog(R.string.selectedDate.toString(), System.currentTimeMillis()) { selectedDate ->
-            val formattedDate = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(selectedDate))
-            reviewDateText.text = formattedDate
+    private fun getStatus(siteSpinner: Int): String {
+        return when (siteSpinner) {
+            1 -> "Assigned"
+            else -> "Closed"
         }
     }
-
-
 }
+

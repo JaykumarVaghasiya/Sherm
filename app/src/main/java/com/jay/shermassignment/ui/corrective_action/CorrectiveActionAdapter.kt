@@ -7,14 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.divider.MaterialDivider
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
 import com.jay.shermassignment.response.correctiveaction.Row
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class CorrectiveActionAdapter(
     private val context: Context,
     private val correctiveActionListener: OnCorrectiveActionItemClick,
-    private val correctiveEvaluationListener: OnCorrectiveEvaluationClick
+    private val correctiveEvaluationListener: OnCorrectiveEvaluationClick,
+    private val onDataSetChanged: (Int) -> Unit
 ) :
     RecyclerView.Adapter<CorrectiveActionAdapter.CorrectiveActionViewHolder>() {
     private var correctiveActionList = mutableListOf<Row>()
@@ -24,6 +28,7 @@ class CorrectiveActionAdapter(
         private val date: MaterialTextView = itemView.findViewById(R.id.tvCorrectiveDate)
         private val assign: MaterialTextView = itemView.findViewById(R.id.tvCorrectiveAssign)
         private val assigner: MaterialTextView = itemView.findViewById(R.id.tvCorrectiveAssigner)
+        private val divider:MaterialDivider=itemView.findViewById(R.id.caDivider)
         private val inspectionName: MaterialTextView =
             itemView.findViewById(R.id.tvInspectionInCorrectiveActionName)
         private val correctiveEvolution: LinearLayout =
@@ -31,10 +36,17 @@ class CorrectiveActionAdapter(
 
         fun bind(row: Row) {
             status.text = row.status
-            date.text = row.dueDate
+            val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val formattedDueDate = dateFormatter.parse(row.dueDate)
+            val formattedDueDateString = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(formattedDueDate!!)
+            date.text = formattedDueDateString
             assign.text = row.responsible
             assigner.text = row.reported
             inspectionName.text = row.caType
+            if(status.text =="Closed"){
+                divider.visibility=View.GONE
+                correctiveEvolution.visibility=View.GONE
+            }
             correctiveEvolution.setOnClickListener {
                 correctiveEvaluationListener.onCorrectiveEvaluationClick(row)
             }
@@ -74,8 +86,13 @@ class CorrectiveActionAdapter(
     fun submitInspectionList(newCorrectiveAction: List<Row>) {
         correctiveActionList.clear()
         correctiveActionList.addAll(newCorrectiveAction)
+        onDataSetChanged(correctiveActionList.size)
         Log.d("Debug", "newInspectionList size: ${newCorrectiveAction.size}")
         notifyDataSetChanged()
+    }
+
+    fun checkStatus(row: Row){
+
     }
 
     interface OnCorrectiveActionItemClick {

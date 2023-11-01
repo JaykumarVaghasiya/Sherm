@@ -31,12 +31,12 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
     private lateinit var correctiveActionAdapter: CorrectiveActionAdapter
     private lateinit var progressBar: LinearLayout
     private lateinit var emptyListMessage: MaterialTextView
+    private val count:Int=0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_corrective_action)
-        supportActionBar?.title = getString(R.string.corrective_action)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setupViews()
         setupAdapter()
@@ -72,7 +72,10 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
     }
 
     private fun setupAdapter() {
-        correctiveActionAdapter = CorrectiveActionAdapter(this, this, this)
+        correctiveActionAdapter = CorrectiveActionAdapter(this, this, this) { itemcount ->
+            updateActionBarItemCount(itemcount)
+
+        }
         val inspectionLayoutManager = LinearLayoutManager(this)
         correctiveActionRecyclerView.layoutManager = inspectionLayoutManager
         correctiveActionRecyclerView.adapter = correctiveActionAdapter
@@ -99,6 +102,11 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
                     (if (correctiveActionAdapter.itemCount == 0) View.VISIBLE else View.GONE)
             }
         })
+    }
+
+    private fun updateActionBarItemCount(itemCount: Int) {
+        val actionBar = supportActionBar
+        actionBar?.title = "Corrective Action ($itemCount)"
     }
 
     private fun setupListeners() {

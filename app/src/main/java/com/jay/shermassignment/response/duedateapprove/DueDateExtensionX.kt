@@ -1,7 +1,7 @@
-package com.jay.shermassignment.response.duedaterequest
+package com.jay.shermassignment.response.duedateapprove
 
 data class DueDateExtensionX(
-    val approverComment: Any,
+    val approverComment: String,
     val id: Int,
     val prefferedDate: Long,
     val requestorComment: String,

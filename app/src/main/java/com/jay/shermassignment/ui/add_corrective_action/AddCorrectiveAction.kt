@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -37,6 +38,7 @@ class AddCorrectiveAction : AppCompatActivity() {
     private lateinit var correctiveActionMultilineEditText: EditText
     private lateinit var followUpSpinner: Spinner
     private lateinit var reviewDateTextView: MaterialTextView
+    private lateinit var loading:LinearLayout
     private var responsibleId: Int = 0
     private var inspectionScheduleId: Int = 0
     private var selectedDueDate: Long = 0
@@ -71,7 +73,7 @@ class AddCorrectiveAction : AppCompatActivity() {
 
             if (responsiblePerson.isSuccessful && responsiblePerson.body() != null) {
                 val body = responsiblePerson.body()
-
+                loading.visibility=View.GONE
                 val responsiblePersonName = body?.content?.map { reportingTo ->
                     reportingTo.fullName
                 }
@@ -112,7 +114,9 @@ class AddCorrectiveAction : AppCompatActivity() {
         statusSpinner = findViewById(R.id.spStatusAddCA)
         followUpSpinner = findViewById(R.id.spFollowUpAddCA)
         reviewDateTextView = findViewById(R.id.tvReviewDateAddCA)
-
+        loading=findViewById(R.id.overLay)
+        loading.bringToFront()
+        loading.visibility=View.VISIBLE
     }
 
     private fun spinnerValue() {
@@ -161,6 +165,7 @@ class AddCorrectiveAction : AppCompatActivity() {
                 return@launch
             }
             if (addCorrectiveAction.isSuccessful && addCorrectiveAction.body() != null) {
+                loading.visibility=View.GONE
                 showConfirmationDialog(getString(R.string.sucess),getString(R.string.added)){
                     finish()
                 }
@@ -220,6 +225,7 @@ class AddCorrectiveAction : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save -> {
+                loading.visibility=View.VISIBLE
                 gatherData()
             }
             android.R.id.home ->{

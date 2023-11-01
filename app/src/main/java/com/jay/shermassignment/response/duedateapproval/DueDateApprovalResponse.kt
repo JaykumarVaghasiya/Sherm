@@ -1,6 +1,6 @@
 package com.jay.shermassignment.response.duedateapproval
 
-data class DueDateAprrovalResponse(
+data class DueDateApprovalResponse(
     val content: Content,
     val errorMap: List<Any>,
     val isSuccess: Boolean,

@@ -9,10 +9,12 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
+import com.jay.shermassignment.generic.commonDateToISODate
 import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.generic.showGenericDateDialog
-import com.jay.shermassignment.response.duedateapproval.DueDateApprovalBody
-import com.jay.shermassignment.response.duedateapproval.DueDateExtension
+import com.jay.shermassignment.generic.timestampToDate
+import com.jay.shermassignment.response.extenddate.DueDateExtension
+import com.jay.shermassignment.response.extenddate.ExtendDateBody
 import com.jay.shermassignment.ui.corrective_action_details.CAViewInstance
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
@@ -28,6 +30,7 @@ class DueDateExtendedApproval : AppCompatActivity() {
     private lateinit var comment: EditText
     private lateinit var rejectBt: MaterialButton
     private lateinit var approveBt: MaterialButton
+    private var id:Int=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +65,6 @@ class DueDateExtendedApproval : AppCompatActivity() {
         }
         rejectBt.setOnClickListener {
             rejectData()
-            finish()
         }
         date.setOnClickListener {
             showGenericDateDialog(
@@ -77,12 +79,13 @@ class DueDateExtendedApproval : AppCompatActivity() {
     }
 
     private fun getDate(){
-        val id = intent.getIntExtra("cID", 1)
         val authToken = SessionManager(this).fetchAuthToken()
+
+        val correctiveActionId=intent.getIntExtra("cID",0)
 
         lifecycleScope.launch {
             val requestResponse = try {
-                CAViewInstance.api.getDueDateExtendedRequest(id, "Bearer $authToken")
+                CAViewInstance.api.checkDueDateExtend(correctiveActionId, "Bearer $authToken")
             } catch (e: Exception) {
                 showConfirmationDialog(getString(R.string.error), e.message)
                 return@launch
@@ -95,8 +98,8 @@ class DueDateExtendedApproval : AppCompatActivity() {
             }
             if (requestResponse.isSuccessful && requestResponse.body() != null) {
                val body =requestResponse.body()!!.content
-
-                dateText.text=body.dueDate
+                dateText.text= timestampToDate(body.dueDateExtension.prefferedDate)
+                id= body.dueDateExtension.id!!
             }
         }
     }
@@ -105,17 +108,17 @@ class DueDateExtendedApproval : AppCompatActivity() {
 
         val dateTextValue = dateText.text.toString()
         val commentText = comment.text.toString()
-        val id = intent.getIntExtra("", 0)
-        val status = "rejected"
-        val body = DueDateApprovalBody(
-            id,
-            DueDateExtension(commentText, 0, dateTextValue, commentText, status)
+        val correctiveActionId=intent.getIntExtra("cID",0)
+        val status = "reject"
+        val body = ExtendDateBody(
+            correctiveActionId, DueDateExtension(commentText,id,
+                commonDateToISODate(dateTextValue) ,commentText,"")
         )
         val authToken = SessionManager(this).fetchAuthToken()
 
         lifecycleScope.launch {
             val rejectResponse = try {
-                DueDateInstance.api.getDueDateApproval(body, id, authToken!!)
+                DueDateInstance.api.getDueDateRequest(status,body,"Bearer $authToken")
             } catch (e: Exception) {
                 showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
@@ -127,29 +130,26 @@ class DueDateExtendedApproval : AppCompatActivity() {
                 return@launch
             }
             if (rejectResponse.isSuccessful && rejectResponse.body() != null) {
-                showConfirmationDialog(getString(R.string.sucess),getString(R.string.reject_sucessfully))
+                showConfirmationDialog(getString(R.string.sucess),getString(R.string.reject_sucessfully)){
+                    finish()
+                }
             }
         }
     }
 
     private fun approveData() {
+        val correctiveActionId=intent.getIntExtra("cID",0)
         val dateTextValue = dateText.text.toString()
         val commentText = comment.text.toString()
-        val id = intent.getIntExtra("", 0)
-        val status = "approved"
-        val body = DueDateApprovalBody(
-            id,
-            DueDateExtension(commentText, 0, dateTextValue, commentText, status)
+        val status = "approve"
+        val body = ExtendDateBody(
+            correctiveActionId, DueDateExtension(commentText,id,commonDateToISODate(dateTextValue),commentText,"")
         )
         val authToken = SessionManager(this).fetchAuthToken()
-
         lifecycleScope.launch {
             val approveResponse = try {
-                DueDateInstance.api.getDueDateApproval(body, id, authToken!!)
-            } catch (e: Exception) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            } catch (e: HttpException) {
+                DueDateInstance.api.getDueDateRequest(status,body,authToken!!)
+            }  catch (e: HttpException) {
                 showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch
             } catch (e: IOException) {
@@ -157,7 +157,9 @@ class DueDateExtendedApproval : AppCompatActivity() {
                 return@launch
             }
             if (approveResponse.isSuccessful && approveResponse.body() != null) {
-                showConfirmationDialog(getString(R.string.sucess),getString(R.string.approve_sucessfully))
+                showConfirmationDialog(getString(R.string.sucess),getString(R.string.approve_sucessfully)){
+                    finish()
+                }
             }
         }
     }

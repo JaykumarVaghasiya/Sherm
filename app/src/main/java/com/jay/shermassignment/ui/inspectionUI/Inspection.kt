@@ -89,7 +89,6 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
         }
         isLoading = true
         if (currentPage == 0) {
-            overlay.visibility = View.VISIBLE
             progressBarPagination.visibility = View.GONE
         } else {
 

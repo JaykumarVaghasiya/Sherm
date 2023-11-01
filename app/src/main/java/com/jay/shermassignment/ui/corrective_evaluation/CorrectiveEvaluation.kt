@@ -56,8 +56,8 @@ class CorrectiveEvaluation : AppCompatActivity() {
 
     private fun getStatusValue(statusValue: String): Int {
         return when (statusValue) {
-            "Assigned" -> 2
-            else -> 3
+            "Assigned" -> 1
+            else -> 2
         }
     }
 

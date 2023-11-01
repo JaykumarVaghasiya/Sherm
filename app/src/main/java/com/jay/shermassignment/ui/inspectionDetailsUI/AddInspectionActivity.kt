@@ -97,6 +97,7 @@ class AddInspectionActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
+                    loading.visibility = View.VISIBLE
                     getInspectionType()
                     getInspectionLocation()
                     onInspectionType()
@@ -137,6 +138,7 @@ class AddInspectionActivity : AppCompatActivity() {
 
     private fun getInspectionType() {
         val authToken = SessionManager(this).fetchAuthToken()
+
         lifecycleScope.launch {
             categoryId=getCategoryValue(categorySpinner.selectedItem.toString())
             val inspectionTypeResponse = try {
@@ -153,7 +155,7 @@ class AddInspectionActivity : AppCompatActivity() {
             }
             if (inspectionTypeResponse.isSuccessful && inspectionTypeResponse.body() != null) {
                 val body = inspectionTypeResponse.body()
-
+                loading.visibility = View.GONE
                 val inspectionNames = body?.content?.map { inspection ->
                     inspection.name
                 }
@@ -192,6 +194,7 @@ class AddInspectionActivity : AppCompatActivity() {
                 id: Long
             ) {
                 getInspectionLocation()
+                loading.visibility = View.VISIBLE
                 getResponsiblePerson()
             }
 
@@ -234,7 +237,7 @@ class AddInspectionActivity : AppCompatActivity() {
             }
             if (inspectionLocationResponse.isSuccessful && inspectionLocationResponse.body() != null) {
                 val body = inspectionLocationResponse.body()
-
+                loading.visibility = View.GONE
                 val inspectionLocation = body?.content?.map { location ->
                     location.inspectionLocation
                 }
@@ -281,7 +284,7 @@ class AddInspectionActivity : AppCompatActivity() {
             }
             if (responsiblePersonResponse.isSuccessful && responsiblePersonResponse.body() != null) {
                 val body = responsiblePersonResponse.body()
-
+                loading.visibility = View.GONE
                 val inspectionNames = body?.content?.map {
                     it.fullName
                 }
