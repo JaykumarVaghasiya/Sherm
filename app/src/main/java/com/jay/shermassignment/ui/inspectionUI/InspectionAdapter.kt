@@ -1,7 +1,6 @@
 package com.jay.shermassignment.ui.inspectionUI
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -75,21 +74,21 @@ class InspectionAdapter(
         return inspectionList.size
     }
 
-    fun submitInspectionList(newInspectionList: List<Row>){
-//        inspectionList.clear()
+    fun addInspectionListItem(newInspectionList: List<Row>){
+        inspectionList.clear()
         inspectionList.addAll(newInspectionList)
-        Log.d("Debug", "newInspectionList size: ${newInspectionList.size}")
+        notifyDataSetChanged()
+    }
+
+    fun submitInspectionList(newInspectionList: List<Row>){
+        inspectionList.addAll(newInspectionList)
         notifyDataSetChanged()
     }
     fun deleteInspection(row: Row){
         inspectionList.remove(row)
-        Log.d("Debug", "inspectionList size: ${inspectionList.size}")
         notifyDataSetChanged()
     }
-    fun sortInspectionListDescending() {
-        inspectionList.sortByDescending { it.dueDate }
-        notifyDataSetChanged()
-    }
+
     interface OnDeleteListener {
         fun onDeleteClicked(row: Row)
     }

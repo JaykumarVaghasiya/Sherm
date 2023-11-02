@@ -9,7 +9,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.showConfirmationDialog
-import com.jay.shermassignment.generic.showCustomDialog
 import com.jay.shermassignment.generic.showGenericDateDialog
 import com.jay.shermassignment.response.addinspectioncompletted.CompletedInspectionBody
 import com.jay.shermassignment.utils.SessionManager
@@ -57,7 +56,7 @@ class AddInspectionCompleted : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home ->{
-                finish()
+                setResult(RESULT_CANCELED)
             }
             R.id.save ->{
                 saveData()
@@ -87,11 +86,13 @@ class AddInspectionCompleted : AppCompatActivity() {
             }
 
             if(response.isSuccessful && response.body()!= null){
-                showCustomDialog(
-                    R.string.sucess,
-                    R.string.complted
-                )
-                finish()
+                showConfirmationDialog(
+                    getString(R.string.sucess),
+                    getString(R.string.complted)
+                ){
+                    setResult(RESULT_OK)
+                    finish()
+                }
             }
         }
 

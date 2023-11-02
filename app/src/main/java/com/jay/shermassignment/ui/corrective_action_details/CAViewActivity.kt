@@ -19,6 +19,9 @@ import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
+import java.time.LocalDate
+import java.time.Period
+import java.time.format.DateTimeFormatter
 
 class CAViewActivity : AppCompatActivity() {
 
@@ -48,6 +51,7 @@ class CAViewActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         getDate()
+        fetchData()
     }
 
     private fun getDate() {
@@ -73,7 +77,12 @@ class CAViewActivity : AppCompatActivity() {
                 if (dueDateId == null) {
                     dueDateApproval.visibility = View.GONE
                 }
-
+                val status = body.content.dueDateExtension.status
+                if (status == "Approved" || status == "Rejected") {
+                    dueDateApproveCA.visibility = View.VISIBLE
+                    dueDateApproval.visibility = View.GONE
+                    dueDateRequest.visibility = View.GONE
+                }
             }
         }
     }
@@ -156,15 +165,18 @@ class CAViewActivity : AppCompatActivity() {
                 responsiblePerson.text = cAViewBody.responsiblePersonName
                 hierarchyOfControl.text = cAViewBody.hierarchyOfControl.value
                 status.text = getStatus(cAViewBody.status)
-                followUp.text = cAViewBody.parentType
-                dueDate.text = timestampToDate(cAViewBody.createdOn)
-                reviewDate.text = timestampToDate(cAViewBody.dueDate)
-                if(status.text == "Closed"){
+                dueDate.text = timestampToDate(cAViewBody.dueDate)
+                reviewDate.text = timestampToDate(cAViewBody.reviewDate)
+                followUp.text = getDatePeriod(
+                    timestampToDate(cAViewBody.dueDate),
+                    timestampToDate(cAViewBody.reviewDate)
+                )
+                if (status.text == "Closed") {
                     dueDateApproval.visibility = View.GONE
                     dueDateRequest.visibility = View.GONE
-                    dueDateApproveCA.visibility=View.VISIBLE
+                    dueDateApproveCA.visibility = View.VISIBLE
                 }
-                loading.visibility=View.GONE
+                loading.visibility = View.GONE
             }
         }
     }
@@ -172,8 +184,30 @@ class CAViewActivity : AppCompatActivity() {
     private fun getStatus(siteSpinner: Int): String {
         return when (siteSpinner) {
             1 -> "Assigned"
+            3 -> "Approved"
+            4 -> "Rejected"
             else -> "Closed"
         }
+    }
+
+    private fun getDatePeriod(fromDate: String, toDate: String): String {
+        val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+
+        val from = LocalDate.parse(fromDate, dateFormatter)
+        val to = LocalDate.parse(toDate, dateFormatter)
+
+        val period = Period.between(from, to)
+        val months = period.months
+        val days = period.days
+
+        return if (months == 0 && days > 15) {
+            "1 month"
+        } else if (months > 0 && days > 15) {
+            "${months + 1} months"
+        } else {
+            "$months months"
+        }
+
     }
 }
 

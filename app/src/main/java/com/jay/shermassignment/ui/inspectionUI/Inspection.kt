@@ -6,11 +6,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.lottie.LottieAnimationView
 import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.generic.showCustomDialog
@@ -29,7 +29,7 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
     private lateinit var recyclerView: RecyclerView
     private lateinit var inspectionAdapter: InspectionAdapter
     private lateinit var overlay:LinearLayout
-    private lateinit var progressBarPagination: LottieAnimationView
+    private lateinit var progressBarPagination: ProgressBar
 
     private var isLoading = false
     private var isLastPage = false
@@ -58,7 +58,6 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
                 }
             }
         })
-        sortData()
     }
 
     private fun initializeViews() {
@@ -78,11 +77,6 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
         recyclerView.adapter = inspectionAdapter
 
     }
-
-    private fun sortData() {
-        inspectionAdapter.sortInspectionListDescending()
-    }
-
     private fun loadNextPage() {
         if (isLoading || isLastPage) {
             return
@@ -121,7 +115,6 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
                     if (rows.isEmpty()) {
                         isLastPage = true
                     }
-
                     inspectionAdapter.submitInspectionList(rows)
                 } else {
                     showConfirmationDialog(getString(R.string.sherm),getString(R.string.empty_data_or_response))
@@ -168,7 +161,7 @@ class Inspection : AppCompatActivity(), InspectionAdapter.OnInspectionListener, 
                         isLastPage = true
                     }
 
-                    inspectionAdapter.submitInspectionList(rows)
+                    inspectionAdapter.addInspectionListItem(rows)
                 } else {
                     showConfirmationDialog(getString(R.string.sherm),getString(R.string.empty_data_or_response))
                 }

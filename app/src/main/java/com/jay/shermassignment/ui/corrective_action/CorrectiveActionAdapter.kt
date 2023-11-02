@@ -1,7 +1,6 @@
 package com.jay.shermassignment.ui.corrective_action
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +42,7 @@ class CorrectiveActionAdapter(
             assign.text = row.responsible
             assigner.text = row.reported
             inspectionName.text = row.caType
-            if(status.text =="Closed"){
+            if(status.text =="Closed" ||status.text =="Approved"){
                 divider.visibility=View.GONE
                 correctiveEvolution.visibility=View.GONE
             }
@@ -59,7 +58,6 @@ class CorrectiveActionAdapter(
         parent: ViewGroup,
         viewType: Int
     ): CorrectiveActionAdapter.CorrectiveActionViewHolder {
-
         val view =
             LayoutInflater.from(context).inflate(R.layout.itemlist_corrective_action, parent, false)
         return CorrectiveActionViewHolder(view)
@@ -87,12 +85,7 @@ class CorrectiveActionAdapter(
         correctiveActionList.clear()
         correctiveActionList.addAll(newCorrectiveAction)
         onDataSetChanged(correctiveActionList.size)
-        Log.d("Debug", "newInspectionList size: ${newCorrectiveAction.size}")
         notifyDataSetChanged()
-    }
-
-    fun checkStatus(row: Row){
-
     }
 
     interface OnCorrectiveActionItemClick {

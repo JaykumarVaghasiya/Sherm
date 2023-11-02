@@ -377,8 +377,10 @@ class AddInspectionActivity : AppCompatActivity() {
                 return@launch
             }
             if (addInspectionResponse.isSuccessful && addInspectionResponse.body() != null) {
-                showConfirmationDialog(getString(R.string.sucess),getString(R.string.added_insp))
-                finish()
+                showConfirmationDialog(getString(R.string.sucess),getString(R.string.added_insp)){
+                    finish()
+                }
+
             } else {
                 showConfirmationDialog(getString(R.string.failed),getString(R.string.failed_to_save))
             }

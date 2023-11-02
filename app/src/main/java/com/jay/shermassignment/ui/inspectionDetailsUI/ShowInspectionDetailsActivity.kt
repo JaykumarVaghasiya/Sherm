@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
@@ -32,6 +33,11 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
     private lateinit var responsiblePerson: MaterialTextView
     private lateinit var dueDate: MaterialTextView
     private lateinit var progressBar: LinearLayout
+    private val launcher =registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result ->
+        if(result.resultCode== RESULT_OK){
+            finish()
+        }
+    }
     private var inspectionId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,7 +132,7 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
             val id = intent.getIntExtra("id", 0)
             val intent=Intent(this,AddInspectionCompleted::class.java)
             intent.putExtra("ids", id)
-            startActivity(intent)
+            launcher.launch(intent)
             d.dismiss()
         }
         dialog.setNegativeButton("Cancel") { d, _ ->

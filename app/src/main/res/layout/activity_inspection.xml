@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
     android:background="@color/offWhite"
     tools:context=".ui.inspectionUI.Inspection">
 
@@ -19,31 +18,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvInspection"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/offWhite"
         android:scrollbars="vertical"
+        android:paddingBottom="50dp"
+        android:clipToPadding="false"
         app:layout_constraintBottom_toTopOf="@+id/pbPagination"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         tools:listitem="@layout/itemlist_inspection" />
 
-
-    <com.airbnb.lottie.LottieAnimationView
+    <ProgressBar
         android:id="@+id/pbPagination"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone"
+        android:progressTint="@color/green"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/rvInspection"
-        app:layout_constraintTop_toBottomOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/animationloading"
-        app:lottie_url="REPLACE_JSON_URL" />
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

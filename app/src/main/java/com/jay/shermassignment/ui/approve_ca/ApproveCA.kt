@@ -89,7 +89,7 @@ class ApproveCA : AppCompatActivity() {
 
         lifecycleScope.launch {
             val approveResponse = try {
-                DueDateInstance.api.getDueDateApproval(body,authToken!!)
+                DueDateInstance.api.getDueDateApproval(body,"Bearer $authToken")
             } catch (e: Exception) {
                 showConfirmationDialog(getString(R.string.sherm),e.message)
                 return@launch

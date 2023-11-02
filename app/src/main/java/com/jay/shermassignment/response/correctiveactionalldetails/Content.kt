@@ -25,7 +25,7 @@ data class Content(
     val parentType: String,
     val responsibleId: Int,
     val responsiblePersonName: String,
-    val reviewDate: Any,
+    val reviewDate: String,
     val reviewDueDateReminderSent: Boolean,
     val siteAdminForParentObject: Boolean,
     val status: Int
