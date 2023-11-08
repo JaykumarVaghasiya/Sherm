@@ -1,12 +1,13 @@
 package com.jay.shermassignment.ui.approve_ca
 
-import com.jay.shermassignment.utils.RetrofitInstance
+import com.jay.shermassignment.utils.NetworkModule
+import okhttp3.OkHttpClient
 
 object ApproveCAInstance {
 
 
         val api: ApproveCAAPI by lazy {
-            RetrofitInstance.api
+            NetworkModule.provideRetrofit(OkHttpClient())
                 .create(ApproveCAAPI::class.java)
         }
 

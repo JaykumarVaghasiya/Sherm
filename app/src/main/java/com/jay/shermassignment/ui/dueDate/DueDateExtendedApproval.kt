@@ -13,8 +13,8 @@ import com.jay.shermassignment.generic.commonDateToISODate
 import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.generic.showGenericDateDialog
 import com.jay.shermassignment.generic.timestampToDate
-import com.jay.shermassignment.response.extenddate.DueDateExtension
-import com.jay.shermassignment.response.extenddate.ExtendDateBody
+import com.jay.shermassignment.model.extenddate.DueDateExtension
+import com.jay.shermassignment.model.extenddate.ExtendDateBody
 import com.jay.shermassignment.ui.corrective_action_details.CAViewInstance
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch

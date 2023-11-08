@@ -3,83 +3,73 @@ package com.jay.shermassignment.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.google.android.material.button.MaterialButton
+import androidx.lifecycle.ViewModelProvider
 import com.jay.shermassignment.R
+import com.jay.shermassignment.databinding.ActivityLoginBinding
+import com.jay.shermassignment.di.viewmodels.LoginViewModel
 import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.ui.dashboardUI.MainActivity
-import com.jay.shermassignment.utils.RetrofitInstance
+import com.jay.shermassignment.utils.NetworkModule
 import com.jay.shermassignment.utils.SessionManager
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
-    private lateinit var emailEditText: EditText
-    private lateinit var passwordEditText: EditText
-    private lateinit var login: MaterialButton
-    private lateinit var sessionManager: SessionManager
-    private lateinit var retrofitInstance: RetrofitInstance
-    private lateinit var overLay:LinearLayout
+
+    lateinit var sessionManager: SessionManager
+
+    lateinit var retrofitInstance: NetworkModule
+
+    private lateinit var _binding: ActivityLoginBinding
+
+    lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-        initializeViews()
+        _binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(_binding.root)
         sessionManager = SessionManager(this)
-        retrofitInstance = RetrofitInstance
+        retrofitInstance = NetworkModule
+        viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+        _binding.overLay.loadingScreen.bringToFront()
         setupListeners()
-
-    }
-
-    private fun initializeViews() {
-
-        emailEditText = findViewById(R.id.et_email)
-        passwordEditText = findViewById(R.id.et_password)
-        login = findViewById(R.id.bt_login)
-        overLay=findViewById(R.id.overLay)
-        overLay.bringToFront()
-
     }
 
     private fun setupListeners() {
-        login.setOnClickListener { loginUser() }
+        _binding.btLogin.setOnClickListener { loginUser() }
     }
 
     private fun loginUser() {
-        val email = emailEditText.text.toString()
-        val password = passwordEditText.text.toString()
+        val email = _binding.etEmail.text.toString()
+        val password = _binding.etPassword.text.toString()
 
         if (email.isEmpty() && password.isEmpty()) {
             showEmptyDialog()
         } else {
-            val user = UserDetails(email, password)
-            overLay.visibility= View.VISIBLE
-            lifecycleScope.launch {
-                try {
-                    val response = UserDetailsInstance.api.getUserDetails(user)
-                    if (response.isSuccessful && response.body() != null) {
-                        val userResponse = response.body()
-                        userResponse?.content?.token?.let { sessionManager.saveAuthToken(it) }
-                        startMainActivity()
-                    }
-                    else {
-                        showErrorDialog()
-                    }
-                } catch (e: IOException) {
-                    showConfirmationDialog(getString(R.string.sherm),e.message)
-                } catch (e: HttpException) {
-                    showConfirmationDialog(getString(R.string.sherm),e.message)
+            val userDetails = UserDetails(email, password)
+
+            _binding.overLay.loadingScreen.visibility = View.VISIBLE
+            viewModel.login(userDetails)
+
+
+            viewModel._userResponseLiveData.observe(this) { userResponse ->
+                _binding.overLay.loadingScreen.visibility = View.GONE
+                if (userResponse != null) {
+                    startMainActivity()
+                }
+            }
+            viewModel._errorMessageLiveData.observe(this) { errorMessage ->
+                _binding.overLay.loadingScreen.visibility = View.GONE
+                if (errorMessage != null) {
+                    showErrorDialog()
                 }
             }
         }
     }
 
     private fun showErrorDialog() {
-        overLay.visibility= View.GONE
+        _binding.overLay.loadingScreen.visibility = View.GONE
         showConfirmationDialog(
             getString(R.string.invalid_credentials),
             getString(R.string.request_valid_email_or_password)
@@ -87,15 +77,16 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showEmptyDialog() {
-        overLay.visibility= View.GONE
+        _binding.overLay.loadingScreen.visibility = View.GONE
         showConfirmationDialog(
             getString(R.string.empty_credentials),
             getString(R.string.request_email_or_password)
         )
     }
+
     private fun startMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
-        overLay.visibility= View.GONE
+        _binding.overLay.loadingScreen.visibility = View.GONE
         startActivity(intent)
         finish()
     }

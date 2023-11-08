@@ -11,7 +11,7 @@
     <string name="request_valid_email_or_password">Please Enter valid Email and Password</string>
     <string name="request_email_or_password">Please Enter Email and Password</string>
     <string name="invalid_credentials">Invalid Credentials</string>
-    <string name="empty_credentials">empty Credentials</string>
+    <string name="empty_credentials">Empty Credentials</string>
     <string name="image">Image</string>
     <string name="delete">Delete</string>
     <string name="empty_data_or_response">Data is Empty or Response</string>

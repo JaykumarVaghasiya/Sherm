@@ -1,7 +1,7 @@
 package com.jay.shermassignment.ui.approve_ca
 
-import com.jay.shermassignment.response.approveca.ApproveCABody
-import com.jay.shermassignment.response.approveca.ApproveCAResponse
+import com.jay.shermassignment.model.approveca.ApproveCABody
+import com.jay.shermassignment.model.approveca.ApproveCAResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

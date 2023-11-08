@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.showCustomDialog
 import com.jay.shermassignment.generic.startActivityStart
-import com.jay.shermassignment.response.dashboard.Dashboard
+import com.jay.shermassignment.model.dashboard.Dashboard
 import com.jay.shermassignment.ui.inspectionUI.Inspection
 import com.jay.shermassignment.ui.login.LoginActivity
 

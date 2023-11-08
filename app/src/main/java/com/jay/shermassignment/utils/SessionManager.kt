@@ -3,8 +3,13 @@ package com.jay.shermassignment.utils
 import android.content.Context
 import android.content.SharedPreferences
 import com.jay.shermassignment.R
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
-class SessionManager(context: Context) {
+@Module
+@InstallIn(SingletonComponent::class)
+class SessionManager (context: Context) {
 
 
     private var prefs: SharedPreferences =

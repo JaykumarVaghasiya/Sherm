@@ -1,7 +1,7 @@
 package com.jay.shermassignment.ui.corrective_action_details
 
-import com.jay.shermassignment.response.correctiveactionalldetails.CorrectiveActionDetailsResponse
-import com.jay.shermassignment.response.duedate.GetDueDateResponse
+import com.jay.shermassignment.model.correctiveactionalldetails.CorrectiveActionDetailsResponse
+import com.jay.shermassignment.model.duedate.GetDueDateResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header

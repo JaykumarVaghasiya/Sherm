@@ -10,7 +10,7 @@ import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.generic.showGenericDateDialog
-import com.jay.shermassignment.response.addinspectioncompletted.CompletedInspectionBody
+import com.jay.shermassignment.model.addinspectioncompletted.CompletedInspectionBody
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
 import retrofit2.HttpException

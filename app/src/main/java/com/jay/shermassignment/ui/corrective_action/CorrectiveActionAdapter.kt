@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDivider
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
-import com.jay.shermassignment.response.correctiveaction.Row
+import com.jay.shermassignment.model.correctiveaction.Row
 import java.text.SimpleDateFormat
 import java.util.Locale
 

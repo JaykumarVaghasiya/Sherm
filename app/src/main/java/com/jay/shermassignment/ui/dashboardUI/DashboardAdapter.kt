@@ -8,7 +8,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
-import com.jay.shermassignment.response.dashboard.Dashboard
+import com.jay.shermassignment.model.dashboard.Dashboard
 
 class DashboardAdapter(
     private val context: Context,

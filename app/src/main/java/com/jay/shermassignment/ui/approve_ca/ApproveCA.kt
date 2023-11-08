@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.showConfirmationDialog
-import com.jay.shermassignment.response.approveca.ApproveCABody
+import com.jay.shermassignment.model.approveca.ApproveCABody
 import com.jay.shermassignment.ui.dueDate.DueDateInstance
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch

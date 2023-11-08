@@ -1,8 +1,8 @@
 package com.jay.shermassignment.ui.inspectionDetailsUI
 
-import com.jay.shermassignment.response.addInspectionData.AddInspectionRef
-import com.jay.shermassignment.response.addinspection.AddInspectionResponse
-import com.jay.shermassignment.response.showInspection.ShowInspectionDetails
+import com.jay.shermassignment.model.addInspectionData.AddInspectionRef
+import com.jay.shermassignment.model.addinspection.AddInspectionResponse
+import com.jay.shermassignment.model.showInspection.ShowInspectionDetails
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

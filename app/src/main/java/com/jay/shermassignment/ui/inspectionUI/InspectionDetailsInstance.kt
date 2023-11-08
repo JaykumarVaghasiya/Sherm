@@ -1,10 +1,11 @@
 package com.jay.shermassignment.ui.inspectionUI
 
-import com.jay.shermassignment.utils.RetrofitInstance
+import com.jay.shermassignment.utils.NetworkModule
+import okhttp3.OkHttpClient
 
 object InspectionDetailsInstance {
        val api: InspectionApi by lazy {
-           RetrofitInstance.api
+           NetworkModule.provideRetrofit(OkHttpClient())
             .create(InspectionApi::class.java)
     }
 }
