@@ -26,21 +26,21 @@ class InspectionPagingAdapter(private val deleteListener: OnDeleteListener,
     override fun onBindViewHolder(holder: InspectionViewHolder, position: Int) {
         val item = getItem(position)
         if (item != null) {
-            holder.binding.tvInspectionId.text = item.inspectionId
+           holder.textInspectionId.text = item.inspectionId
             val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val formattedDueDate = dateFormatter.parse(item.dueDate)
             val formattedDueDateString =
                 SimpleDateFormat("dd MMMM, yyyy", Locale.getDefault()).format(formattedDueDate!!)
-            holder.binding.tvInspectionDate.text = formattedDueDateString
-            holder.binding.tvInspectionName.text = item.inspectionType
-            holder.binding.tvInspectionLocation.text = item.inspectionLocation
-            holder.binding.tvInspectionVolunteer.text = item.responsible
-            holder.binding.tvInspectionStatus.text = item.status
-            holder.binding.btDelete.setOnClickListener {
+            holder.textInspectionDate.text = formattedDueDateString
+            holder.textInspectionName.text = item.inspectionType
+            holder.textInspectionLocation.text = item.inspectionLocation
+            holder.textInspectionVolunteer.text = item.responsible
+            holder.textInspectionStatus.text = item.status
+            holder.buttonDelete.setOnClickListener {
                 deleteListener.onDeleteClicked(item)
             }
             holder.itemView.setOnClickListener {
-                inspectionListener.onInspectionClicked(inspectionList[position])
+              item?.let { inspectionListener.onInspectionClicked(it) }
             }
         }
     }
@@ -49,8 +49,16 @@ class InspectionPagingAdapter(private val deleteListener: OnDeleteListener,
     }
 
 
-    class InspectionViewHolder(val binding: ItemlistInspectionBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    class InspectionViewHolder(binding: ItemlistInspectionBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        val textInspectionId = binding.tvInspectionId
+        val textInspectionDate=binding.tvInspectionDate
+        val textInspectionName=binding.tvInspectionName
+        val textInspectionLocation=binding.tvInspectionLocation
+        val textInspectionVolunteer=binding.tvInspectionVolunteer
+        val textInspectionStatus=binding.tvInspectionStatus
+        val buttonDelete=binding.btDelete
+    }
 
     companion object {
         private val COMPARATOR = object : DiffUtil.ItemCallback<Row>() {
@@ -64,9 +72,12 @@ class InspectionPagingAdapter(private val deleteListener: OnDeleteListener,
 
         }
     }
-    fun deleteInspection(row: Row){
-        inspectionList.remove(row)
-        notifyDataSetChanged()
+    fun deleteInspection(row: Row) {
+        val position = inspectionList.indexOf(row)
+        if (position != -1) {
+            inspectionList.remove(row)
+            notifyItemRemoved(position)
+        }
     }
 
     interface OnDeleteListener {

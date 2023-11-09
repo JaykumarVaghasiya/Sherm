@@ -127,7 +127,6 @@
             android:textColor="@color/darkGreen" />
 
         <View
-            android:id="@+id/divider7"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
@@ -162,7 +161,7 @@
 
 
         <View
-            android:id="@+id/divider10"
+
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
@@ -196,7 +195,7 @@
             android:textColor="@color/darkGreen" />
 
         <View
-            android:id="@+id/divider11"
+
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
@@ -231,7 +230,7 @@
             android:textColor="@color/darkGreen" />
 
         <View
-            android:id="@+id/divider12"
+
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
@@ -265,7 +264,6 @@
 
 
         <View
-            android:id="@+id/divider13"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
@@ -289,7 +287,6 @@
                 android:textColor="@color/darkGreen" />
 
         <View
-            android:id="@+id/divider16"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
@@ -321,7 +318,6 @@
             android:textColor="@color/darkGreen" />
 
         <View
-            android:id="@+id/divider17"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />

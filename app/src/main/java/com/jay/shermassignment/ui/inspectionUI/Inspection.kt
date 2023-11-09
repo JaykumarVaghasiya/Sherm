@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +18,7 @@ import com.jay.shermassignment.generic.showCustomDialog
 import com.jay.shermassignment.generic.startActivityStart
 import com.jay.shermassignment.model.inspection.Row
 import com.jay.shermassignment.pagination.InspectionPagingAdapter
+import com.jay.shermassignment.pagination.LoaderAdapter
 import com.jay.shermassignment.ui.inspectionDetailsUI.AddInspectionActivity
 import com.jay.shermassignment.ui.inspectionDetailsUI.ShowInspectionDetailsActivity
 import com.jay.shermassignment.utils.SessionManager
@@ -29,36 +31,42 @@ class Inspection : AppCompatActivity(), InspectionPagingAdapter.OnInspectionList
     InspectionPagingAdapter.OnDeleteListener {
 
     lateinit var inspectionAdapter: InspectionPagingAdapter
-    lateinit var _binding :ActivityInspectionBinding
+    lateinit var _binding: ActivityInspectionBinding
     lateinit var inspectionViewModel: InspectionViewModel
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding= ActivityInspectionBinding.inflate(layoutInflater)
+        _binding = ActivityInspectionBinding.inflate(layoutInflater)
         setContentView(_binding.root)
         supportActionBar?.setTitle(R.string.inspections)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        inspectionAdapter = InspectionPagingAdapter(this, this)
-        inspectionViewModel=ViewModelProvider(this)[InspectionViewModel::class.java]
-        val inspectionLayoutManager = LinearLayoutManager(this)
-        _binding.rvInspection.layoutManager = inspectionLayoutManager
-        _binding.rvInspection.adapter = inspectionAdapter
-
-        inspectionViewModel.list.observe(this, Observer {
-            inspectionAdapter.submitData(lifecycle,it)
-        })
-
-
+        _binding.overLay.loadingScreen.bringToFront()
+        setupRecyclerView()
+        callViewModel()
     }
 
+    private fun callViewModel() {
 
+        inspectionViewModel = ViewModelProvider(this)[InspectionViewModel::class.java]
+        inspectionViewModel.list.observe(this, Observer {
+            _binding.overLay.loadingScreen.visibility = View.GONE
+            inspectionAdapter.submitData(lifecycle, it)
+        })
+    }
 
     private fun setupRecyclerView() {
+        _binding.overLay.loadingScreen.visibility = View.VISIBLE
+        inspectionAdapter = InspectionPagingAdapter(this, this)
+        val inspectionLayoutManager = LinearLayoutManager(this)
+        _binding.rvInspection.layoutManager = inspectionLayoutManager
+        _binding.rvInspection.setHasFixedSize(true)
+        _binding.rvInspection.adapter = inspectionAdapter.withLoadStateHeaderAndFooter(
+            footer = LoaderAdapter(),
+            header = LoaderAdapter()
+        )
 
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.ispection_menu, menu)
         return true

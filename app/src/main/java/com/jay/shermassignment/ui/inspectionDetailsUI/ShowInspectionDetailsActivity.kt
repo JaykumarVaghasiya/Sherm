@@ -4,52 +4,41 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
-import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textview.MaterialTextView
+import androidx.lifecycle.ViewModelProvider
 import com.jay.shermassignment.R
+import com.jay.shermassignment.databinding.ActivityShowInspectionDetails2Binding
+import com.jay.shermassignment.di.viewmodels.InspectionDetailViewModel
 import com.jay.shermassignment.generic.showConfirmationDialog
-import com.jay.shermassignment.generic.timestampToDate
 import com.jay.shermassignment.ui.add_inspection_completed.AddInspectionCompleted
 import com.jay.shermassignment.ui.commentUI.Comment
 import com.jay.shermassignment.ui.corrective_action.CorrectiveAction
-import com.jay.shermassignment.utils.SessionManager
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class ShowInspectionDetailsActivity : AppCompatActivity() {
-    private lateinit var correctiveAction: MaterialButton
-    private lateinit var comment: MaterialButton
-    private lateinit var docUpload: MaterialButton
-    private lateinit var reschedule: MaterialTextView
-    private lateinit var category: MaterialTextView
-    private lateinit var inspectionType: MaterialTextView
-    private lateinit var site: MaterialTextView
-    private lateinit var inspectionLocation: MaterialTextView
-    private lateinit var responsiblePerson: MaterialTextView
-    private lateinit var dueDate: MaterialTextView
-    private lateinit var progressBar: LinearLayout
-    private val launcher =registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result ->
-        if(result.resultCode== RESULT_OK){
-            finish()
+    lateinit var _binding: ActivityShowInspectionDetails2Binding
+    private val launcher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                finish()
+            }
         }
-    }
+    lateinit var viewModel: InspectionDetailViewModel
     private var inspectionId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_show_inspection_details2)
-        val id =intent.getStringExtra("inspectionId")
-        inspectionId=intent.getIntExtra("id",0)
+        _binding = ActivityShowInspectionDetails2Binding.inflate(layoutInflater)
+        setContentView(_binding.root)
+        val id = intent.getStringExtra("inspectionId")
+        inspectionId = intent.getIntExtra("id", 0)
+        viewModel = ViewModelProvider(this)[InspectionDetailViewModel::class.java]
+        fetchData()
         supportActionBar?.title = id
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        initializeViews()
         setupClickListeners()
-        fetchData()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -62,65 +51,41 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
     }
 
     private fun fetchData() {
-        val authToken = SessionManager(this).fetchAuthToken()
-        progressBar.visibility = View.VISIBLE
-        lifecycleScope.launch {
-            val showInspectionResponse = try {
-                ShowInspectionDetailsInstance.api.getShowInspectionDetails(
-                    inspectionId,
-                    "Bearer $authToken"
-                )
-            } catch (e: Exception) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            } finally {
-                progressBar.visibility = View.GONE
-            }
+        viewModel.inspectionDetail(inspectionId)
 
-            if (showInspectionResponse.isSuccessful && showInspectionResponse.body() != null) {
-                val data = showInspectionResponse.body()!!.content
+        viewModel._inspectionLiveData.observe(this) { response ->
+            _binding.tvCategory.text = response?.content?.inspectionCategoryMaster?.name
+            _binding.tvInspectionLocation.text = response?.content?.inspectionLocation
+            _binding.tvInspectionType.text = response?.content?.inspectionType?.name
+            _binding.tvSite.text = response?.content?.workplaceInspection?.site?.name
+            _binding.tvDueDate.text = response?.content?.dueDate
+            _binding.tvReportingTo.text = response?.content?.reschedule.toString()
+            _binding.tvResponsiblePerson.text =
+                response?.content?.responsiblePerson?.user?.employee?.fullName
+        }
 
-                category.text = data.inspectionCategoryMaster.name
-                inspectionType.text = data.inspectionType.name
-                inspectionLocation.text = data.inspectionLocation
-                responsiblePerson.text = data.responsiblePerson.user.employee.fullName
-                dueDate.text = timestampToDate(data.dueDate)
-                site.text = data.workplaceInspection.site.name
-                reschedule.text = data.reschedule.toString()
+        viewModel._errorLiveData.observe(this) { errorMessage ->
+            if (errorMessage != null) {
+                showConfirmationDialog(getString(R.string.error), errorMessage)
             }
         }
-    }
 
-    private fun initializeViews() {
-        progressBar = findViewById(R.id.overLay)
-        progressBar.bringToFront()
-        category = findViewById(R.id.tvCategory)
-        inspectionType = findViewById(R.id.tvInspectionType)
-        site = findViewById(R.id.tvSite)
-        inspectionLocation = findViewById(R.id.tvInspectionLocation)
-        responsiblePerson = findViewById(R.id.tvResponsiblePerson)
-        dueDate = findViewById(R.id.tvDueDate)
-        correctiveAction = findViewById(R.id.btnCorrectiveAction)
-        comment = findViewById(R.id.btnComments)
-        docUpload = findViewById(R.id.btnInspectionCompleted)
-        reschedule = findViewById(R.id.tvReportingTo)
     }
-
     private fun setupClickListeners() {
 
-        correctiveAction.setOnClickListener {
+        _binding.btnCorrectiveAction.setOnClickListener {
             val intent = Intent(this, CorrectiveAction::class.java)
             intent.putExtra("ids", inspectionId)
             startActivity(intent)
         }
-        comment.setOnClickListener {
+        _binding.btnComments.setOnClickListener {
             val intent = Intent(this, Comment::class.java)
             intent.putExtra("ids", inspectionId)
             startActivity(intent)
         }
-        docUpload.setOnClickListener {
+        _binding.btnInspectionCompleted.setOnClickListener {
             showConfirmationDialog()
-           }
+        }
     }
 
     private fun showConfirmationDialog() {

@@ -11,13 +11,14 @@ class ShermApp : Application() {
 
         lateinit var loginRepository: UserRepository
             private set
-
-
     }
+
+
 
     override fun onCreate() {
         super.onCreate()
         loginRepository = UserRepository(SessionManager(applicationContext))
+
 
 
     }

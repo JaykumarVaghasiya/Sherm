@@ -13,7 +13,7 @@ class InspectionPagingSource(val inspectionApi: InspectionApi,val context: Conte
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Row> {
        return try {
-            val position = params.key ?: 1
+            val position = params.key ?: 0
             val authToken = SessionManager(context).fetchAuthToken()
             val body = InspectionRef(
                 inspectionId = "",
@@ -28,7 +28,7 @@ class InspectionPagingSource(val inspectionApi: InspectionApi,val context: Conte
             val response = inspectionApi.getInspectionDetails(body, "Bearer $authToken")
             return LoadResult.Page(
                 data = response.body()?.content!!.rows,
-                prevKey = if (position == 1) null else position - 1,
+                prevKey = if (position == 0) null else position - 1,
                 nextKey = if (position == response.body()!!.content.total) null else position + 1
             )
         } catch (e: Exception) {
