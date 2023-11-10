@@ -4,17 +4,16 @@ import android.app.Activity
 import androidx.appcompat.app.AlertDialog
 
 fun Activity.showCustomDialog(
-    titleResId: Int,
-    messageResId: Int,
+    titleResId: String?,
+    messageResId: String?,
     positiveButtonLabel: String = "Yes",
     onPositiveButtonClick: () -> Unit = {}
 ) {
-    val title = getString(titleResId)
-    val message =getString(messageResId)
+
 
     AlertDialog.Builder(this)
-        .setMessage(message)
-        .setTitle(title)
+        .setMessage(messageResId)
+        .setTitle(titleResId)
         .setCancelable(true)
         .setPositiveButton(positiveButtonLabel) { dialog, _ ->
             onPositiveButtonClick()

@@ -24,9 +24,8 @@ class InspectionDetailRepository @Inject constructor(
         } catch (e: HttpException) {
             return e.message
         }
-        if(inspectionResponse.isSuccessful && inspectionResponse.body() != null) {
-            return inspectionResponse.body()?.content
-        }
-        return inspectionResponse.body()?.content
+        return if(inspectionResponse.isSuccessful && inspectionResponse.body() != null)
+            inspectionResponse.body()?: ""
+        else TODO()
     }
 }

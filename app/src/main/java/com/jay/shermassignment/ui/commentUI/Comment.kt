@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.showConfirmationDialog
-import com.jay.shermassignment.model.comments.CommentBody
+import com.jay.shermassignment.dataModel.comments.CommentBody
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
 import retrofit2.HttpException

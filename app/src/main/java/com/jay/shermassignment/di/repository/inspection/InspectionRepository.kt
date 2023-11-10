@@ -1,10 +1,10 @@
 package com.jay.shermassignment.di.repository.inspection
 
 import android.content.Context
+import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.liveData
-import com.jay.shermassignment.model.inspection.Row
 import com.jay.shermassignment.pagination.InspectionPagingSource
 import com.jay.shermassignment.ui.inspectionUI.InspectionApi
 import com.jay.shermassignment.ui.inspectionUI.InspectionDetailsInstance
@@ -18,13 +18,13 @@ import javax.inject.Singleton
 @Singleton
 
 class InspectionRepository @Inject constructor(val inspectionAPI:InspectionApi, @ApplicationContext val context: Context) {
-
+    val authToken = SessionManager(context).fetchAuthToken()
     fun getInspectionList()=Pager(
         config = PagingConfig(pageSize = 4, maxSize = 12),
         pagingSourceFactory = {InspectionPagingSource(inspectionAPI,context)}
     ).liveData
-    val authToken = SessionManager(context).fetchAuthToken()
-    suspend fun deleteInspection(row: Row,id:Int):Any?{
+
+    suspend fun deleteInspection(id: Int):Any?{
         val deleteResponse=try {
             InspectionDetailsInstance.api.deleteInspectionItem(id,"Bearer $authToken")
         }catch (e:Exception){
@@ -34,9 +34,10 @@ class InspectionRepository @Inject constructor(val inspectionAPI:InspectionApi, 
         }catch (e:HttpException){
            return e.message
         }
-        if(deleteResponse.isSuccessful && deleteResponse.body() != null){
-            return deleteResponse.body()!!.content
+        return if(deleteResponse.isSuccessful && deleteResponse.body() != null){
+            return deleteResponse.body() ?: ""
+        }else{
+            Log.d("response","Empty")
         }
-        return deleteResponse.body()!!.content
     }
 }

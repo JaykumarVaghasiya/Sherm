@@ -13,8 +13,8 @@ import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.commonDateToISODate
 import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.generic.showGenericDateDialog
-import com.jay.shermassignment.model.extenddate.DueDateExtension
-import com.jay.shermassignment.model.extenddate.ExtendDateBody
+import com.jay.shermassignment.dataModel.extenddate.DueDateExtension
+import com.jay.shermassignment.dataModel.extenddate.ExtendDateBody
 import com.jay.shermassignment.utils.SessionManager
 import kotlinx.coroutines.launch
 import retrofit2.HttpException

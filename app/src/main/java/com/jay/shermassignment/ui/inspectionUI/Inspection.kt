@@ -6,33 +6,28 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jay.shermassignment.R
+import com.jay.shermassignment.dataModel.inspection.Row
 import com.jay.shermassignment.databinding.ActivityInspectionBinding
-import com.jay.shermassignment.di.viewmodels.InspectionViewModel
-import com.jay.shermassignment.generic.showConfirmationDialog
+import com.jay.shermassignment.di.viewmodels.Inspection.DeleteInspectionViewModel
+import com.jay.shermassignment.di.viewmodels.Inspection.InspectionViewModel
 import com.jay.shermassignment.generic.showCustomDialog
 import com.jay.shermassignment.generic.startActivityStart
-import com.jay.shermassignment.model.inspection.Row
 import com.jay.shermassignment.pagination.InspectionPagingAdapter
 import com.jay.shermassignment.pagination.LoaderAdapter
 import com.jay.shermassignment.ui.inspectionDetailsUI.AddInspectionActivity
 import com.jay.shermassignment.ui.inspectionDetailsUI.ShowInspectionDetailsActivity
-import com.jay.shermassignment.utils.SessionManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 @AndroidEntryPoint
 class Inspection : AppCompatActivity(), InspectionPagingAdapter.OnInspectionListener,
     InspectionPagingAdapter.OnDeleteListener {
 
-    lateinit var inspectionAdapter: InspectionPagingAdapter
-    lateinit var _binding: ActivityInspectionBinding
-    lateinit var inspectionViewModel: InspectionViewModel
+    private lateinit var inspectionAdapter: InspectionPagingAdapter
+    private lateinit var _binding: ActivityInspectionBinding
+    private lateinit var inspectionViewModel: InspectionViewModel
+    private lateinit var deleteInspectionViewModel: DeleteInspectionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,13 +40,21 @@ class Inspection : AppCompatActivity(), InspectionPagingAdapter.OnInspectionList
         callViewModel()
     }
 
+    override fun onResume() {
+        super.onResume()
+        inspectionViewModel.list.observe(this){
+            inspectionAdapter.submitData(lifecycle,it)
+        }
+    }
+
     private fun callViewModel() {
 
         inspectionViewModel = ViewModelProvider(this)[InspectionViewModel::class.java]
-        inspectionViewModel.list.observe(this, Observer {
+        deleteInspectionViewModel = ViewModelProvider(this)[DeleteInspectionViewModel::class.java]
+        inspectionViewModel.list.observe(this) {
             _binding.overLay.loadingScreen.visibility = View.GONE
             inspectionAdapter.submitData(lifecycle, it)
-        })
+        }
     }
 
     private fun setupRecyclerView() {
@@ -85,29 +88,10 @@ class Inspection : AppCompatActivity(), InspectionPagingAdapter.OnInspectionList
     }
 
     override fun onDeleteClicked(row: Row) {
-        val authToken = SessionManager(this).fetchAuthToken()
-        lifecycleScope.launch {
-            try {
-                val queryParameters = row.id
-                val inspectionResponse = InspectionDetailsInstance.api.deleteInspectionItem(
-                    queryParameters,
-                    "Bearer $authToken"
-                )
-                if (inspectionResponse.isSuccessful) {
-                    showCustomDialog(
-                        R.string.sherm,
-                        R.string.deleteThis
-                    ) {
-                        inspectionAdapter.deleteInspection(row)
-                    }
-                } else {
-                    showConfirmationDialog(getString(R.string.sherm),getString( R.string.cantdeleted)
-                    )
-                }
-            } catch (e: IOException) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-            } catch (e: HttpException) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
+        deleteInspectionViewModel.deleteInspection(row.id)
+        deleteInspectionViewModel.deleteInspectionLiveData.observe(this) {
+            showCustomDialog(getString(R.string.sherm),getString(R.string.are_you_sure)) {
+                inspectionAdapter.deleteInspection(row)
             }
         }
     }

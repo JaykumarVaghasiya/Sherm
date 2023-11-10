@@ -8,9 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jay.shermassignment.R
+import com.jay.shermassignment.dataModel.dashboard.Dashboard
 import com.jay.shermassignment.generic.showCustomDialog
 import com.jay.shermassignment.generic.startActivityStart
-import com.jay.shermassignment.model.dashboard.Dashboard
 import com.jay.shermassignment.ui.inspectionUI.Inspection
 import com.jay.shermassignment.ui.login.LoginActivity
 
@@ -65,8 +65,8 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.signOut -> {
                 showCustomDialog(
-                    R.string.are_you_sure,
-                    R.string.logout,
+                    getString(R.string.are_you_sure),
+                    getString(R.string.logout),
                     positiveButtonLabel = "Yes"
                 ){
                     startActivityStart<LoginActivity>()

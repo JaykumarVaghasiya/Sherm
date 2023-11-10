@@ -1,6 +1,6 @@
 package com.jay.shermassignment.ui.corrective_evaluation
 
-import com.jay.shermassignment.model.correctiveevaluation.CorrectiveEvaluationResponse
+import com.jay.shermassignment.dataModel.correctiveevaluation.CorrectiveEvaluationResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header

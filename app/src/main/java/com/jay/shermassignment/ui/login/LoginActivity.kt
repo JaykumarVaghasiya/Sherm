@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.jay.shermassignment.R
 import com.jay.shermassignment.databinding.ActivityLoginBinding
-import com.jay.shermassignment.di.viewmodels.LoginViewModel
+import com.jay.shermassignment.di.viewmodels.login.LoginViewModel
 import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.ui.dashboardUI.MainActivity
 import com.jay.shermassignment.utils.NetworkModule
@@ -17,13 +17,13 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var sessionManager: SessionManager
+    private lateinit var sessionManager: SessionManager
 
-    lateinit var retrofitInstance: NetworkModule
+    private lateinit var retrofitInstance: NetworkModule
 
     private lateinit var _binding: ActivityLoginBinding
 
-    lateinit var viewModel: LoginViewModel
+    private lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,20 +62,11 @@ class LoginActivity : AppCompatActivity() {
             viewModel._errorMessageLiveData.observe(this) { errorMessage ->
                 _binding.overLay.loadingScreen.visibility = View.GONE
                 if (errorMessage != null) {
-                    showErrorDialog()
+                   showConfirmationDialog(getString(R.string.error),errorMessage)
                 }
             }
         }
     }
-
-    private fun showErrorDialog() {
-        _binding.overLay.loadingScreen.visibility = View.GONE
-        showConfirmationDialog(
-            getString(R.string.invalid_credentials),
-            getString(R.string.request_valid_email_or_password)
-        )
-    }
-
     private fun showEmptyDialog() {
         _binding.overLay.loadingScreen.visibility = View.GONE
         showConfirmationDialog(

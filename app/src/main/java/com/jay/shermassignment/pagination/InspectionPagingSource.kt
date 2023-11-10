@@ -3,8 +3,8 @@ package com.jay.shermassignment.pagination
 import android.content.Context
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.jay.shermassignment.model.inspection.InspectionRef
-import com.jay.shermassignment.model.inspection.Row
+import com.jay.shermassignment.dataModel.inspection.InspectionRef
+import com.jay.shermassignment.dataModel.inspection.Row
 import com.jay.shermassignment.ui.inspectionUI.InspectionApi
 import com.jay.shermassignment.utils.SessionManager
 

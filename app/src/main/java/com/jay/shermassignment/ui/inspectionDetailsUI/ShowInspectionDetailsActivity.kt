@@ -9,23 +9,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.jay.shermassignment.R
 import com.jay.shermassignment.databinding.ActivityShowInspectionDetails2Binding
-import com.jay.shermassignment.di.viewmodels.InspectionDetailViewModel
+import com.jay.shermassignment.di.viewmodels.Inspection.InspectionDetailViewModel
 import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.ui.add_inspection_completed.AddInspectionCompleted
 import com.jay.shermassignment.ui.commentUI.Comment
 import com.jay.shermassignment.ui.corrective_action.CorrectiveAction
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @AndroidEntryPoint
 class ShowInspectionDetailsActivity : AppCompatActivity() {
-    lateinit var _binding: ActivityShowInspectionDetails2Binding
+    private lateinit var _binding: ActivityShowInspectionDetails2Binding
     private val launcher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 finish()
             }
         }
-    lateinit var viewModel: InspectionDetailViewModel
+    private lateinit var viewModel: InspectionDetailViewModel
     private var inspectionId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,10 +60,14 @@ class ShowInspectionDetailsActivity : AppCompatActivity() {
             _binding.tvInspectionLocation.text = response?.content?.inspectionLocation
             _binding.tvInspectionType.text = response?.content?.inspectionType?.name
             _binding.tvSite.text = response?.content?.workplaceInspection?.site?.name
-            _binding.tvDueDate.text = response?.content?.dueDate
-            _binding.tvReportingTo.text = response?.content?.reschedule.toString()
+            val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val formattedDueDate = dateFormatter.parse(response?.content?.dueDate!!)
+            val formattedDueDateString =
+                SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(formattedDueDate!!)
+            _binding.tvDueDate.text = formattedDueDateString
+            _binding.tvReportingTo.text = response.content.reschedule.toString()
             _binding.tvResponsiblePerson.text =
-                response?.content?.responsiblePerson?.user?.employee?.fullName
+                response.content.responsiblePerson.user.employee.fullName
         }
 
         viewModel._errorLiveData.observe(this) { errorMessage ->

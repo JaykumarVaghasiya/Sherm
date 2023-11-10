@@ -1,7 +1,7 @@
 package com.jay.shermassignment.ui.corrective_action
 
-import com.jay.shermassignment.model.correctiveaction.CorrectiveActionData
-import com.jay.shermassignment.model.correctiveaction.CorrectiveActionResponseX
+import com.jay.shermassignment.dataModel.correctiveaction.CorrectiveActionData
+import com.jay.shermassignment.dataModel.correctiveaction.CorrectiveActionResponseX
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header

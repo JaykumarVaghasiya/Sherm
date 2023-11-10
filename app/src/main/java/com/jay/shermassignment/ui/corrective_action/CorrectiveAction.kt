@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
 import com.jay.shermassignment.generic.showConfirmationDialog
-import com.jay.shermassignment.model.correctiveaction.CorrectiveActionData
-import com.jay.shermassignment.model.correctiveaction.Row
+import com.jay.shermassignment.dataModel.correctiveaction.CorrectiveActionData
+import com.jay.shermassignment.dataModel.correctiveaction.Row
 import com.jay.shermassignment.ui.add_corrective_action.AddCorrectiveAction
 import com.jay.shermassignment.ui.corrective_action_details.CAViewActivity
 import com.jay.shermassignment.ui.corrective_evaluation.CorrectiveEvaluation

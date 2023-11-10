@@ -1,9 +1,9 @@
 package com.jay.shermassignment.ui.dueDate
 
-import com.jay.shermassignment.model.approveca.ApproveCABody
-import com.jay.shermassignment.model.approveca.ApproveCAResponse
-import com.jay.shermassignment.model.extenddate.ExtendDateBody
-import com.jay.shermassignment.model.extenddate.ExtendDateResponse
+import com.jay.shermassignment.dataModel.approveca.ApproveCABody
+import com.jay.shermassignment.dataModel.approveca.ApproveCAResponse
+import com.jay.shermassignment.dataModel.extenddate.ExtendDateBody
+import com.jay.shermassignment.dataModel.extenddate.ExtendDateResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header

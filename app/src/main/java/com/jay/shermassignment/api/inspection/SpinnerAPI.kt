@@ -1,9 +1,9 @@
 package com.jay.shermassignment.api.inspection
 
-import com.jay.shermassignment.model.inspectiontype.InspectionTypeResponse
-import com.jay.shermassignment.model.reportingTo.ReportingToResponse
-import com.jay.shermassignment.model.responsibleperson.ResponsiblePersonResponse
-import com.jay.shermassignment.model.location.InspectionLocationResponse
+import com.jay.shermassignment.dataModel.inspectiontype.InspectionTypeResponse
+import com.jay.shermassignment.dataModel.location.InspectionLocationResponse
+import com.jay.shermassignment.dataModel.reportingTo.ReportingToResponse
+import com.jay.shermassignment.dataModel.responsibleperson.ResponsiblePersonResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
