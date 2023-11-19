@@ -89,6 +89,4 @@ class CorrectiveEvaluation : AppCompatActivity() {
             }
         }
     }
-
-
 }
