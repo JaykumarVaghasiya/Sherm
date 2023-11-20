@@ -4,45 +4,33 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textview.MaterialTextView
+import androidx.lifecycle.ViewModelProvider
 import com.jay.shermassignment.R
+import com.jay.shermassignment.databinding.ActivityCaviewBinding
+import com.jay.shermassignment.di.viewmodels.correctiveaction.CorrectiveActionDetailsViewModel
 import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.generic.timestampToDate
 import com.jay.shermassignment.ui.approve_ca.ApproveCA
 import com.jay.shermassignment.ui.dueDate.DueDateExtendRequest
 import com.jay.shermassignment.ui.dueDate.DueDateExtendedApproval
-import com.jay.shermassignment.utils.SessionManager
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
 
 class CAViewActivity : AppCompatActivity() {
 
-    private lateinit var dueDateRequest: MaterialButton
-    private lateinit var dueDateApproval: MaterialButton
-    private lateinit var dueDateApproveCA: MaterialButton
-    private lateinit var loading:LinearLayout
-    private lateinit var dueDate: MaterialTextView
-    private lateinit var reviewDate: MaterialTextView
-    private lateinit var responsiblePerson: MaterialTextView
-    private lateinit var hierarchyOfControl: MaterialTextView
-    private lateinit var followUp: MaterialTextView
-    private lateinit var status: MaterialTextView
-    private lateinit var correctiveActionText: MaterialTextView
+    private lateinit var binding: ActivityCaviewBinding
+    private lateinit var correctiveActionDetailsViewModel: CorrectiveActionDetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_caview)
+        binding = ActivityCaviewBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         supportActionBar?.setTitle(R.string.caview)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        initializeViews()
+        correctiveActionDetailsViewModel =
+            ViewModelProvider(this)[CorrectiveActionDetailsViewModel::class.java]
         getDate()
         fetchData()
         setClickListeners()
@@ -56,59 +44,27 @@ class CAViewActivity : AppCompatActivity() {
 
     private fun getDate() {
         val id = intent.getIntExtra("correctiveActionId", 1)
-        val authToken = SessionManager(this).fetchAuthToken()
-
-        lifecycleScope.launch {
-            val requestResponse = try {
-                CAViewInstance.api.checkDueDateExtend(id, "Bearer $authToken")
-            } catch (e: Exception) {
-                showConfirmationDialog(getString(R.string.error), e.message)
-                return@launch
-            } catch (e: HttpException) {
-                showConfirmationDialog(getString(R.string.error), e.message)
-                return@launch
-            } catch (e: IOException) {
-                showConfirmationDialog(getString(R.string.error), e.message)
-                return@launch
-            }
-            if (requestResponse.isSuccessful && requestResponse.body() != null) {
-                val body = requestResponse.body()!!
-                val dueDateId = body.content.dueDateExtension.id
-                if (dueDateId == null) {
-                    dueDateApproval.visibility = View.GONE
+        correctiveActionDetailsViewModel.getDueDate(id)
+        correctiveActionDetailsViewModel._dueDateLiveData.observe(this){getDate->
+            if(getDate?.isSuccess == true){
+                val dueDate=getDate.content.dueDateExtension.id
+                if(dueDate == null){
+                    binding.btnDueDateApproval.visibility=View.GONE
                 }
-                val status = body.content.dueDateExtension.status
-                if (status == "Approved" || status == "Rejected") {
-                    dueDateApproveCA.visibility = View.VISIBLE
-                    dueDateApproval.visibility = View.GONE
-                    dueDateRequest.visibility = View.GONE
+                val status=getDate.content.dueDateExtension.status
+                if(status == "Approved" || status == "Rejected"){
+                    binding.btnCApprove.visibility=View.VISIBLE
+                    binding.btnDueDateApproval.visibility=View.GONE
+                    binding.btnDueDateRequest.visibility=View.GONE
                 }
             }
         }
     }
 
-
-    private fun initializeViews() {
-        dueDateRequest = findViewById(R.id.btnDueDateRequest)
-        dueDateApproval = findViewById(R.id.btnDueDateApproval)
-        dueDateApproveCA=findViewById(R.id.btnCApprove)
-        dueDate = findViewById(R.id.tvDueDateCA)
-        reviewDate = findViewById(R.id.tvReviewDate)
-        loading=findViewById(R.id.overLay)
-        loading.bringToFront()
-        loading.visibility=View.VISIBLE
-        responsiblePerson = findViewById(R.id.spResponsiblePersonCA)
-        hierarchyOfControl = findViewById(R.id.spHierarchyOfControl)
-        status = findViewById(R.id.spStatus)
-        correctiveActionText = findViewById(R.id.etmCorrectiveAction)
-        followUp = findViewById(R.id.tvFollowUp)
-    }
-
-
     private fun setClickListeners() {
-        dueDateRequest.setOnClickListener { navigateToDueDateExtendRequest() }
-        dueDateApproval.setOnClickListener { navigateToDueDateExtendedApproval() }
-        dueDateApproveCA.setOnClickListener { navigateToApproveCA() }
+        binding.btnDueDateRequest.setOnClickListener { navigateToDueDateExtendRequest() }
+        binding.btnDueDateApproval.setOnClickListener { navigateToDueDateExtendedApproval() }
+        binding.btnCApprove.setOnClickListener { navigateToApproveCA() }
     }
 
     private fun navigateToApproveCA() {
@@ -143,40 +99,31 @@ class CAViewActivity : AppCompatActivity() {
     }
 
     private fun fetchData() {
-        val authToken = SessionManager(this).fetchAuthToken()
         val id = intent.getIntExtra("correctiveActionId", 1)
-        lifecycleScope.launch {
-            val cAViewResponse = try {
-                CAViewInstance.api.getAllCAViewDetails(id, "Bearer $authToken")
-            } catch (e: Exception) {
-                showConfirmationDialog(getString(R.string.sherm), e.message)
-                return@launch
-            } catch (e: HttpException) {
-                showConfirmationDialog(getString(R.string.sherm), e.message)
-                return@launch
-            } catch (e: IOException) {
-                showConfirmationDialog(getString(R.string.sherm), e.message)
-                return@launch
-            }
-
-            if (cAViewResponse.isSuccessful && cAViewResponse.body() != null) {
-                val cAViewBody = cAViewResponse.body()!!.content
-                correctiveActionText.text = cAViewBody.action
-                responsiblePerson.text = cAViewBody.responsiblePersonName
-                hierarchyOfControl.text = cAViewBody.hierarchyOfControl.value
-                status.text = getStatus(cAViewBody.status)
-                dueDate.text = timestampToDate(cAViewBody.dueDate)
-                reviewDate.text = timestampToDate(cAViewBody.reviewDate)
-                followUp.text = getDatePeriod(
-                    timestampToDate(cAViewBody.dueDate),
-                    timestampToDate(cAViewBody.reviewDate)
+        correctiveActionDetailsViewModel.addCorrectiveAction(id)
+        correctiveActionDetailsViewModel._correctiveActionDetailsLiveData.observe(this) { cADetail ->
+            if (cADetail?.isSuccess == true) {
+                binding.etmCorrectiveAction.text = cADetail.content.action
+                binding.spResponsiblePersonCA.text = cADetail.content.responsiblePersonName
+                binding.spHierarchyOfControl.text = cADetail.content.hierarchyOfControl.value
+                binding.spStatus.text = getStatus(cADetail.content.status)
+                binding.tvDueDateCA.text = timestampToDate(cADetail.content.dueDate)
+                binding.tvReviewDate.text = timestampToDate(cADetail.content.reviewDate)
+                binding.tvFollowUp.text = getDatePeriod(
+                    timestampToDate(cADetail.content.dueDate),
+                    timestampToDate(cADetail.content.reviewDate)
                 )
-                if (status.text == "Closed") {
-                    dueDateApproval.visibility = View.GONE
-                    dueDateRequest.visibility = View.GONE
-                    dueDateApproveCA.visibility = View.VISIBLE
+                if (binding.spStatus.text == "Closed") {
+                    binding.btnDueDateApproval.visibility = View.GONE
+                    binding.btnCApprove.visibility = View.VISIBLE
+                    binding.btnDueDateRequest.visibility = View.GONE
                 }
-                loading.visibility = View.GONE
+                binding.overLay.loadingScreen.visibility = View.GONE
+            }
+        }
+        correctiveActionDetailsViewModel._errorMessageLiveData.observe(this) { error ->
+            if (error != null) {
+                showConfirmationDialog(getString(R.string.error), error)
             }
         }
     }

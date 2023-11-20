@@ -22,7 +22,6 @@
             android:layout_width="88dp"
             android:layout_height="88dp"
             android:layout_gravity="center"
-            android:visibility="visible"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/animationloading"

@@ -1,7 +1,7 @@
 package com.jay.shermassignment.generic
 
 import android.app.Activity
-import androidx.appcompat.app.AlertDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 fun Activity.showConfirmationDialog(
     titleResId: String?,
@@ -10,7 +10,7 @@ fun Activity.showConfirmationDialog(
     onPositiveButtonClick: () -> Unit = {}
 ) {
 
-    AlertDialog.Builder(this)
+    MaterialAlertDialogBuilder(this)
         .setMessage(messageResId)
         .setTitle(titleResId)
         .setCancelable(true)

@@ -4,28 +4,27 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import com.jay.shermassignment.R
-import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.dataModel.comments.CommentBody
-import com.jay.shermassignment.utils.SessionManager
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
+import com.jay.shermassignment.databinding.ActivityCommentBinding
+import com.jay.shermassignment.di.viewmodels.comment.CommentViewModel
+import com.jay.shermassignment.generic.showConfirmationDialog
 
 class Comment : AppCompatActivity() {
 
-    private lateinit var comment: EditText
+  private lateinit var commentViewModel: CommentViewModel
+  private lateinit var binding:ActivityCommentBinding
     private var inspectionId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_comment)
+        binding= ActivityCommentBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         supportActionBar?.setTitle(R.string.inspection_comments)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        comment = findViewById(R.id.etInspectionComment)
+        commentViewModel=ViewModelProvider(this)[CommentViewModel::class.java]
         inspectionId = intent.getIntExtra("ids", 0)
     }
 
@@ -44,32 +43,26 @@ class Comment : AppCompatActivity() {
     }
 
     private fun saveComment() {
-        val commentText = comment.text.toString()
+        val commentText = binding.etInspectionComment.text.toString()
         if(commentText.isEmpty()){
             showConfirmationDialog(getString(R.string.error),getString(R.string.comment_required))
         }
-        val authToken = SessionManager(this).fetchAuthToken()
+
         val commentBody = CommentBody(commentText, inspectionId)
 
-        lifecycleScope.launch {
-            val commentResponse =
-            try {
-                CommentInstance.api.addCommentsForInspection(commentBody, authToken!!)
-            } catch (e: Exception) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            } catch (e: HttpException) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            } catch (e: IOException) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            }
-            if (commentResponse.isSuccessful && commentResponse.body() != null) {
-                showConfirmationDialog(getString(R.string.sherm),getString(R.string.successfully_comment)){
+        commentViewModel.addCorrectiveAction(commentBody)
+        commentViewModel._addCommentLiveData.observe(this){comment->
+            if(comment?.isSuccess ==true){
+                showConfirmationDialog(getString(R.string.sucess),getString(R.string.successfully_comment)){
                     finish()
                 }
             }
         }
+        commentViewModel._errorMessageLiveData.observe(this){error->
+            if(error != null){
+                showConfirmationDialog(getString(R.string.error),error)
+            }
+        }
+
     }
 }

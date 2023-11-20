@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.jay.shermassignment.databinding.ItemlistInspectionBinding
 import com.jay.shermassignment.dataModel.inspection.Row
+import com.jay.shermassignment.databinding.ItemlistInspectionBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -76,6 +76,12 @@ class InspectionPagingAdapter(private val deleteListener: OnDeleteListener,
         val position = inspectionList.indexOf(row)
         inspectionList.remove(row)
         notifyItemRemoved(position)
+    }
+
+    fun refreshList(row: List<Row>){
+        inspectionList.clear()
+        inspectionList.addAll(row)
+        notifyDataSetChanged()
     }
 
     interface OnDeleteListener {

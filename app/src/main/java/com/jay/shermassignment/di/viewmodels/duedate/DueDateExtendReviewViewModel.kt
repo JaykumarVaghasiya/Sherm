@@ -11,15 +11,16 @@ import com.jay.shermassignment.di.application.ShermApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltViewModel
-class DueDateRequestViewModel @Inject constructor(application: Application):AndroidViewModel(application) {
+class DueDateExtendReviewViewModel @Inject constructor(application: Application):AndroidViewModel(application) {
     val _dueDateRequestLiveData = MutableLiveData<ExtendDateResponse?>()
     val _errorMessageLiveData = MutableLiveData<String?>()
 
-    fun addInspection(status:String,extendDateBody: ExtendDateBody) {
+    fun dueDateApproval(status:String,extendDateBody: ExtendDateBody) {
         viewModelScope.launch {
             val dueDateResponse =
-                ShermApp.dueDateRequestRepository.dueDateRequest(status, extendDateBody)
+                ShermApp.dueDateExtendReviewRepository.dueDateRequest(status, extendDateBody)
 
             if(dueDateResponse is ExtendDateResponse){
                 _dueDateRequestLiveData.postValue(dueDateResponse)

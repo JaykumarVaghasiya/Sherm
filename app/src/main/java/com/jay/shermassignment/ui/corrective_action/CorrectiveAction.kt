@@ -5,40 +5,32 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.textview.MaterialTextView
 import com.jay.shermassignment.R
-import com.jay.shermassignment.generic.showConfirmationDialog
-import com.jay.shermassignment.dataModel.correctiveaction.CorrectiveActionData
 import com.jay.shermassignment.dataModel.correctiveaction.Row
+import com.jay.shermassignment.databinding.ActivityCorrectiveActionBinding
+import com.jay.shermassignment.di.viewmodels.correctiveaction.CorrectiveActionViewModel
+import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.ui.add_corrective_action.AddCorrectiveAction
 import com.jay.shermassignment.ui.corrective_action_details.CAViewActivity
 import com.jay.shermassignment.ui.corrective_evaluation.CorrectiveEvaluation
-import com.jay.shermassignment.utils.SessionManager
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 
 class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrectiveActionItemClick,
     CorrectiveActionAdapter.OnCorrectiveEvaluationClick {
 
-    private lateinit var correctiveActionRecyclerView: RecyclerView
     private lateinit var correctiveActionAdapter: CorrectiveActionAdapter
-    private lateinit var progressBar: LinearLayout
-    private lateinit var emptyListMessage: MaterialTextView
-    private val count:Int=0
-
-
+    private lateinit var binding: ActivityCorrectiveActionBinding
+    private lateinit var correctiveActionViewModel: CorrectiveActionViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_corrective_action)
+        binding=ActivityCorrectiveActionBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        setupViews()
+        correctiveActionViewModel=ViewModelProvider(this)[CorrectiveActionViewModel::class.java]
         setupAdapter()
         setupListeners()
     }
@@ -63,22 +55,14 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
         return super.onOptionsItemSelected(item)
     }
 
-    private fun setupViews() {
-        correctiveActionRecyclerView = findViewById(R.id.rvCorrectiveAction)
-        progressBar = findViewById(R.id.overLay)
-        emptyListMessage = findViewById(R.id.emptyListMessage)
-        progressBar.bringToFront()
-        progressBar.visibility = View.VISIBLE
-    }
-
     private fun setupAdapter() {
         correctiveActionAdapter = CorrectiveActionAdapter(this, this, this) { itemcount ->
             updateActionBarItemCount(itemcount)
 
         }
         val inspectionLayoutManager = LinearLayoutManager(this)
-        correctiveActionRecyclerView.layoutManager = inspectionLayoutManager
-        correctiveActionRecyclerView.adapter = correctiveActionAdapter
+        binding.rvCorrectiveAction.layoutManager = inspectionLayoutManager
+        binding.rvCorrectiveAction.adapter = correctiveActionAdapter
 
         correctiveActionAdapter.registerAdapterDataObserver(object :
             RecyclerView.AdapterDataObserver() {
@@ -98,7 +82,7 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
             }
 
             fun checkEmpty() {
-                emptyListMessage.visibility =
+                binding.emptyListMessage.visibility =
                     (if (correctiveActionAdapter.itemCount == 0) View.VISIBLE else View.GONE)
             }
         })
@@ -119,27 +103,19 @@ class CorrectiveAction : AppCompatActivity(), CorrectiveActionAdapter.OnCorrecti
 
     private fun loadCorrectiveAction() {
         val inspectionId = intent.getIntExtra("ids", 1)
-        val authToken=SessionManager(this).fetchAuthToken()
 
-        lifecycleScope.launch {
-            val correctiveActionResponse = try {
-                CorrectiveActionInstance.api.getAllCorrectiveAction(
-                    CorrectiveActionData(inspectionId, 1, "id", "desc", "Inspection"),
-                    "Bearer $authToken"
-                )
-            } catch (e: Exception) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            } catch (e: IOException) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            } catch (e: HttpException) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
+        correctiveActionViewModel.correctiveAction(inspectionId)
+        correctiveActionViewModel._correctiveActionLiveData.observe(this){correctiveAction->
+            if(correctiveAction?.isSuccess == true){
+                correctiveActionAdapter.submitInspectionList(correctiveAction.content.rows)
+                binding.overLay.loadingScreen.visibility=View.GONE
+            }else{
+                showConfirmationDialog(getString(R.string.error),getString(R.string.empty_data_or_response))
             }
-            if (correctiveActionResponse.isSuccessful && correctiveActionResponse.body() != null) {
-                correctiveActionAdapter.submitInspectionList(correctiveActionResponse.body()!!.content.rows)
-                progressBar.visibility = View.GONE
+        }
+        correctiveActionViewModel._errorMessageLiveData.observe(this){error->
+            if(error != null){
+                showConfirmationDialog(getString(R.string.error),error)
             }
         }
     }

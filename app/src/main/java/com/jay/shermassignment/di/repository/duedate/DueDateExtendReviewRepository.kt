@@ -12,10 +12,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DueDateRequestRepository @Inject constructor(@ApplicationContext context: Context) {
+class DueDateExtendReviewRepository @Inject constructor(@ApplicationContext context: Context) {
+
     val authToken = SessionManager(context).fetchAuthToken()
 
-    suspend fun dueDateRequest(status:String,extendDateBody: ExtendDateBody): Any? {
+    suspend fun dueDateRequest(status: String, extendDateBody: ExtendDateBody): Any? {
         val request = try {
             DueDateInstance.api.getDueDateRequest(status, extendDateBody, "Bearer $authToken")
         } catch (e: Exception) {
@@ -26,9 +27,9 @@ class DueDateRequestRepository @Inject constructor(@ApplicationContext context: 
             return e.message
         }
         return if (request.isSuccessful && request.body() != null) {
-            request.body() ?:  ""
-        }else{
-            Log.e("response","Empty")
+            request.body()?: ""
+        } else {
+            Log.e("response", "Empty")
         }
     }
 }

@@ -6,23 +6,16 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textview.MaterialTextView
+import androidx.lifecycle.ViewModelProvider
 import com.jay.shermassignment.R
-import com.jay.shermassignment.api.inspection.SpinnerInstance
+import com.jay.shermassignment.databinding.ActivityAssignCorrectiveActionBinding
+import com.jay.shermassignment.di.viewmodels.correctiveaction.AddCorrectiveActionViewModel
+import com.jay.shermassignment.di.viewmodels.spinner.ReportingToViewModel
 import com.jay.shermassignment.generic.commonDateToISODate
 import com.jay.shermassignment.generic.setupSpinnerFromArray
 import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.generic.showGenericDateDialog
-import com.jay.shermassignment.utils.SessionManager
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -30,24 +23,21 @@ import java.util.Locale
 
 class AddCorrectiveAction : AppCompatActivity() {
 
-    private lateinit var responsiblePersonSpinner: Spinner
-    private lateinit var hierarchyOfControlSpinner: Spinner
-    private lateinit var statusSpinner: Spinner
-    private lateinit var dueDateTextView: MaterialTextView
-    private lateinit var dueDateButton: MaterialButton
-    private lateinit var correctiveActionMultilineEditText: EditText
-    private lateinit var followUpSpinner: Spinner
-    private lateinit var reviewDateTextView: MaterialTextView
-    private lateinit var loading:LinearLayout
+    private lateinit var binding: ActivityAssignCorrectiveActionBinding
+    private lateinit var addCorrectiveActionViewModel: AddCorrectiveActionViewModel
+    private lateinit var reportingToViewModel: ReportingToViewModel
     private var responsibleId: Int = 0
     private var inspectionScheduleId: Int = 0
     private var selectedDueDate: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_assign_corrective_action)
+        binding = ActivityAssignCorrectiveActionBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         supportActionBar?.setTitle(R.string.assign_ca)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        initializeViewId()
+        reportingToViewModel = ViewModelProvider(this)[ReportingToViewModel::class.java]
+        addCorrectiveActionViewModel =
+            ViewModelProvider(this)[AddCorrectiveActionViewModel::class.java]
         spinnerValue()
         getAllResponsiblePerson()
         btClickListener()
@@ -56,86 +46,52 @@ class AddCorrectiveAction : AppCompatActivity() {
 
     private fun getAllResponsiblePerson() {
 
-        val authToken = SessionManager(this).fetchAuthToken()
-        lifecycleScope.launch {
-            val responsiblePerson = try {
-                SpinnerInstance.api.getAlLResponsiblePerson("Bearer $authToken")
-            } catch (e: Exception) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            } catch (e: HttpException) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            } catch (e: IOException) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
+        reportingToViewModel.reportingTo()
+        reportingToViewModel._reportingToLiveData.observe(this) { reportingTo ->
+            val responsiblePersonName = reportingTo?.content?.map {
+                it.fullName
             }
-
-            if (responsiblePerson.isSuccessful && responsiblePerson.body() != null) {
-                val body = responsiblePerson.body()
-                loading.visibility=View.GONE
-                val responsiblePersonName = body?.content?.map { reportingTo ->
-                    reportingTo.fullName
-                }
-                val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-                    this@AddCorrectiveAction,
-                    android.R.layout.simple_spinner_item,
-                    responsiblePersonName ?: emptyList()
-                )
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                responsiblePersonSpinner.adapter = adapter
-                responsiblePersonSpinner.onItemSelectedListener =
-                    object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
-                            responsibleId = body?.content?.get(position)?.id ?: 0
-                        }
-
-                        override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                        }
+            val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                this@AddCorrectiveAction,
+                android.R.layout.simple_spinner_item,
+                responsiblePersonName ?: emptyList()
+            )
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spResponsiblePersonAddCA.adapter = adapter
+            binding.spResponsiblePersonAddCA.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        responsibleId = reportingTo?.content?.get(position)?.id ?: 0
                     }
 
-            }
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                    }
+                }
         }
     }
 
 
-    private fun initializeViewId() {
-        responsiblePersonSpinner = findViewById(R.id.spResponsiblePersonAddCA)
-        hierarchyOfControlSpinner = findViewById(R.id.spHierarchyOfControlAddCA)
-        dueDateTextView = findViewById(R.id.tvDueDateAddCA)
-        dueDateButton = findViewById(R.id.btnDuedateAddCA)
-        correctiveActionMultilineEditText = findViewById(R.id.etmAddCA)
-        statusSpinner = findViewById(R.id.spStatusAddCA)
-        followUpSpinner = findViewById(R.id.spFollowUpAddCA)
-        reviewDateTextView = findViewById(R.id.tvReviewDateAddCA)
-        loading=findViewById(R.id.overLay)
-        loading.bringToFront()
-        loading.visibility=View.VISIBLE
-    }
-
     private fun spinnerValue() {
-        setupSpinnerFromArray(hierarchyOfControlSpinner, R.array.hierarchyControl)
-        setupSpinnerFromArray(followUpSpinner, R.array.followUp)
-        setupSpinnerFromArray(statusSpinner, R.array.status)
+        setupSpinnerFromArray(binding.spHierarchyOfControlAddCA, R.array.hierarchyControl)
+        setupSpinnerFromArray(binding.spFollowUpAddCA, R.array.followUp)
+        setupSpinnerFromArray(binding.spStatusAddCA, R.array.status)
     }
 
 
     private fun gatherData() {
 
-        val hierarchyOfControl = hierarchyOfControlSpinner.selectedItem.toString()
+        val hierarchyOfControl = binding.spHierarchyOfControlAddCA.selectedItem.toString()
         val hierarchyOfControlValue = getHierarchyControl(hierarchyOfControl)
-        val correctiveAction = correctiveActionMultilineEditText.text.toString()
-        val dueDateText = dueDateTextView.text.toString()
-        val reviewDateValue = reviewDateTextView.text.toString()
-        val authToken = SessionManager(this).fetchAuthToken()
+        val correctiveAction = binding.etmAddCA.text.toString()
+        val dueDateText = binding.tvDueDateAddCA.text.toString()
+        val reviewDateValue = binding.tvReviewDateAddCA.text.toString()
         inspectionScheduleId = intent.getIntExtra("iId", 1)
-
 
 
         val body = AddCorrectiveActionBody(
@@ -150,31 +106,23 @@ class AddCorrectiveAction : AppCompatActivity() {
             responsibleId,
             commonDateToISODate(reviewDateValue)
         )
-
-        lifecycleScope.launch {
-            val addCorrectiveAction = try {
-                AddCorrectiveActionInstance.api.addCorrectiveAction(body, "Bearer $authToken")
-            } catch (e: Exception) {
-                showConfirmationDialog(getString(R.string.error),e.message)
-                return@launch
-            } catch (e: HttpException) {
-                showConfirmationDialog(getString(R.string.error),e.message)
-                return@launch
-            } catch (e: IOException) {
-                showConfirmationDialog(getString(R.string.error),e.message)
-                return@launch
-            }
-            if (addCorrectiveAction.isSuccessful && addCorrectiveAction.body() != null) {
-                loading.visibility=View.GONE
-                showConfirmationDialog(getString(R.string.sucess),getString(R.string.added)){
+        addCorrectiveActionViewModel.addCorrectiveAction(body)
+        addCorrectiveActionViewModel._addCorrectiveActionLiveData.observe(this){response->
+            if(response?.isSuccess == true){
+                showConfirmationDialog(getString(R.string.sucess),getString(R.string.saved_sucessfully)){
                     finish()
                 }
+            }
+        }
+        addCorrectiveActionViewModel._errorMessageLiveData.observe(this){
+            if(it != null){
+                showConfirmationDialog(getString(R.string.error),it)
             }
         }
     }
 
     private fun btClickListener() {
-        dueDateButton.setOnClickListener {
+        binding.btnDuedateAddCA.setOnClickListener {
             showGenericDateDialog(
                 getString(R.string.selectedDate),
                 System.currentTimeMillis()
@@ -182,14 +130,14 @@ class AddCorrectiveAction : AppCompatActivity() {
                 selectedDueDate = selectedDate
                 val formattedDate =
                     SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date(selectedDate))
-                dueDateTextView.text = formattedDate
+                binding.tvDueDateAddCA.text = formattedDate
 
                 // Calculate and display the review date based on the selected follow-up duration
 
                 calculateReviewDate()
             }
         }
-        followUpSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.spFollowUpAddCA.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parentView: AdapterView<*>?,
                 selectedItemView: View?,
@@ -206,7 +154,7 @@ class AddCorrectiveAction : AppCompatActivity() {
     }
 
     private fun calculateReviewDate() {
-        val selectedFollowUpItem = followUpSpinner.selectedItem.toString()
+        val selectedFollowUpItem = binding.spFollowUpAddCA.selectedItem.toString()
         val followUpMonths = selectedFollowUpItem.split(" ")[0].toInt()
 
         val calendar = Calendar.getInstance()
@@ -214,7 +162,7 @@ class AddCorrectiveAction : AppCompatActivity() {
         calendar.add(Calendar.MONTH, followUpMonths)
 
         val formattedReviewDate = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(calendar.time)
-        reviewDateTextView.text = formattedReviewDate
+        binding.tvReviewDateAddCA.text = formattedReviewDate
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -225,7 +173,7 @@ class AddCorrectiveAction : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save -> {
-                loading.visibility=View.VISIBLE
+                binding.overLay.loadingScreen.visibility=View.VISIBLE
                 gatherData()
             }
             android.R.id.home ->{

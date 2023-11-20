@@ -13,7 +13,5 @@ class InspectionViewModel @Inject constructor(
     inspectionRepository: InspectionRepository,
     application: Application
 ) : AndroidViewModel(application) {
-
     val list = inspectionRepository.getInspectionList().cachedIn(viewModelScope)
-
 }

@@ -27,7 +27,7 @@ class CorrectiveActionAdapter(
         private val date: MaterialTextView = itemView.findViewById(R.id.tvCorrectiveDate)
         private val assign: MaterialTextView = itemView.findViewById(R.id.tvCorrectiveAssign)
         private val assigner: MaterialTextView = itemView.findViewById(R.id.tvCorrectiveAssigner)
-        private val divider:MaterialDivider=itemView.findViewById(R.id.caDivider)
+        private val divider: MaterialDivider =itemView.findViewById(R.id.caDivider)
         private val inspectionName: MaterialTextView =
             itemView.findViewById(R.id.tvInspectionInCorrectiveActionName)
         private val correctiveEvolution: LinearLayout =

@@ -2,38 +2,33 @@ package com.jay.shermassignment.ui.approve_ca
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.google.android.material.button.MaterialButton
+import androidx.lifecycle.ViewModelProvider
 import com.jay.shermassignment.R
-import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.dataModel.approveca.ApproveCABody
-import com.jay.shermassignment.ui.dueDate.DueDateInstance
-import com.jay.shermassignment.utils.SessionManager
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
+import com.jay.shermassignment.databinding.ActivityApproveCaBinding
+import com.jay.shermassignment.di.viewmodels.duedate.DueDateApprovalViewModel
+import com.jay.shermassignment.generic.showConfirmationDialog
 
 class ApproveCA : AppCompatActivity() {
 
-    private lateinit var comment:EditText
-    private lateinit var reject:MaterialButton
-    private lateinit var approve:MaterialButton
+    private lateinit var binding:ActivityApproveCaBinding
+    private lateinit var dueDateApprovalViewModel: DueDateApprovalViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_approve_ca)
-        supportActionBar?.setTitle(getString(R.string.approverejectCA))
+        binding= ActivityApproveCaBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        supportActionBar?.title = getString(R.string.approverejectCA)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        initializeView()
+        dueDateApprovalViewModel=ViewModelProvider(this)[DueDateApprovalViewModel::class.java]
         buttonClickListener()
     }
 
     private fun buttonClickListener() {
-        approve.setOnClickListener {
+        binding.btnApproveCA.setOnClickListener {
             approveData()
         }
-        reject.setOnClickListener {
+        binding.btnRejectCA.setOnClickListener {
             rejectData()
         }
     }
@@ -48,69 +43,47 @@ class ApproveCA : AppCompatActivity() {
 
     private fun rejectData() {
 
-        val commentText = comment.text.toString()
+        val commentText = binding.etmCommentCA.text.toString()
         val status = "rejected"
         val id=intent.getIntExtra("cID",1)
         val body = ApproveCABody(
             status,commentText,id
         )
-        val authToken = SessionManager(this).fetchAuthToken()
-
-        lifecycleScope.launch {
-            val rejectResponse = try {
-                DueDateInstance.api.getDueDateApproval(body,"Bearer $authToken")
-            } catch (e: Exception) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            } catch (e: HttpException) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            } catch (e: IOException) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            }
-            if (rejectResponse.isSuccessful && rejectResponse.body() != null) {
+        dueDateApprovalViewModel.dueDateReject(body)
+        dueDateApprovalViewModel._dueDateLiveData.observe(this){rejected->
+            if(rejected?.isSuccess ==true){
                 showConfirmationDialog(getString(R.string.sucess),getString(R.string.reject_sucessfully)){
                     finish()
                 }
+            }
+        }
+        dueDateApprovalViewModel._errorMessageLiveData.observe(this){error->
+            if(error != null){
+                showConfirmationDialog(getString(R.string.error),error)
             }
         }
     }
 
     private fun approveData() {
 
-        val commentText = comment.text.toString()
+        val commentText = binding.etmCommentCA.text.toString()
         val status = "approved"
         val id=intent.getIntExtra("cID",1)
         val body = ApproveCABody(
            status,commentText,id
         )
-        val authToken = SessionManager(this).fetchAuthToken()
-
-        lifecycleScope.launch {
-            val approveResponse = try {
-                DueDateInstance.api.getDueDateApproval(body,"Bearer $authToken")
-            } catch (e: Exception) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            } catch (e: HttpException) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            } catch (e: IOException) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            }
-            if (approveResponse.isSuccessful && approveResponse.body() != null) {
+        dueDateApprovalViewModel.dueDateApprove(body)
+        dueDateApprovalViewModel._dueDateLiveData.observe(this){approved->
+            if(approved?.isSuccess==true){
                 showConfirmationDialog(getString(R.string.sucess),getString(R.string.approve_sucessfully)){
                     finish()
                 }
             }
         }
-    }
-
-    private fun initializeView() {
-        comment=findViewById(R.id.etmCommentCA)
-        approve=findViewById(R.id.btnApproveCA)
-        reject=findViewById(R.id.btnRejectCA)
+        dueDateApprovalViewModel._errorMessageLiveData.observe(this){error->
+            if(error != null){
+                showConfirmationDialog(getString(R.string.error),error)
+            }
+        }
     }
 }

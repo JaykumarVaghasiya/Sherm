@@ -7,6 +7,7 @@ import com.jay.shermassignment.di.repository.correctiveaction.CorrectiveActionDe
 import com.jay.shermassignment.di.repository.correctiveaction.CorrectiveActionRepository
 import com.jay.shermassignment.di.repository.correctiveevalution.CorrectiveEvaluationRepository
 import com.jay.shermassignment.di.repository.duedate.CheckDueDateRepository
+import com.jay.shermassignment.di.repository.duedate.DueDateExtendReviewRepository
 import com.jay.shermassignment.di.repository.duedate.DueDateExtendedRepository
 import com.jay.shermassignment.di.repository.duedate.DueDateRequestRepository
 import com.jay.shermassignment.di.repository.inspection.AddInspectionRepository
@@ -70,6 +71,9 @@ class ShermApp : Application() {
 
         lateinit var inspectionCompletedRepository: InspectionCompletedRepository
             private set
+
+        lateinit var dueDateExtendReviewRepository: DueDateExtendReviewRepository
+            private set
     }
 
 
@@ -93,6 +97,7 @@ class ShermApp : Application() {
         inspectionCompletedRepository= InspectionCompletedRepository(applicationContext)
         addCorrectiveActionRepository= AddCorrectiveActionRepository(applicationContext)
         correctiveEvaluationRepository=CorrectiveEvaluationRepository(applicationContext)
+        dueDateExtendReviewRepository=DueDateExtendReviewRepository(applicationContext)
 
     }
 }

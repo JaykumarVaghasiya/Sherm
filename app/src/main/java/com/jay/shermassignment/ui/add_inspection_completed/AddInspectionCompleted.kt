@@ -4,46 +4,40 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textview.MaterialTextView
+import androidx.lifecycle.ViewModelProvider
 import com.jay.shermassignment.R
+import com.jay.shermassignment.dataModel.addinspectioncompletted.CompletedInspectionBody
+import com.jay.shermassignment.databinding.ActivityAddInspectionCompletedBinding
+import com.jay.shermassignment.di.viewmodels.inspectioncompleted.InspectionCompletedViewModel
+import com.jay.shermassignment.generic.commonDateToISODate
 import com.jay.shermassignment.generic.showConfirmationDialog
 import com.jay.shermassignment.generic.showGenericDateDialog
-import com.jay.shermassignment.dataModel.addinspectioncompletted.CompletedInspectionBody
-import com.jay.shermassignment.utils.SessionManager
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 class AddInspectionCompleted : AppCompatActivity() {
-
-    private lateinit var inspectionCompleted:MaterialTextView
-    private lateinit var calendarInspectionCompleted: MaterialButton
+    private lateinit var binding: ActivityAddInspectionCompletedBinding
+    private lateinit var inspectionCompletedViewModel: InspectionCompletedViewModel
     private var inspectionId: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_inspection_completed)
+        binding = ActivityAddInspectionCompletedBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         supportActionBar?.setTitle(R.string.add_inspections_completed)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        initializeId()
+        inspectionCompletedViewModel =
+            ViewModelProvider(this)[InspectionCompletedViewModel::class.java]
         buttonClickListener()
     }
 
-    private fun initializeId(){
-        inspectionCompleted=findViewById(R.id.tvInspectionCompletedDate)
-        calendarInspectionCompleted=findViewById(R.id.btnCalenderInspectionCompleted)
-    }
 
     private fun buttonClickListener() {
-        calendarInspectionCompleted.setOnClickListener {
+        binding.btnCalenderInspectionCompleted.setOnClickListener {
             showGenericDateDialog(R.string.selectedDate.toString(), System.currentTimeMillis()) { selectedDate ->
                 val formattedDate =
-                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(selectedDate))
-                inspectionCompleted.text = formattedDate
+                    SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date(selectedDate))
+                binding.tvInspectionCompletedDate.text = formattedDate
             }
         }
     }
@@ -66,35 +60,22 @@ class AddInspectionCompleted : AppCompatActivity() {
     }
 
     private fun saveData() {
-        val authToken = SessionManager(this).fetchAuthToken()
         inspectionId= intent.getIntExtra("ids",0)
-        val completedDate=inspectionCompleted.text.toString()
-        val body = CompletedInspectionBody(completedDate,inspectionId)
-
-        lifecycleScope.launch {
-            val response = try {
-                CompletedInstance.api.completedScheduledInspection(body,authToken!!)
-            }catch (e:Exception){
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            }catch (e:HttpException){
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            }catch (e:IOException){
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            }
-
-            if(response.isSuccessful && response.body()!= null){
-                showConfirmationDialog(
-                    getString(R.string.sucess),
-                    getString(R.string.complted)
-                ){
+        val completedDate=binding.tvInspectionCompletedDate.text.toString()
+        val body = CompletedInspectionBody(commonDateToISODate(completedDate),inspectionId)
+        inspectionCompletedViewModel.dueDateApprove(body)
+        inspectionCompletedViewModel._inspectiomCompletedLiveData.observe(this){completed->
+            if(completed?.isSuccess ==true){
+                showConfirmationDialog(getString(R.string.sucess),getString(R.string.complted)){
                     setResult(RESULT_OK)
                     finish()
                 }
             }
         }
-
+        inspectionCompletedViewModel._errorMessageLiveData.observe(this){error->
+            if(error != null){
+                showConfirmationDialog(getString(R.string.error),error)
+            }
+        }
     }
 }

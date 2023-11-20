@@ -35,30 +35,26 @@ class Inspection : AppCompatActivity(), InspectionPagingAdapter.OnInspectionList
         setContentView(_binding.root)
         supportActionBar?.setTitle(R.string.inspections)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        _binding.overLay.loadingScreen.bringToFront()
         setupRecyclerView()
         callViewModel()
+
     }
 
     override fun onResume() {
         super.onResume()
         inspectionViewModel.list.observe(this){
             inspectionAdapter.submitData(lifecycle,it)
+            _binding.overLay.loadingScreen.visibility= View.GONE
         }
+
     }
 
     private fun callViewModel() {
-
         inspectionViewModel = ViewModelProvider(this)[InspectionViewModel::class.java]
         deleteInspectionViewModel = ViewModelProvider(this)[DeleteInspectionViewModel::class.java]
-        inspectionViewModel.list.observe(this) {
-            _binding.overLay.loadingScreen.visibility = View.GONE
-            inspectionAdapter.submitData(lifecycle, it)
-        }
     }
 
     private fun setupRecyclerView() {
-        _binding.overLay.loadingScreen.visibility = View.VISIBLE
         inspectionAdapter = InspectionPagingAdapter(this, this)
         val inspectionLayoutManager = LinearLayoutManager(this)
         _binding.rvInspection.layoutManager = inspectionLayoutManager
@@ -67,6 +63,7 @@ class Inspection : AppCompatActivity(), InspectionPagingAdapter.OnInspectionList
             footer = LoaderAdapter(),
             header = LoaderAdapter()
         )
+
 
     }
 

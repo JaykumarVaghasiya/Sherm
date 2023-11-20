@@ -3,39 +3,32 @@ package com.jay.shermassignment.ui.corrective_evaluation
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.EditText
-import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import com.jay.shermassignment.R
+import com.jay.shermassignment.databinding.ActivityCorrecitveEvalutionBinding
+import com.jay.shermassignment.di.viewmodels.correctiveevaluation.CorrectiveEvaluationViewModel
 import com.jay.shermassignment.generic.setupSpinnerFromArray
 import com.jay.shermassignment.generic.showConfirmationDialog
-import com.jay.shermassignment.utils.SessionManager
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 
 class CorrectiveEvaluation : AppCompatActivity() {
-
-    private lateinit var comment: EditText
-    private lateinit var status: Spinner
+private lateinit var binding:ActivityCorrecitveEvalutionBinding
+private lateinit var correctiveEvaluationViewModel:CorrectiveEvaluationViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_correcitve_evalution)
+        binding= ActivityCorrecitveEvalutionBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         supportActionBar?.setTitle(R.string.corrective_evaluation)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        initializeView()
+        correctiveEvaluationViewModel=ViewModelProvider(this)[CorrectiveEvaluationViewModel::class.java]
         spinnerValues()
     }
 
     private fun spinnerValues() {
-        setupSpinnerFromArray(status, R.array.statusCE)
+        setupSpinnerFromArray(binding.spStatusCorrectiveEvaluation, R.array.statusCE)
     }
 
-    private fun initializeView() {
-        comment = findViewById(R.id.etCorrectiveEvaluationComments)
-        status = findViewById(R.id.spStatusCorrectiveEvaluation)
-    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.save_menu, menu)
@@ -62,30 +55,26 @@ class CorrectiveEvaluation : AppCompatActivity() {
     }
 
     private fun saveCorrectiveEvaluation() {
-        val authToken = SessionManager(this).fetchAuthToken()
+
         val id = intent.getIntExtra("correctiveActionId", 0)
-        val comment = comment.text.toString()
-        val statusValue = status.selectedItem.toString()
+        val comment = binding.etCorrectiveEvaluationComments.text.toString()
+        val statusValue = binding.spStatusCorrectiveEvaluation.selectedItem.toString()
         val statusIntValue = getStatusValue(statusValue)
 
         val body = CorrectiveEvaluationBody(statusIntValue, comment, id)
 
-        lifecycleScope.launch {
-            val correctiveEvaluation = try {
-                CorrectiveEvaluationInstance.api.addEvaluation(body, authToken!!)
-            } catch (e: Exception) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            } catch (e: HttpException) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
-            } catch (e: IOException) {
-                showConfirmationDialog(getString(R.string.sherm),e.message)
-                return@launch
+        correctiveEvaluationViewModel.getCorrectiveEvaluation(body)
+        correctiveEvaluationViewModel._correctiveEvaluationLiveData.observe(this){cEResponse->
+            if(cEResponse?.isSuccess ==true){
+                showConfirmationDialog(getString(R.string.sucess),getString(R.string.saved_sucessfully)){
+                    finish()
+                }
             }
-            if(correctiveEvaluation.isSuccessful && correctiveEvaluation.body() != null){
-                showConfirmationDialog(getString(R.string.sherm),getString(R.string.added))
-                finish()
+        }
+
+        correctiveEvaluationViewModel._errorMessageLiveData.observe(this){error->
+            if(error != null){
+                showConfirmationDialog(getString(R.string.error),error)
             }
         }
     }
